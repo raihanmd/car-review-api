@@ -1,4 +1,33 @@
 definitions:
+  request.CarCreateRequest:
+    properties:
+      brand:
+        type: string
+      image:
+        type: string
+      model:
+        type: string
+      year:
+        minimum: 1878
+        type: integer
+    required:
+    - brand
+    - image
+    - model
+    - year
+    type: object
+  request.CarUpdateRequest:
+    properties:
+      brand:
+        type: string
+      image:
+        type: string
+      model:
+        type: string
+      year:
+        minimum: 1878
+        type: integer
+    type: object
   request.LoginRequest:
     properties:
       password:
@@ -53,6 +82,24 @@ definitions:
         maxLength: 20
         minLength: 3
         type: string
+    type: object
+  response.CarResponse:
+    properties:
+      brand:
+        example: Toyota
+        type: string
+      id:
+        example: 1
+        type: integer
+      image:
+        example: url
+        type: string
+      model:
+        example: Yaris
+        type: string
+      year:
+        example: 2020
+        type: integer
     type: object
   response.LoginResponse:
     properties:
@@ -128,12 +175,56 @@ definitions:
         example: luigi
         type: string
     type: object
-  web.WebError:
+  web.WebBadRequestError:
     properties:
       code:
         example: 400
         type: integer
-      errors: {}
+      errors:
+        example: bad request
+        type: string
+    type: object
+  web.WebForbiddenError:
+    properties:
+      code:
+        example: 403
+        type: integer
+      errors:
+        example: forbidden
+        type: string
+    type: object
+  web.WebNotFoundError:
+    properties:
+      code:
+        example: 404
+        type: integer
+      errors:
+        example: not found
+        type: string
+    type: object
+  web.WebSuccess-array_response_CarResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/response.CarResponse'
+        type: array
+      message:
+        example: success
+        type: string
+    type: object
+  web.WebSuccess-response_CarResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        $ref: '#/definitions/response.CarResponse'
+      message:
+        example: success
+        type: string
     type: object
   web.WebSuccess-response_LoginResponse:
     properties:
@@ -190,10 +281,19 @@ definitions:
         example: success
         type: string
     type: object
+  web.WebUnauthorizedError:
+    properties:
+      code:
+        example: 401
+        type: integer
+      errors:
+        example: unauthorized
+        type: string
+    type: object
 info:
   contact: {}
 paths:
-  /api/login:
+  /api/auth/login:
     post:
       description: Logging in to get jwt token to access admin or user api by roles.
       parameters:
@@ -213,13 +313,17 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/web.WebError'
+            $ref: '#/definitions/web.WebBadRequestError'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/web.WebUnauthorizedError'
       summary: User Login.
       tags:
       - Auth
-  /api/register:
+  /api/auth/register:
     post:
-      description: registering a user from public access.
+      description: Registering a user from public access.
       parameters:
       - description: the body to register a user
         in: body
@@ -230,18 +334,188 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/web.WebSuccess-response_RegisterResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/web.WebError'
+            $ref: '#/definitions/web.WebBadRequestError'
       summary: User Register.
       tags:
       - Auth
-  /api/user:
+  /api/cars:
+    get:
+      description: Find all car.
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-array_response_CarResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/web.WebForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+      summary: Find all car.
+      tags:
+      - Cars
+    post:
+      description: Create a car.
+      parameters:
+      - description: the body to register a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.CarCreateRequest'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_CarResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/web.WebForbiddenError'
+      security:
+      - BearerToken: []
+      summary: Create car.
+      tags:
+      - Cars
+  /api/cars/{id}:
+    delete:
+      description: Delete a car.
+      parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/web.WebForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+      security:
+      - BearerToken: []
+      summary: Delete car.
+      tags:
+      - Cars
+    get:
+      description: Find a car by id.
+      parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_CarResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/web.WebForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+      summary: Find car.
+      tags:
+      - Cars
+    patch:
+      description: Update a car.
+      parameters:
+      - description: Car ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: the body to register a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.CarUpdateRequest'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_CarResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/web.WebForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+      security:
+      - BearerToken: []
+      summary: Update car.
+      tags:
+      - Cars
+  /api/users:
     delete:
       description: Delete a user profile by ID.
       parameters:
@@ -260,14 +534,14 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/web.WebError'
+            $ref: '#/definitions/web.WebBadRequestError'
       security:
       - BearerToken: []
       summary: Delete User.
       tags:
-      - User
-  /api/user/password:
-    put:
+      - Users
+  /api/users/password:
+    patch:
       description: Update the current user's password.
       parameters:
       - description: the body to update a password
@@ -291,14 +565,14 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/web.WebError'
+            $ref: '#/definitions/web.WebBadRequestError'
       security:
       - BearerToken: []
       summary: Update user password.
       tags:
-      - User
-  /api/user/profile:
-    put:
+      - Users
+  /api/users/profile:
+    patch:
       description: Update the profile of a user.
       parameters:
       - description: the body to update user profile
@@ -322,13 +596,13 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/web.WebError'
+            $ref: '#/definitions/web.WebBadRequestError'
       security:
       - BearerToken: []
       summary: Update User Profile.
       tags:
-      - User
-  /api/user/profile/{id}:
+      - Users
+  /api/users/profile/{id}:
     get:
       description: Get user profile data.
       parameters:
@@ -347,8 +621,12 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/web.WebError'
+            $ref: '#/definitions/web.WebBadRequestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
       summary: Get user profile.
       tags:
-      - User
+      - Users
 swagger: "2.0"

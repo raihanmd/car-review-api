@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/login": {
+        "/api/auth/login": {
             "post": {
                 "description": "Logging in to get jwt token to access admin or user api by roles.",
                 "produces": [
@@ -46,15 +46,21 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/web.WebError"
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebUnauthorizedError"
                         }
                     }
                 }
             }
         },
-        "/api/register": {
+        "/api/auth/register": {
             "post": {
-                "description": "registering a user from public access.",
+                "description": "Registering a user from public access.",
                 "produces": [
                     "application/json"
                 ],
@@ -74,8 +80,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/web.WebSuccess-response_RegisterResponse"
                         }
@@ -83,13 +89,274 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/web.WebError"
+                            "$ref": "#/definitions/web.WebBadRequestError"
                         }
                     }
                 }
             }
         },
-        "/api/user": {
+        "/api/cars": {
+            "get": {
+                "description": "Find all car.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Find all car.",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-array_response_CarResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebForbiddenError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Create a car.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Create car.",
+                "parameters": [
+                    {
+                        "description": "the body to register a user",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CarCreateRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization. How to input in swagger : 'Bearer \u003cinsert_your_token_here\u003e'",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-response_CarResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebForbiddenError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/cars/{id}": {
+            "get": {
+                "description": "Find a car by id.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Find car.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Car ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-response_CarResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebForbiddenError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Delete a car.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Delete car.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Car ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization. How to input in swagger : 'Bearer \u003cinsert_your_token_here\u003e'",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebForbiddenError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Update a car.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Cars"
+                ],
+                "summary": "Update car.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Car ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "the body to register a user",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CarUpdateRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization. How to input in swagger : 'Bearer \u003cinsert_your_token_here\u003e'",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-response_CarResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebForbiddenError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users": {
             "delete": {
                 "security": [
                     {
@@ -101,7 +368,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Users"
                 ],
                 "summary": "Delete User.",
                 "parameters": [
@@ -123,14 +390,14 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/web.WebError"
+                            "$ref": "#/definitions/web.WebBadRequestError"
                         }
                     }
                 }
             }
         },
-        "/api/user/password": {
-            "put": {
+        "/api/users/password": {
+            "patch": {
                 "security": [
                     {
                         "BearerToken": []
@@ -141,7 +408,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Users"
                 ],
                 "summary": "Update user password.",
                 "parameters": [
@@ -172,14 +439,14 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/web.WebError"
+                            "$ref": "#/definitions/web.WebBadRequestError"
                         }
                     }
                 }
             }
         },
-        "/api/user/profile": {
-            "put": {
+        "/api/users/profile": {
+            "patch": {
                 "security": [
                     {
                         "BearerToken": []
@@ -190,7 +457,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Users"
                 ],
                 "summary": "Update User Profile.",
                 "parameters": [
@@ -221,20 +488,20 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/web.WebError"
+                            "$ref": "#/definitions/web.WebBadRequestError"
                         }
                     }
                 }
             }
         },
-        "/api/user/profile/{id}": {
+        "/api/users/profile/{id}": {
             "get": {
                 "description": "Get user profile data.",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "User"
+                    "Users"
                 ],
                 "summary": "Get user profile.",
                 "parameters": [
@@ -256,7 +523,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/web.WebError"
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
                         }
                     }
                 }
@@ -264,6 +537,48 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "request.CarCreateRequest": {
+            "type": "object",
+            "required": [
+                "brand",
+                "image",
+                "model",
+                "year"
+            ],
+            "properties": {
+                "brand": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer",
+                    "minimum": 1878
+                }
+            }
+        },
+        "request.CarUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "brand": {
+                    "type": "string"
+                },
+                "image": {
+                    "type": "string"
+                },
+                "model": {
+                    "type": "string"
+                },
+                "year": {
+                    "type": "integer",
+                    "minimum": 1878
+                }
+            }
+        },
         "request.LoginRequest": {
             "type": "object",
             "required": [
@@ -339,6 +654,31 @@ const docTemplate = `{
                     "type": "string",
                     "maxLength": 20,
                     "minLength": 3
+                }
+            }
+        },
+        "response.CarResponse": {
+            "type": "object",
+            "properties": {
+                "brand": {
+                    "type": "string",
+                    "example": "Toyota"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "image": {
+                    "type": "string",
+                    "example": "url"
+                },
+                "model": {
+                    "type": "string",
+                    "example": "Yaris"
+                },
+                "year": {
+                    "type": "integer",
+                    "example": 2020
                 }
             }
         },
@@ -445,14 +785,78 @@ const docTemplate = `{
                 }
             }
         },
-        "web.WebError": {
+        "web.WebBadRequestError": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer",
                     "example": 400
                 },
-                "errors": {}
+                "errors": {
+                    "type": "string",
+                    "example": "bad request"
+                }
+            }
+        },
+        "web.WebForbiddenError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 403
+                },
+                "errors": {
+                    "type": "string",
+                    "example": "forbidden"
+                }
+            }
+        },
+        "web.WebNotFoundError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 404
+                },
+                "errors": {
+                    "type": "string",
+                    "example": "not found"
+                }
+            }
+        },
+        "web.WebSuccess-array_response_CarResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 200
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.CarResponse"
+                    }
+                },
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "web.WebSuccess-response_CarResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 200
+                },
+                "data": {
+                    "$ref": "#/definitions/response.CarResponse"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                }
             }
         },
         "web.WebSuccess-response_LoginResponse": {
@@ -532,6 +936,19 @@ const docTemplate = `{
                 "message": {
                     "type": "string",
                     "example": "success"
+                }
+            }
+        },
+        "web.WebUnauthorizedError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 401
+                },
+                "errors": {
+                    "type": "string",
+                    "example": "unauthorized"
                 }
             }
         }

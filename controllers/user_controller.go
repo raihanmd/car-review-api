@@ -35,13 +35,13 @@ func NewUserController(userService services.UserService) UserController {
 
 // Register godoc
 // @Summary User Register.
-// @Description registering a user from public access.
+// @Description Registering a user from public access.
 // @Tags Auth
 // @Param Body body request.RegisterRequest true "the body to register a user"
 // @Produce json
-// @Success 200 {object} web.WebSuccess[response.RegisterResponse]
-// @Failure 400 {object} web.WebError
-// @Router /api/register [post]
+// @Success 201 {object} web.WebSuccess[response.RegisterResponse]
+// @Failure 400 {object} web.WebBadRequestError
+// @Router /api/auth/register [post]
 func (controller *userControllerImpl) Register(c *gin.Context) {
 	var registerReq request.RegisterRequest
 
@@ -56,7 +56,7 @@ func (controller *userControllerImpl) Register(c *gin.Context) {
 	registerRes, err := controller.UserService.Register(c, &newUser)
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, registerRes)
+	helper.ToResponseJSON(c, http.StatusCreated, registerRes)
 }
 
 // LoginUser godoc
@@ -66,8 +66,9 @@ func (controller *userControllerImpl) Register(c *gin.Context) {
 // @Param Body body request.LoginRequest true "the body to login a user"
 // @Produce json
 // @Success 200 {object} web.WebSuccess[response.LoginResponse]
-// @Failure 400 {object} web.WebError
-// @Router /api/login [post]
+// @Failure 400 {object} web.WebBadRequestError
+// @Failure 401 {object} web.WebUnauthorizedError
+// @Router /api/auth/login [post]
 func (controller *userControllerImpl) Login(c *gin.Context) {
 	var loginReq request.LoginRequest
 
@@ -83,14 +84,14 @@ func (controller *userControllerImpl) Login(c *gin.Context) {
 // UpdatePassword godoc
 // @Summary Update user password.
 // @Description Update the current user's password.
-// @Tags User
+// @Tags Users
 // @Param Body body request.UpdatePasswordRequest true "the body to update a password"
 // @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
 // @Security BearerToken
 // @Produce json
 // @Success 200 {object} web.WebSuccess[string]
-// @Failure 400 {object} web.WebError
-// @Router /api/user/password [put]
+// @Failure 400 {object} web.WebBadRequestError
+// @Router /api/users/password [patch]
 func (controller *userControllerImpl) UpdatePassword(c *gin.Context) {
 	var updatePasswordReq request.UpdatePasswordRequest
 
@@ -109,12 +110,13 @@ func (controller *userControllerImpl) UpdatePassword(c *gin.Context) {
 // UpdatePassword godoc
 // @Summary Get user profile.
 // @Description Get user profile data.
-// @Tags User
+// @Tags Users
 // @Produce json
 // @Param id path int true "User ID"
 // @Success 200 {object} web.WebSuccess[response.UserProfileResponse]
-// @Failure 400 {object} web.WebError
-// @Router /api/user/profile/{id} [get]
+// @Failure 400 {object} web.WebBadRequestError
+// @Failure 404 {object} web.WebNotFoundError
+// @Router /api/users/profile/{id} [get]
 func (controller *userControllerImpl) GetUserProfile(c *gin.Context) {
 	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	helper.PanicIfError(err)
@@ -128,14 +130,14 @@ func (controller *userControllerImpl) GetUserProfile(c *gin.Context) {
 // UpdateUserProfile godoc
 // @Summary Update User Profile.
 // @Description Update the profile of a user.
-// @Tags User
+// @Tags Users
 // @Param Body body request.UpdateUserProfileRequest true "the body to update user profile"
 // @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
 // @Security BearerToken
 // @Produce json
 // @Success 200 {object} web.WebSuccess[response.UpdateUserProfileResponse]
-// @Failure 400 {object} web.WebError
-// @Router /api/user/profile [put]
+// @Failure 400 {object} web.WebBadRequestError
+// @Router /api/users/profile [patch]
 func (controller *userControllerImpl) UpdateUserProfile(c *gin.Context) {
 	var updateUserReq request.UpdateUserProfileRequest
 
@@ -144,17 +146,6 @@ func (controller *userControllerImpl) UpdateUserProfile(c *gin.Context) {
 
 	userID, _, err := utils.ExtractTokenClaims(c)
 	helper.PanicIfError(err)
-
-	// updatedUser := &entity.User{
-	// 	Username: updateUserReq.Username,
-	// 	Profile: entity.Profile{
-	// 		Email:    updateUserReq.Email,
-	// 		FullName: updateUserReq.FullName,
-	// 		Bio:      updateUserReq.Bio,
-	// 		Age:      updateUserReq.Age,
-	// 		Gender:   updateUserReq.Gender,
-	// 	},
-	// }
 
 	updatedProfile := &entity.User{
 		Username: updateUserReq.Username,
@@ -178,13 +169,13 @@ func (controller *userControllerImpl) UpdateUserProfile(c *gin.Context) {
 // DeleteUserProfile godoc
 // @Summary Delete User.
 // @Description Delete a user profile by ID.
-// @Tags User
+// @Tags Users
 // @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
 // @Security BearerToken
 // @Produce json
 // @Success 200 {object} web.WebSuccess[string]
-// @Failure 400 {object} web.WebError
-// @Router /api/user [delete]
+// @Failure 400 {object} web.WebBadRequestError
+// @Router /api/users [delete]
 func (controller *userControllerImpl) DeleteUserProfile(c *gin.Context) {
 	userID, _, err := utils.ExtractTokenClaims(c)
 	helper.PanicIfError(err)

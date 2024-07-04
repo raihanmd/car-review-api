@@ -1,5 +1,19 @@
 package request
 
+type RegisterRequest struct {
+	Username string `json:"username" binding:"required,min=3,max=20,no_space,lowercase"`
+	Password string `json:"password" binding:"required,min=6,no_space"`
+}
+
+type LoginRequest struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
+type UpdatePasswordRequest struct {
+	Password string `json:"password" binding:"required,min=3,no_space"`
+}
+
 type UpdateUserProfileRequest struct {
 	Username string  `json:"username" binding:"omitempty,min=3,max=20,no_space,lowercase"`
 	Email    *string `json:"email" binding:"omitempty,email"`

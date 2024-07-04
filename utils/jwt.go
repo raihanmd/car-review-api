@@ -2,13 +2,16 @@ package utils
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/raihanmd/car-review-sb/exceptions"
 	"github.com/raihanmd/car-review-sb/helper"
+	"github.com/raihanmd/car-review-sb/model/entity"
 )
 
 var API_SECRET = helper.GetEnv("API_SECRET", "RAHASIA")
@@ -75,4 +78,14 @@ func ExtractTokenClaims(c *gin.Context) (id uint, role string, err error) {
 		return 0, "", err
 	}
 	return uint(userId), claims["user_role"].(string), nil
+}
+
+func UserRoleMustAdmin(c *gin.Context) {
+	_, role, err := ExtractTokenClaims(c)
+	if err != nil {
+		helper.PanicIfError(err)
+	}
+	if role != entity.RoleAdmin {
+		helper.PanicIfError(exceptions.NewCustomError(http.StatusForbidden, "only admin can manipulate data"))
+	}
 }

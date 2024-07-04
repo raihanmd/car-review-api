@@ -44,10 +44,11 @@ func NewRouter() *gin.Engine {
 	cfg := zap.Config{
 		OutputPaths: []string{"./log/test.log", "stdout"},
 		EncoderConfig: zapcore.EncoderConfig{
-			MessageKey: "message",
-			LevelKey:   "level",
-			TimeKey:    "time_stamp",
-			EncodeTime: zapcore.ISO8601TimeEncoder,
+			MessageKey:    "message",
+			LevelKey:      "level",
+			TimeKey:       "time_stamp",
+			StacktraceKey: "stacktrace",
+			EncodeTime:    zapcore.ISO8601TimeEncoder,
 		},
 		Encoding: "json",
 		Level:    zap.NewAtomicLevelAt(zap.DebugLevel),
@@ -61,6 +62,9 @@ func NewRouter() *gin.Engine {
 
 	userService := services.NewUserService()
 	userController := controllers.NewUserController(userService)
+
+	carService := services.NewCarService()
+	carController := controllers.NewCarController(carService)
 
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowAllOrigins = true
@@ -84,16 +88,33 @@ func NewRouter() *gin.Engine {
 
 	apiRouter := r.Group("/api")
 
-	apiRouter.POST("/register", userController.Register)
-	apiRouter.POST("/login", userController.Login)
+	// ======================== AUTH ROUTE =======================
 
-	apiRouter.GET("/user/profile/:id", userController.GetUserProfile)
+	apiRouter.POST("/auth/register", userController.Register)
+	apiRouter.POST("/auth/login", userController.Login)
 
-	userRouter := apiRouter.Group("/user", middlewares.JwtAuthMiddleware)
+	// ======================== USERS ROUTE =======================
+
+	apiRouter.GET("/users/profile/:id", userController.GetUserProfile)
+
+	userRouter := apiRouter.Group("/users", middlewares.JwtAuthMiddleware)
 
 	userRouter.PUT("/password", userController.UpdatePassword)
-	userRouter.PUT("/profile", userController.UpdateUserProfile)
+	userRouter.PATCH("/profile", userController.UpdateUserProfile)
 	userRouter.DELETE("/", userController.DeleteUserProfile)
+
+	// ======================== CARS ROUTE =======================
+
+	carRouter := apiRouter.Group("/cars")
+
+	carRouter.GET("/", carController.FindAll)
+	carRouter.GET("/:id", carController.FindById)
+
+	carRouter.Use(middlewares.JwtAuthMiddleware)
+
+	carRouter.POST("/", carController.Create)
+	carRouter.PATCH("/:id", carController.Update)
+	carRouter.DELETE("/:id", carController.Delete)
 
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.DefaultModelsExpandDepth(-1)))
 

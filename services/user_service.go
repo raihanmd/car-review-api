@@ -32,8 +32,7 @@ func NewUserService() UserService {
 }
 
 func (service *userServiceImpl) Register(c *gin.Context, user *entity.User) (*response.RegisterResponse, error) {
-	db := c.MustGet("db").(*gorm.DB)
-	logger := c.MustGet("logger").(*zap.Logger)
+	db, logger := helper.GetDBAndLogger(c)
 
 	hashedPassword, err := helper.HashPassword(user.Password)
 	if err != nil {
@@ -70,8 +69,7 @@ func (service *userServiceImpl) Register(c *gin.Context, user *entity.User) (*re
 }
 
 func (service *userServiceImpl) Login(c *gin.Context, username, password string) (*response.LoginResponse, error) {
-	db := c.MustGet("db").(*gorm.DB)
-	logger := c.MustGet("logger").(*zap.Logger)
+	db, logger := helper.GetDBAndLogger(c)
 
 	var err error
 
@@ -102,8 +100,7 @@ func (service *userServiceImpl) Login(c *gin.Context, username, password string)
 }
 
 func (service *userServiceImpl) UpdatePassword(c *gin.Context, userID uint, newPassword string) error {
-	db := c.MustGet("db").(*gorm.DB)
-	logger := c.MustGet("logger").(*zap.Logger)
+	db, logger := helper.GetDBAndLogger(c)
 
 	hashedPassword, err := helper.HashPassword(newPassword)
 	if err != nil {
@@ -120,28 +117,29 @@ func (service *userServiceImpl) UpdatePassword(c *gin.Context, userID uint, newP
 }
 
 func (service *userServiceImpl) GetUserProfile(c *gin.Context, userID uint) (*response.UserProfileResponse, error) {
-	db := c.MustGet("db").(*gorm.DB)
+	db, _ := helper.GetDBAndLogger(c)
 
-	var result response.UserProfileResponse
+	var responseUser response.UserProfileResponse
 
 	if err := db.Model(&entity.User{}).
 		Select("users.id, users.username, users.role, profiles.user_id, profiles.email, profiles.full_name, profiles.bio, profiles.age, profiles.gender").
 		Joins("left join profiles on users.id = profiles.user_id").
 		Where("users.id = ?", userID).
-		Scan(&result).Error; err != nil {
+		Scan(&responseUser).Error; err != nil {
 		return nil, err
 	}
 
-	return &result, nil
+	if responseUser.ID == 0 {
+		return nil, exceptions.NewCustomError(http.StatusNotFound, "user not found")
+	}
+
+	return &responseUser, nil
 }
 
 func (service *userServiceImpl) UpdateUserProfile(c *gin.Context, updatedUser *entity.User, userID uint) (*response.UpdateUserProfileResponse, error) {
-	db := c.MustGet("db").(*gorm.DB)
-	logger := c.MustGet("logger").(*zap.Logger)
+	db, logger := helper.GetDBAndLogger(c)
 
-	var response response.UpdateUserProfileResponse
-
-	logger.Info("user", zap.Any("user", updatedUser))
+	var responseUser response.UpdateUserProfileResponse
 
 	err := db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Model(&entity.User{ID: userID}).
@@ -157,9 +155,9 @@ func (service *userServiceImpl) UpdateUserProfile(c *gin.Context, updatedUser *e
 		}
 
 		if err := tx.Model(&entity.User{}).
-			Select("users.id, users.username, users.role, profiles.*").
+			Select("profiles.*, users.id, users.username, users.role").
 			Joins("left join profiles on users.id = profiles.user_id").
-			Take(&response, "users.id = ?", userID).Error; err != nil {
+			Take(&responseUser, "users.id = ?", userID).Error; err != nil {
 			return err
 		}
 		return nil
@@ -171,12 +169,11 @@ func (service *userServiceImpl) UpdateUserProfile(c *gin.Context, updatedUser *e
 
 	logger.Info("success updating user profile", zap.Uint("userID", userID))
 
-	return &response, nil
+	return &responseUser, nil
 }
 
 func (service *userServiceImpl) DeleteUserProfile(c *gin.Context, userID uint) error {
-	db := c.MustGet("db").(*gorm.DB)
-	logger := c.MustGet("logger").(*zap.Logger)
+	db, logger := helper.GetDBAndLogger(c)
 
 	err := db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Where("user_id = ?", userID).Delete(&entity.Profile{}).Error; err != nil {
