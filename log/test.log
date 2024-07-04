@@ -1,0 +1,58 @@
+{"time_stamp":"2024-07-04T11:12:55.098+0700","message":"global error handler","error":"path not found, use http://localhost:3000/api/docs/index.html for API docs"}
+{"time_stamp":"2024-07-04T11:12:59.407+0700","message":"global error handler","error":"path not found, use http://localhost:3000/api/docs/index.html for API docs"}
+{"time_stamp":"2024-07-04T11:13:53.579+0700","message":"global error handler","error":"path not found, use http://localhost:3000/api/docs/index.html for API docs"}
+{"time_stamp":"2024-07-04T11:16:25.196+0700","message":"global error handler","error":"path not found, use http://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-04T11:23:02.613+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-04T11:25:00.665+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-04T11:26:27.730+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-04T11:36:41.598+0700","message":"success registering user","userID":1}
+{"time_stamp":"2024-07-04T11:36:58.094+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-04T11:37:12.188+0700","message":"success registering user","userID":2}
+{"time_stamp":"2024-07-04T11:37:20.972+0700","message":"user success logged in","userID":2}
+{"time_stamp":"2024-07-04T11:37:41.245+0700","message":"global error handler","error":"Key: 'UpdatePasswordRequest.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"time_stamp":"2024-07-04T11:37:56.471+0700","message":"user password updated successfully","userID":2}
+{"time_stamp":"2024-07-04T11:44:05.677+0700","message":"get user profile","profile":{"ID":1,"UserID":0,"Email":null,"FullName":null,"Bio":null,"Age":null,"Gender":null,"CreatedAt":"0001-01-01T00:00:00Z","UpdatedAt":"0001-01-01T00:00:00Z","User":{"ID":0,"Username":"","Password":"","Role":"","CreatedAt":"0001-01-01T00:00:00Z","UpdatedAt":"0001-01-01T00:00:00Z"}}}
+{"time_stamp":"2024-07-04T11:48:27.831+0700","message":"get user profile","profile":{"ID":1,"UserID":1,"Email":null,"FullName":null,"Bio":null,"Age":null,"Gender":null,"CreatedAt":"2024-07-04T11:36:41.483089+07:00","UpdatedAt":"2024-07-04T11:36:41.483089+07:00","User":{"ID":0,"Username":"","Password":"","Role":"","CreatedAt":"0001-01-01T00:00:00Z","UpdatedAt":"0001-01-01T00:00:00Z"}}}
+{"time_stamp":"2024-07-04T11:50:57.704+0700","message":"get user profile","profile":{"age":null,"bio":null,"created_at":"2024-07-04T11:36:41.483089+07:00","email":null,"full_name":null,"gender":null,"id":1,"role":"USER","updated_at":"2024-07-04T11:36:41.483089+07:00","user_id":1,"username":"adit"}}
+{"time_stamp":"2024-07-04T11:54:31.164+0700","message":"get user profile","profile":{"ID":1,"UserID":1,"Email":null,"FullName":null,"Bio":null,"Age":null,"Gender":null,"CreatedAt":"2024-07-04T11:36:41.483089+07:00","UpdatedAt":"2024-07-04T11:36:41.483089+07:00","User":null}}
+{"time_stamp":"2024-07-04T11:55:11.683+0700","message":"get user profile","profile":{"ID":1,"UserID":1,"Email":null,"FullName":null,"Bio":null,"Age":null,"Gender":null,"CreatedAt":"2024-07-04T11:36:41.483089+07:00","UpdatedAt":"2024-07-04T11:36:41.483089+07:00","User":null}}
+{"time_stamp":"2024-07-04T11:56:09.656+0700","message":"get user profile","profile":{"ID":1,"UserID":1,"Email":null,"FullName":null,"Bio":null,"Age":null,"Gender":null,"CreatedAt":"2024-07-04T11:36:41.483089+07:00","UpdatedAt":"2024-07-04T11:36:41.483089+07:00","User":null}}
+{"time_stamp":"2024-07-04T15:39:19.137+0700","message":"global error handler","error":"path not found, use https://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-04T15:39:19.534+0700","message":"global error handler","error":"path not found, use https://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-04T15:39:44.305+0700","message":"get user profile","profile":{"ID":2,"UserID":2,"Email":null,"FullName":null,"Bio":null,"Age":null,"Gender":null,"CreatedAt":"2024-07-04T11:37:12.109634+07:00","UpdatedAt":"2024-07-04T11:37:12.109634+07:00","User":null}}
+{"time_stamp":"2024-07-04T15:39:44.607+0700","message":"global error handler","error":"interface conversion: interface {} is nil, not map[string]uint"}
+{"time_stamp":"2024-07-04T15:45:34.440+0700","message":"success registering user","userID":1}
+{"time_stamp":"2024-07-04T15:45:38.271+0700","message":"global error handler","error":"user not found"}
+{"time_stamp":"2024-07-04T15:45:42.055+0700","message":"get user profile","profile":{"ID":1,"UserID":1,"Email":null,"FullName":null,"Bio":null,"Age":null,"Gender":null,"CreatedAt":"2024-07-04T15:45:34.335672+07:00","UpdatedAt":"2024-07-04T15:45:34.335672+07:00","User":null}}
+{"time_stamp":"2024-07-04T15:45:42.055+0700","message":"global error handler","error":"interface conversion: interface {} is nil, not map[string]uint"}
+{"time_stamp":"2024-07-04T15:50:26.519+0700","message":"success registering user","userID":1}
+{"time_stamp":"2024-07-04T15:50:29.015+0700","message":"get user profile","profile":{"ID":1,"UserID":1,"Email":null,"FullName":null,"Bio":null,"Age":null,"Gender":null,"CreatedAt":"2024-07-04T15:50:26.368949+07:00","UpdatedAt":"2024-07-04T15:50:26.368949+07:00"}}
+{"time_stamp":"2024-07-04T15:50:29.016+0700","message":"global error handler","error":"interface conversion: interface {} is nil, not map[string]uint"}
+{"time_stamp":"2024-07-04T15:56:35.446+0700","message":"global error handler","error":"user not found"}
+{"time_stamp":"2024-07-04T15:56:40.183+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-04T15:56:41.667+0700","message":"global error handler","error":"user not found"}
+{"time_stamp":"2024-07-04T15:59:31.249+0700","message":"global error handler","error":"user not found"}
+{"time_stamp":"2024-07-04T16:00:32.452+0700","message":"global error handler","error":"user not found"}
+{"time_stamp":"2024-07-04T16:02:47.863+0700","message":"global error handler","error":"user not found"}
+{"time_stamp":"2024-07-04T16:04:13.511+0700","message":"get user profile","user":{"ID":1,"Username":"string","Password":"","Role":"USER","Profile":{"ID":0,"UserID":0,"Email":null,"FullName":null,"Bio":null,"Age":null,"Gender":null,"CreatedAt":"0001-01-01T00:00:00Z","UpdatedAt":"0001-01-01T00:00:00Z"},"CreatedAt":"2024-07-04T15:50:26.368949+07:00","UpdatedAt":"2024-07-04T15:50:26.368949+07:00"}}
+{"time_stamp":"2024-07-04T16:05:59.335+0700","message":"get user profile","user":{"ID":1,"Username":"string","Password":"","Role":"USER","Profile":{"ID":0,"UserID":0,"Email":null,"FullName":null,"Bio":null,"Age":null,"Gender":null,"CreatedAt":"0001-01-01T00:00:00Z","UpdatedAt":"0001-01-01T00:00:00Z"},"CreatedAt":"2024-07-04T15:50:26.368949+07:00","UpdatedAt":"2024-07-04T15:50:26.368949+07:00"}}
+{"time_stamp":"2024-07-04T16:06:10.762+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-04T16:06:26.689+0700","message":"global error handler","error":"Key: 'UpdateUserProfileRequest.Email' Error:Field validation for 'Email' failed on the 'email' tag"}
+{"time_stamp":"2024-07-04T16:06:35.352+0700","message":"global error handler","error":"ERROR: table name \"users\" specified more than once (SQLSTATE 42712)"}
+{"time_stamp":"2024-07-04T16:08:36.129+0700","message":"success updating user profile","userID":1}
+{"time_stamp":"2024-07-04T16:09:25.238+0700","message":"get user profile","user":{"ID":1,"Username":"string","Password":"","Role":"USER","Profile":{"ID":0,"UserID":0,"Email":null,"FullName":null,"Bio":null,"Age":null,"Gender":null,"CreatedAt":"0001-01-01T00:00:00Z","UpdatedAt":"0001-01-01T00:00:00Z"},"CreatedAt":"2024-07-04T15:50:26.368949+07:00","UpdatedAt":"2024-07-04T16:08:35.994613+07:00"}}
+{"time_stamp":"2024-07-04T16:13:05.333+0700","message":"get user profile","user":{"ID":1,"Username":"string","Password":"$2a$10$j9uY5tTofaICqvxZlH5leeQvaX6lKS58EqMgMLqmoIq0wlGZDEyHq","Role":"USER","Profile":{"ID":1,"UserID":1,"Email":null,"FullName":"string","Bio":"string","Age":200,"Gender":"MALE","CreatedAt":"2024-07-04T15:50:26.368949+07:00","UpdatedAt":"2024-07-04T16:08:35.994613+07:00","User":null},"CreatedAt":"2024-07-04T15:50:26.213443+07:00","UpdatedAt":"2024-07-04T16:08:35.942448+07:00"}}
+{"time_stamp":"2024-07-04T16:14:36.805+0700","message":"get user profile","user":{"id":1,"username":"string","role":"USER","email":null,"full_name":"string","bio":"string","age":200,"gender":"MALE"}}
+{"time_stamp":"2024-07-04T16:17:29.539+0700","message":"success updating user profile","userID":1}
+{"time_stamp":"2024-07-04T16:17:35.008+0700","message":"get user profile","user":{"id":1,"username":"string","role":"USER","email":null,"full_name":"string","bio":"Adit","age":17,"gender":"FEMALE"}}
+{"time_stamp":"2024-07-04T16:19:35.939+0700","message":"global error handler","error":"WHERE conditions required"}
+{"time_stamp":"2024-07-04T16:20:29.114+0700","message":"success updating user profile","userID":1}
+{"time_stamp":"2024-07-04T16:21:38.227+0700","message":"success updating user profile","userID":1}
+{"time_stamp":"2024-07-04T16:23:18.038+0700","message":"user","user":{"ID":1,"Username":"","Password":"","Role":"","Profile":{"ID":0,"UserID":0,"Email":null,"FullName":null,"Bio":"Saya Adit","Age":27,"Gender":"MALE","CreatedAt":"0001-01-01T00:00:00Z","UpdatedAt":"0001-01-01T00:00:00Z","User":null},"CreatedAt":"0001-01-01T00:00:00Z","UpdatedAt":"0001-01-01T00:00:00Z"}}
+{"time_stamp":"2024-07-04T16:23:18.274+0700","message":"success updating user profile","userID":1}
+{"time_stamp":"2024-07-04T16:24:29.889+0700","message":"user","user":{"ID":1,"Username":"aditya","Password":"","Role":"","Profile":{"ID":0,"UserID":0,"Email":null,"FullName":null,"Bio":"Saya Adit","Age":27,"Gender":"MALE","CreatedAt":"0001-01-01T00:00:00Z","UpdatedAt":"0001-01-01T00:00:00Z","User":null},"CreatedAt":"0001-01-01T00:00:00Z","UpdatedAt":"0001-01-01T00:00:00Z"}}
+{"time_stamp":"2024-07-04T16:24:30.987+0700","message":"success updating user profile","userID":1}
+{"time_stamp":"2024-07-04T16:24:37.862+0700","message":"success registering user","userID":3}
+{"time_stamp":"2024-07-04T16:24:41.401+0700","message":"user success logged in","userID":3}
+{"time_stamp":"2024-07-04T16:24:57.949+0700","message":"user profile and user deleted successfully","userID":3}
+{"time_stamp":"2024-07-04T16:25:01.075+0700","message":"global error handler","error":"username or password is incorrect"}

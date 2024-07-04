@@ -1,0 +1,354 @@
+definitions:
+  request.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  request.RegisterRequest:
+    properties:
+      password:
+        minLength: 6
+        type: string
+      username:
+        maxLength: 20
+        minLength: 3
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  request.UpdatePasswordRequest:
+    properties:
+      password:
+        minLength: 3
+        type: string
+    required:
+    - password
+    type: object
+  request.UpdateUserProfileRequest:
+    properties:
+      age:
+        minimum: 0
+        type: integer
+      bio:
+        maxLength: 500
+        type: string
+      email:
+        type: string
+      full_name:
+        maxLength: 100
+        minLength: 3
+        type: string
+      gender:
+        enum:
+        - MALE
+        - FEMALE
+        type: string
+      username:
+        maxLength: 20
+        minLength: 3
+        type: string
+    type: object
+  response.LoginResponse:
+    properties:
+      role:
+        example: USER
+        type: string
+      token:
+        type: string
+      username:
+        example: luigi
+        type: string
+    type: object
+  response.RegisterResponse:
+    properties:
+      role:
+        example: USER
+        type: string
+      username:
+        example: luigi
+        type: string
+    type: object
+  response.UpdateUserProfileResponse:
+    properties:
+      age:
+        example: 18
+        type: integer
+      bio:
+        example: I am Luigi
+        type: string
+      email:
+        example: luigi@sam.com
+        type: string
+      full_name:
+        example: Luigi Di Caprio
+        type: string
+      gender:
+        example: MALE
+        type: string
+      id:
+        example: 1
+        type: integer
+      role:
+        example: USER
+        type: string
+      username:
+        example: luigi
+        type: string
+    type: object
+  response.UserProfileResponse:
+    properties:
+      age:
+        example: 18
+        type: integer
+      bio:
+        example: I am Luigi
+        type: string
+      email:
+        example: luigi@sam.com
+        type: string
+      full_name:
+        example: Luigi Di Caprio
+        type: string
+      gender:
+        example: MALE
+        type: string
+      id:
+        example: 1
+        type: integer
+      role:
+        example: USER
+        type: string
+      username:
+        example: luigi
+        type: string
+    type: object
+  web.WebError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      errors: {}
+    type: object
+  web.WebSuccess-response_LoginResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        $ref: '#/definitions/response.LoginResponse'
+      message:
+        example: success
+        type: string
+    type: object
+  web.WebSuccess-response_RegisterResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        $ref: '#/definitions/response.RegisterResponse'
+      message:
+        example: success
+        type: string
+    type: object
+  web.WebSuccess-response_UpdateUserProfileResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        $ref: '#/definitions/response.UpdateUserProfileResponse'
+      message:
+        example: success
+        type: string
+    type: object
+  web.WebSuccess-response_UserProfileResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        $ref: '#/definitions/response.UserProfileResponse'
+      message:
+        example: success
+        type: string
+    type: object
+  web.WebSuccess-string:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        type: string
+      message:
+        example: success
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/login:
+    post:
+      description: Logging in to get jwt token to access admin or user api by roles.
+      parameters:
+      - description: the body to login a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebError'
+      summary: User Login.
+      tags:
+      - Auth
+  /api/register:
+    post:
+      description: registering a user from public access.
+      parameters:
+      - description: the body to register a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebError'
+      summary: User Register.
+      tags:
+      - Auth
+  /api/user:
+    delete:
+      description: Delete a user profile by ID.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebError'
+      security:
+      - BearerToken: []
+      summary: Delete User.
+      tags:
+      - User
+  /api/user/password:
+    put:
+      description: Update the current user's password.
+      parameters:
+      - description: the body to update a password
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdatePasswordRequest'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebError'
+      security:
+      - BearerToken: []
+      summary: Update user password.
+      tags:
+      - User
+  /api/user/profile:
+    put:
+      description: Update the profile of a user.
+      parameters:
+      - description: the body to update user profile
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateUserProfileRequest'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_UpdateUserProfileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebError'
+      security:
+      - BearerToken: []
+      summary: Update User Profile.
+      tags:
+      - User
+  /api/user/profile/{id}:
+    get:
+      description: Get user profile data.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_UserProfileResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebError'
+      summary: Get user profile.
+      tags:
+      - User
+swagger: "2.0"
