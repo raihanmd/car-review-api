@@ -2,6 +2,7 @@ package services
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -122,9 +123,11 @@ func (service *reviewServiceImpl) FindAll(c *gin.Context) (*[]response.FindRevie
 
 	for _, v := range reviews {
 		review := response.FindReviewResponse{
-			ID:      uint(v["review_id"].(int64)),
-			Title:   v["title"].(string),
-			Content: v["content"].(string),
+			ID:        uint(v["review_id"].(int64)),
+			Title:     v["title"].(string),
+			Content:   v["content"].(string),
+			CreatedAt: v["created_at"].(time.Time),
+			UpdatedAt: v["updated_at"].(time.Time),
 			Car: response.CarResponse{
 				ID:    uint(v["car_id"].(int64)),
 				Brand: v["brand"].(string),
@@ -160,9 +163,11 @@ func (service *reviewServiceImpl) FindByID(c *gin.Context, reviewId uint) (*resp
 	}
 
 	return &response.FindReviewResponse{
-		ID:      uint(review["review_id"].(int64)),
-		Title:   review["title"].(string),
-		Content: review["content"].(string),
+		ID:        uint(review["review_id"].(int64)),
+		Title:     review["title"].(string),
+		Content:   review["content"].(string),
+		CreatedAt: review["created_at"].(time.Time),
+		UpdatedAt: review["updated_at"].(time.Time),
 		Car: response.CarResponse{
 			ID:    uint(review["car_id"].(int64)),
 			Brand: review["brand"].(string),

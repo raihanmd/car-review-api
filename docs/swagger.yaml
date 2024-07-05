@@ -3,13 +3,17 @@ definitions:
     properties:
       brand:
         type: string
+        x-order: "0"
       image:
         type: string
+        x-order: "3"
       model:
         type: string
+        x-order: "1"
       year:
         minimum: 1878
         type: integer
+        x-order: "2"
     required:
     - brand
     - image
@@ -20,20 +24,26 @@ definitions:
     properties:
       brand:
         type: string
+        x-order: "0"
       image:
         type: string
+        x-order: "3"
       model:
         type: string
+        x-order: "1"
       year:
         minimum: 1878
         type: integer
+        x-order: "2"
     type: object
   request.LoginRequest:
     properties:
       password:
         type: string
+        x-order: "1"
       username:
         type: string
+        x-order: "0"
     required:
     - password
     - username
@@ -43,10 +53,12 @@ definitions:
       password:
         minLength: 6
         type: string
+        x-order: "1"
       username:
         maxLength: 20
         minLength: 3
         type: string
+        x-order: "0"
     required:
     - password
     - username
@@ -55,10 +67,14 @@ definitions:
     properties:
       car_id:
         type: integer
+        x-order: "0"
       content:
         type: string
+        x-order: "2"
       title:
+        maxLength: 100
         type: string
+        x-order: "1"
     required:
     - car_id
     - content
@@ -68,8 +84,10 @@ definitions:
     properties:
       content:
         type: string
+        x-order: "1"
       title:
         type: string
+        x-order: "0"
     type: object
   request.UpdatePasswordRequest:
     properties:
@@ -84,159 +102,222 @@ definitions:
       age:
         minimum: 0
         type: integer
+        x-order: "4"
       bio:
         maxLength: 500
         type: string
+        x-order: "3"
       email:
         type: string
+        x-order: "1"
       full_name:
         maxLength: 100
         minLength: 3
         type: string
+        x-order: "2"
       gender:
         enum:
         - MALE
         - FEMALE
         type: string
+        x-order: "5"
       username:
         maxLength: 20
         minLength: 3
         type: string
+        x-order: "0"
     type: object
   response.CarResponse:
     properties:
       brand:
         example: Toyota
         type: string
+        x-order: "1"
       id:
         example: 1
         type: integer
+        x-order: "0"
       image:
         example: url
         type: string
+        x-order: "4"
       model:
         example: Yaris
         type: string
+        x-order: "2"
       year:
         example: 2020
         type: integer
+        x-order: "3"
     type: object
   response.FindReviewResponse:
     properties:
       car:
-        $ref: '#/definitions/response.CarResponse'
+        allOf:
+        - $ref: '#/definitions/response.CarResponse'
+        x-order: "3"
       content:
         example: Lorem ipsum dolor sit amet
         type: string
+        x-order: "2"
+      created_at:
+        example: "2022-01-01T00:00:00Z"
+        type: string
+        x-order: "5"
       id:
         example: 1
         type: integer
+        x-order: "0"
       title:
         example: Title
         type: string
+        x-order: "1"
+      updated_at:
+        example: "2022-01-01T00:00:00Z"
+        type: string
+        x-order: "6"
       user:
-        $ref: '#/definitions/response.ReviewUserResponse'
+        allOf:
+        - $ref: '#/definitions/response.ReviewUserResponse'
+        x-order: "4"
     type: object
   response.LoginResponse:
     properties:
       role:
         example: USER
         type: string
+        x-order: "1"
       token:
+        example: token
         type: string
+        x-order: "2"
       username:
         example: luigi
         type: string
+        x-order: "0"
     type: object
   response.RegisterResponse:
     properties:
       role:
         example: USER
         type: string
+        x-order: "1"
       username:
         example: luigi
         type: string
+        x-order: "0"
     type: object
   response.ReviewResponse:
     properties:
       car_id:
         example: 2
         type: integer
+        x-order: "1"
       content:
         example: Lorem ipsum dolor sit amet
         type: string
+        x-order: "4"
+      created_at:
+        example: "2022-01-01T00:00:00Z"
+        type: string
+        x-order: "5"
       id:
         example: 1
         type: integer
+        x-order: "0"
       title:
         example: Title
         type: string
+        x-order: "3"
+      updated_at:
+        example: "2022-01-01T00:00:00Z"
+        type: string
+        x-order: "6"
       user_id:
         example: 3
         type: integer
+        x-order: "2"
     type: object
   response.ReviewUserResponse:
     properties:
       id:
         example: 1
         type: integer
+        x-order: "0"
       username:
         example: John Doe
         type: string
+        x-order: "1"
     type: object
   response.UpdateUserProfileResponse:
     properties:
       age:
         example: 18
         type: integer
+        x-order: "6"
       bio:
         example: I am Luigi
         type: string
+        x-order: "5"
       email:
         example: luigi@sam.com
         type: string
+        x-order: "3"
       full_name:
         example: Luigi Di Caprio
         type: string
+        x-order: "4"
       gender:
         example: MALE
         type: string
+        x-order: "7"
       id:
         example: 1
         type: integer
+        x-order: "0"
       role:
         example: USER
         type: string
+        x-order: "2"
       username:
         example: luigi
         type: string
+        x-order: "1"
     type: object
   response.UserProfileResponse:
     properties:
       age:
         example: 18
         type: integer
+        x-order: "6"
       bio:
         example: I am Luigi
         type: string
+        x-order: "5"
       email:
         example: luigi@sam.com
         type: string
+        x-order: "3"
       full_name:
         example: Luigi Di Caprio
         type: string
+        x-order: "4"
       gender:
         example: MALE
         type: string
+        x-order: "7"
       id:
         example: 1
         type: integer
+        x-order: "0"
       role:
         example: USER
         type: string
+        x-order: "2"
       username:
         example: luigi
         type: string
+        x-order: "1"
     type: object
   web.WebBadRequestError:
     properties:
@@ -279,114 +360,151 @@ definitions:
       code:
         example: 200
         type: integer
+        x-order: "0"
       data:
         items:
           $ref: '#/definitions/response.CarResponse'
         type: array
+        x-order: "2"
       message:
         example: success
         type: string
+        x-order: "1"
     type: object
   web.WebSuccess-array_response_FindReviewResponse:
     properties:
       code:
         example: 200
         type: integer
+        x-order: "0"
       data:
         items:
           $ref: '#/definitions/response.FindReviewResponse'
         type: array
+        x-order: "2"
       message:
         example: success
         type: string
+        x-order: "1"
     type: object
   web.WebSuccess-response_CarResponse:
     properties:
       code:
         example: 200
         type: integer
+        x-order: "0"
       data:
-        $ref: '#/definitions/response.CarResponse'
+        allOf:
+        - $ref: '#/definitions/response.CarResponse'
+        x-order: "2"
       message:
         example: success
         type: string
+        x-order: "1"
     type: object
   web.WebSuccess-response_FindReviewResponse:
     properties:
       code:
         example: 200
         type: integer
+        x-order: "0"
       data:
-        $ref: '#/definitions/response.FindReviewResponse'
+        allOf:
+        - $ref: '#/definitions/response.FindReviewResponse'
+        x-order: "2"
       message:
         example: success
         type: string
+        x-order: "1"
     type: object
   web.WebSuccess-response_LoginResponse:
     properties:
       code:
         example: 200
         type: integer
+        x-order: "0"
       data:
-        $ref: '#/definitions/response.LoginResponse'
+        allOf:
+        - $ref: '#/definitions/response.LoginResponse'
+        x-order: "2"
       message:
         example: success
         type: string
+        x-order: "1"
     type: object
   web.WebSuccess-response_RegisterResponse:
     properties:
       code:
         example: 200
         type: integer
+        x-order: "0"
       data:
-        $ref: '#/definitions/response.RegisterResponse'
+        allOf:
+        - $ref: '#/definitions/response.RegisterResponse'
+        x-order: "2"
       message:
         example: success
         type: string
+        x-order: "1"
     type: object
   web.WebSuccess-response_ReviewResponse:
     properties:
       code:
         example: 200
         type: integer
+        x-order: "0"
       data:
-        $ref: '#/definitions/response.ReviewResponse'
+        allOf:
+        - $ref: '#/definitions/response.ReviewResponse'
+        x-order: "2"
       message:
         example: success
         type: string
+        x-order: "1"
     type: object
   web.WebSuccess-response_UpdateUserProfileResponse:
     properties:
       code:
         example: 200
         type: integer
+        x-order: "0"
       data:
-        $ref: '#/definitions/response.UpdateUserProfileResponse'
+        allOf:
+        - $ref: '#/definitions/response.UpdateUserProfileResponse'
+        x-order: "2"
       message:
         example: success
         type: string
+        x-order: "1"
     type: object
   web.WebSuccess-response_UserProfileResponse:
     properties:
       code:
         example: 200
         type: integer
+        x-order: "0"
       data:
-        $ref: '#/definitions/response.UserProfileResponse'
+        allOf:
+        - $ref: '#/definitions/response.UserProfileResponse'
+        x-order: "2"
       message:
         example: success
         type: string
+        x-order: "1"
     type: object
   web.WebSuccess-string:
     properties:
       code:
         example: 200
         type: integer
+        x-order: "0"
       data:
         type: string
+        x-order: "2"
       message:
         example: success
         type: string
+        x-order: "1"
     type: object
   web.WebUnauthorizedError:
     properties:

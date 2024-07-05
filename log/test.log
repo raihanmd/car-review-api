@@ -208,3 +208,7 @@
 {"time_stamp":"2024-07-05T14:01:54.629+0700","message":"review created successfully","reviewID":20,"userID":3}
 {"time_stamp":"2024-07-05T14:02:08.912+0700","message":"user success logged in","userID":1}
 {"time_stamp":"2024-07-05T14:02:24.583+0700","message":"global error handler","error":"review not found"}
+{"time_stamp":"2024-07-05T16:22:27.686+0700","message":"global error handler","error":"path not found, use https://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-05T16:22:27.816+0700","message":"global error handler","error":"path not found, use https://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-05T16:22:52.184+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-05T16:23:13.632+0700","message":"global error handler","error":"review not found"}

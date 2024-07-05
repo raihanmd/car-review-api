@@ -1,9 +1,9 @@
 package web
 
 type WebSuccess[T any] struct {
-	Code    int    `json:"code" example:"200"`
-	Message string `json:"message" example:"success"`
-	Data    T      `json:"data"`
+	Code    int    `json:"code" example:"200" extensions:"x-order=0"`
+	Message string `json:"message" example:"success" extensions:"x-order=1"`
+	Data    T      `json:"data" extensions:"x-order=2"`
 }
 
 type WebError struct {
