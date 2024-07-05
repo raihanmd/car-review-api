@@ -14,8 +14,11 @@ func NewConnection() *gorm.DB {
 	})
 	helper.PanicIfError(err)
 
-	err = db.AutoMigrate(&entity.User{}, &entity.Car{}, &entity.Review{}, &entity.Comment{}, &entity.Rating{}, &entity.Favorite{}, &entity.Profile{})
+	err = db.AutoMigrate(&entity.User{}, &entity.Car{}, &entity.CarSpecification{}, &entity.Brand{}, &entity.Review{}, &entity.Comment{}, &entity.Rating{}, &entity.Favorite{}, &entity.Profile{})
 	helper.PanicIfError(err)
+
+	// create full text index on reviews.title
+	db.Exec("CREATE INDEX IF NOT EXISTS idx_title_fulltext ON reviews USING GIN (to_tsvector('english', title))")
 
 	return db
 }

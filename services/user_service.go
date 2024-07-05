@@ -46,8 +46,7 @@ func (service *userServiceImpl) Register(c *gin.Context, user *entity.User) (*re
 			return exceptions.NewCustomError(http.StatusConflict, "username already exists")
 		}
 
-		profile := entity.Profile{UserID: user.ID}
-		if err = db.Create(&profile).Error; err != nil {
+		if err = db.Create(&entity.Profile{UserID: user.ID}).Error; err != nil {
 			return exceptions.NewCustomError(http.StatusConflict, "username already exists")
 		}
 

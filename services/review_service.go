@@ -123,17 +123,18 @@ func (service *reviewServiceImpl) FindAll(c *gin.Context) (*[]response.FindRevie
 
 	for _, v := range reviews {
 		review := response.FindReviewResponse{
-			ID:        uint(v["review_id"].(int64)),
+			ID:        v["review_id"].(uint),
 			Title:     v["title"].(string),
 			Content:   v["content"].(string),
+			Image:     v["image"].(string),
 			CreatedAt: v["created_at"].(time.Time),
 			UpdatedAt: v["updated_at"].(time.Time),
 			Car: response.CarResponse{
-				ID:    uint(v["car_id"].(int64)),
-				Brand: v["brand"].(string),
-				Model: v["model"].(string),
-				Year:  int(v["year"].(int16)),
-				Image: v["image"].(string),
+				ID:       v["car_id"].(uint),
+				BrandID:  v["brand_id"].(uint),
+				Model:    v["model"].(string),
+				Year:     v["year"].(int16),
+				ImageUrl: v["image_url"].(string),
 			},
 			User: response.ReviewUserResponse{
 				ID:       uint(v["user_id"].(int64)),
@@ -163,20 +164,21 @@ func (service *reviewServiceImpl) FindByID(c *gin.Context, reviewId uint) (*resp
 	}
 
 	return &response.FindReviewResponse{
-		ID:        uint(review["review_id"].(int64)),
+		ID:        review["review_id"].(uint),
 		Title:     review["title"].(string),
 		Content:   review["content"].(string),
+		Image:     review["image"].(string),
 		CreatedAt: review["created_at"].(time.Time),
 		UpdatedAt: review["updated_at"].(time.Time),
 		Car: response.CarResponse{
-			ID:    uint(review["car_id"].(int64)),
-			Brand: review["brand"].(string),
-			Model: review["model"].(string),
-			Year:  int(review["year"].(int16)),
-			Image: review["image"].(string),
+			ID:       review["car_id"].(uint),
+			BrandID:  review["brand_id"].(uint),
+			Model:    review["model"].(string),
+			Year:     review["year"].(int16),
+			ImageUrl: review["image_url"].(string),
 		},
 		User: response.ReviewUserResponse{
-			ID:       uint(review["user_id"].(int64)),
+			ID:       review["user_id"].(uint),
 			Username: review["username"].(string),
 		},
 	}, nil

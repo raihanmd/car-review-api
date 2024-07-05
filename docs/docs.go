@@ -825,50 +825,149 @@ const docTemplate = `{
         "request.CarCreateRequest": {
             "type": "object",
             "required": [
-                "brand",
-                "image",
+                "acceleration",
+                "brand_id",
+                "breaking_system_back",
+                "breaking_system_front",
+                "engine",
+                "fuel",
+                "height",
+                "horse_power",
+                "image_url",
+                "length",
                 "model",
+                "torque",
+                "transmission",
+                "width",
                 "year"
             ],
             "properties": {
-                "brand": {
-                    "type": "string",
+                "brand_id": {
+                    "type": "integer",
                     "x-order": "0"
                 },
                 "model": {
                     "type": "string",
                     "x-order": "1"
                 },
+                "acceleration": {
+                    "type": "number",
+                    "x-order": "10"
+                },
+                "horse_power": {
+                    "type": "integer",
+                    "x-order": "11"
+                },
+                "breaking_system_front": {
+                    "type": "string",
+                    "x-order": "12"
+                },
+                "breaking_system_back": {
+                    "type": "string",
+                    "x-order": "13"
+                },
+                "fuel": {
+                    "type": "string",
+                    "x-order": "14"
+                },
                 "year": {
                     "type": "integer",
                     "minimum": 1878,
                     "x-order": "2"
                 },
-                "image": {
+                "image_url": {
                     "type": "string",
                     "x-order": "3"
+                },
+                "width": {
+                    "type": "integer",
+                    "x-order": "4"
+                },
+                "height": {
+                    "type": "integer",
+                    "x-order": "5"
+                },
+                "length": {
+                    "type": "integer",
+                    "x-order": "6"
+                },
+                "engine": {
+                    "type": "string",
+                    "x-order": "7"
+                },
+                "torque": {
+                    "type": "integer",
+                    "x-order": "8"
+                },
+                "transmission": {
+                    "type": "string",
+                    "x-order": "9"
                 }
             }
         },
         "request.CarUpdateRequest": {
             "type": "object",
             "properties": {
-                "brand": {
-                    "type": "string",
+                "brand_id": {
+                    "type": "integer",
                     "x-order": "0"
                 },
                 "model": {
                     "type": "string",
                     "x-order": "1"
                 },
+                "acceleration": {
+                    "type": "number",
+                    "x-order": "10"
+                },
+                "horse_power": {
+                    "type": "integer",
+                    "x-order": "11"
+                },
+                "breaking_system_front": {
+                    "type": "string",
+                    "x-order": "12"
+                },
+                "breaking_system_back": {
+                    "type": "string",
+                    "x-order": "13"
+                },
+                "fuel": {
+                    "type": "string",
+                    "x-order": "14"
+                },
                 "year": {
                     "type": "integer",
                     "minimum": 1878,
                     "x-order": "2"
                 },
-                "image": {
+                "image_url": {
                     "type": "string",
                     "x-order": "3"
+                },
+                "width": {
+                    "type": "integer",
+                    "x-order": "4"
+                },
+                "height": {
+                    "type": "integer",
+                    "x-order": "5"
+                },
+                "length": {
+                    "type": "integer",
+                    "x-order": "6"
+                },
+                "engine": {
+                    "type": "string",
+                    "x-order": "7"
+                },
+                "torque": {
+                    "type": "integer",
+                    "x-order": "8"
+                },
+                "transmission": {
+                    "type": "string",
+                    "x-order": "9"
                 }
             }
         },
@@ -914,6 +1013,7 @@ const docTemplate = `{
             "required": [
                 "car_id",
                 "content",
+                "image",
                 "title"
             ],
             "properties": {
@@ -929,11 +1029,18 @@ const docTemplate = `{
                 "content": {
                     "type": "string",
                     "x-order": "2"
+                },
+                "image": {
+                    "type": "string",
+                    "x-order": "3"
                 }
             }
         },
         "request.ReviewUpdateRequest": {
             "type": "object",
+            "required": [
+                "image"
+            ],
             "properties": {
                 "title": {
                     "type": "string",
@@ -942,6 +1049,10 @@ const docTemplate = `{
                 "content": {
                     "type": "string",
                     "x-order": "1"
+                },
+                "image": {
+                    "type": "string",
+                    "x-order": "2"
                 }
             }
         },
@@ -1004,10 +1115,40 @@ const docTemplate = `{
                     "x-order": "0",
                     "example": 1
                 },
-                "brand": {
-                    "type": "string",
+                "brand_id": {
+                    "type": "integer",
                     "x-order": "1",
-                    "example": "Toyota"
+                    "example": 2
+                },
+                "transmission": {
+                    "type": "string",
+                    "x-order": "10",
+                    "example": "Manual"
+                },
+                "acceleration": {
+                    "type": "number",
+                    "x-order": "11",
+                    "example": 5.6
+                },
+                "horse_power": {
+                    "type": "integer",
+                    "x-order": "12",
+                    "example": 265
+                },
+                "breaking_system_front": {
+                    "type": "string",
+                    "x-order": "13",
+                    "example": "Ventilated Disc"
+                },
+                "breaking_system_back": {
+                    "type": "string",
+                    "x-order": "14",
+                    "example": "Disc"
+                },
+                "fuel": {
+                    "type": "string",
+                    "x-order": "15",
+                    "example": "Electric"
                 },
                 "model": {
                     "type": "string",
@@ -1019,10 +1160,35 @@ const docTemplate = `{
                     "x-order": "3",
                     "example": 2020
                 },
-                "image": {
+                "image_url": {
                     "type": "string",
                     "x-order": "4",
-                    "example": "url"
+                    "example": "image url"
+                },
+                "width": {
+                    "type": "integer",
+                    "x-order": "5",
+                    "example": 462
+                },
+                "height": {
+                    "type": "integer",
+                    "x-order": "6",
+                    "example": 184
+                },
+                "length": {
+                    "type": "integer",
+                    "x-order": "7",
+                    "example": 137
+                },
+                "engine": {
+                    "type": "string",
+                    "x-order": "8",
+                    "example": "2.0L EA113 CDLA TFSI In-Line 4 + Mild Hybrid 48V"
+                },
+                "torque": {
+                    "type": "integer",
+                    "x-order": "9",
+                    "example": 370
                 }
             }
         },
@@ -1044,13 +1210,18 @@ const docTemplate = `{
                     "x-order": "2",
                     "example": "Lorem ipsum dolor sit amet"
                 },
+                "image": {
+                    "type": "string",
+                    "x-order": "3",
+                    "example": "image url"
+                },
                 "car": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.CarResponse"
                         }
                     ],
-                    "x-order": "3"
+                    "x-order": "4"
                 },
                 "user": {
                     "allOf": [
@@ -1058,16 +1229,16 @@ const docTemplate = `{
                             "$ref": "#/definitions/response.ReviewUserResponse"
                         }
                     ],
-                    "x-order": "4"
+                    "x-order": "5"
                 },
                 "created_at": {
                     "type": "string",
-                    "x-order": "5",
+                    "x-order": "6",
                     "example": "2022-01-01T00:00:00Z"
                 },
                 "updated_at": {
                     "type": "string",
-                    "x-order": "6",
+                    "x-order": "7",
                     "example": "2022-01-01T00:00:00Z"
                 }
             }
@@ -1135,14 +1306,19 @@ const docTemplate = `{
                     "x-order": "4",
                     "example": "Lorem ipsum dolor sit amet"
                 },
-                "created_at": {
+                "image": {
                     "type": "string",
                     "x-order": "5",
+                    "example": "image url"
+                },
+                "created_at": {
+                    "type": "string",
+                    "x-order": "6",
                     "example": "2022-01-01T00:00:00Z"
                 },
                 "updated_at": {
                     "type": "string",
-                    "x-order": "6",
+                    "x-order": "7",
                     "example": "2022-01-01T00:00:00Z"
                 }
             }

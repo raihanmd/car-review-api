@@ -1,36 +1,113 @@
 definitions:
   request.CarCreateRequest:
     properties:
-      brand:
-        type: string
+      acceleration:
+        type: number
+        x-order: "10"
+      brand_id:
+        type: integer
         x-order: "0"
-      image:
+      breaking_system_back:
+        type: string
+        x-order: "13"
+      breaking_system_front:
+        type: string
+        x-order: "12"
+      engine:
+        type: string
+        x-order: "7"
+      fuel:
+        type: string
+        x-order: "14"
+      height:
+        type: integer
+        x-order: "5"
+      horse_power:
+        type: integer
+        x-order: "11"
+      image_url:
         type: string
         x-order: "3"
+      length:
+        type: integer
+        x-order: "6"
       model:
         type: string
         x-order: "1"
+      torque:
+        type: integer
+        x-order: "8"
+      transmission:
+        type: string
+        x-order: "9"
+      width:
+        type: integer
+        x-order: "4"
       year:
         minimum: 1878
         type: integer
         x-order: "2"
     required:
-    - brand
-    - image
+    - acceleration
+    - brand_id
+    - breaking_system_back
+    - breaking_system_front
+    - engine
+    - fuel
+    - height
+    - horse_power
+    - image_url
+    - length
     - model
+    - torque
+    - transmission
+    - width
     - year
     type: object
   request.CarUpdateRequest:
     properties:
-      brand:
-        type: string
+      acceleration:
+        type: number
+        x-order: "10"
+      brand_id:
+        type: integer
         x-order: "0"
-      image:
+      breaking_system_back:
+        type: string
+        x-order: "13"
+      breaking_system_front:
+        type: string
+        x-order: "12"
+      engine:
+        type: string
+        x-order: "7"
+      fuel:
+        type: string
+        x-order: "14"
+      height:
+        type: integer
+        x-order: "5"
+      horse_power:
+        type: integer
+        x-order: "11"
+      image_url:
         type: string
         x-order: "3"
+      length:
+        type: integer
+        x-order: "6"
       model:
         type: string
         x-order: "1"
+      torque:
+        type: integer
+        x-order: "8"
+      transmission:
+        type: string
+        x-order: "9"
+      width:
+        type: integer
+        x-order: "4"
       year:
         minimum: 1878
         type: integer
@@ -71,6 +148,9 @@ definitions:
       content:
         type: string
         x-order: "2"
+      image:
+        type: string
+        x-order: "3"
       title:
         maxLength: 100
         type: string
@@ -78,6 +158,7 @@ definitions:
     required:
     - car_id
     - content
+    - image
     - title
     type: object
   request.ReviewUpdateRequest:
@@ -85,9 +166,14 @@ definitions:
       content:
         type: string
         x-order: "1"
+      image:
+        type: string
+        x-order: "2"
       title:
         type: string
         x-order: "0"
+    required:
+    - image
     type: object
   request.UpdatePasswordRequest:
     properties:
@@ -129,22 +215,66 @@ definitions:
     type: object
   response.CarResponse:
     properties:
-      brand:
-        example: Toyota
-        type: string
+      acceleration:
+        example: 5.6
+        type: number
+        x-order: "11"
+      brand_id:
+        example: 2
+        type: integer
         x-order: "1"
+      breaking_system_back:
+        example: Disc
+        type: string
+        x-order: "14"
+      breaking_system_front:
+        example: Ventilated Disc
+        type: string
+        x-order: "13"
+      engine:
+        example: 2.0L EA113 CDLA TFSI In-Line 4 + Mild Hybrid 48V
+        type: string
+        x-order: "8"
+      fuel:
+        example: Electric
+        type: string
+        x-order: "15"
+      height:
+        example: 184
+        type: integer
+        x-order: "6"
+      horse_power:
+        example: 265
+        type: integer
+        x-order: "12"
       id:
         example: 1
         type: integer
         x-order: "0"
-      image:
-        example: url
+      image_url:
+        example: image url
         type: string
         x-order: "4"
+      length:
+        example: 137
+        type: integer
+        x-order: "7"
       model:
         example: Yaris
         type: string
         x-order: "2"
+      torque:
+        example: 370
+        type: integer
+        x-order: "9"
+      transmission:
+        example: Manual
+        type: string
+        x-order: "10"
+      width:
+        example: 462
+        type: integer
+        x-order: "5"
       year:
         example: 2020
         type: integer
@@ -155,7 +285,7 @@ definitions:
       car:
         allOf:
         - $ref: '#/definitions/response.CarResponse'
-        x-order: "3"
+        x-order: "4"
       content:
         example: Lorem ipsum dolor sit amet
         type: string
@@ -163,11 +293,15 @@ definitions:
       created_at:
         example: "2022-01-01T00:00:00Z"
         type: string
-        x-order: "5"
+        x-order: "6"
       id:
         example: 1
         type: integer
         x-order: "0"
+      image:
+        example: image url
+        type: string
+        x-order: "3"
       title:
         example: Title
         type: string
@@ -175,11 +309,11 @@ definitions:
       updated_at:
         example: "2022-01-01T00:00:00Z"
         type: string
-        x-order: "6"
+        x-order: "7"
       user:
         allOf:
         - $ref: '#/definitions/response.ReviewUserResponse'
-        x-order: "4"
+        x-order: "5"
     type: object
   response.LoginResponse:
     properties:
@@ -220,11 +354,15 @@ definitions:
       created_at:
         example: "2022-01-01T00:00:00Z"
         type: string
-        x-order: "5"
+        x-order: "6"
       id:
         example: 1
         type: integer
         x-order: "0"
+      image:
+        example: image url
+        type: string
+        x-order: "5"
       title:
         example: Title
         type: string
@@ -232,7 +370,7 @@ definitions:
       updated_at:
         example: "2022-01-01T00:00:00Z"
         type: string
-        x-order: "6"
+        x-order: "7"
       user_id:
         example: 3
         type: integer
