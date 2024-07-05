@@ -34,13 +34,14 @@ func NewUserController(userService services.UserService) UserController {
 }
 
 // Register godoc
-// @Summary User Register.
+// @Summary User register.
 // @Description Registering a user from public access.
 // @Tags Auth
 // @Param Body body request.RegisterRequest true "the body to register a user"
 // @Produce json
 // @Success 201 {object} web.WebSuccess[response.RegisterResponse]
 // @Failure 400 {object} web.WebBadRequestError
+// @Failure 500 {object} web.WebInternalServerError
 // @Router /api/auth/register [post]
 func (controller *userControllerImpl) Register(c *gin.Context) {
 	var registerReq request.RegisterRequest
@@ -60,7 +61,7 @@ func (controller *userControllerImpl) Register(c *gin.Context) {
 }
 
 // LoginUser godoc
-// @Summary User Login.
+// @Summary User login.
 // @Description Logging in to get jwt token to access admin or user api by roles.
 // @Tags Auth
 // @Param Body body request.LoginRequest true "the body to login a user"
@@ -68,6 +69,7 @@ func (controller *userControllerImpl) Register(c *gin.Context) {
 // @Success 200 {object} web.WebSuccess[response.LoginResponse]
 // @Failure 400 {object} web.WebBadRequestError
 // @Failure 401 {object} web.WebUnauthorizedError
+// @Failure 500 {object} web.WebInternalServerError
 // @Router /api/auth/login [post]
 func (controller *userControllerImpl) Login(c *gin.Context) {
 	var loginReq request.LoginRequest
@@ -91,6 +93,7 @@ func (controller *userControllerImpl) Login(c *gin.Context) {
 // @Produce json
 // @Success 200 {object} web.WebSuccess[string]
 // @Failure 400 {object} web.WebBadRequestError
+// @Failure 500 {object} web.WebInternalServerError
 // @Router /api/users/password [patch]
 func (controller *userControllerImpl) UpdatePassword(c *gin.Context) {
 	var updatePasswordReq request.UpdatePasswordRequest
@@ -116,6 +119,7 @@ func (controller *userControllerImpl) UpdatePassword(c *gin.Context) {
 // @Success 200 {object} web.WebSuccess[response.UserProfileResponse]
 // @Failure 400 {object} web.WebBadRequestError
 // @Failure 404 {object} web.WebNotFoundError
+// @Failure 500 {object} web.WebInternalServerError
 // @Router /api/users/profile/{id} [get]
 func (controller *userControllerImpl) GetUserProfile(c *gin.Context) {
 	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
@@ -128,7 +132,7 @@ func (controller *userControllerImpl) GetUserProfile(c *gin.Context) {
 }
 
 // UpdateUserProfile godoc
-// @Summary Update User Profile.
+// @Summary Update user profile.
 // @Description Update the profile of a user.
 // @Tags Users
 // @Param Body body request.UpdateUserProfileRequest true "the body to update user profile"
@@ -137,6 +141,7 @@ func (controller *userControllerImpl) GetUserProfile(c *gin.Context) {
 // @Produce json
 // @Success 200 {object} web.WebSuccess[response.UpdateUserProfileResponse]
 // @Failure 400 {object} web.WebBadRequestError
+// @Failure 500 {object} web.WebInternalServerError
 // @Router /api/users/profile [patch]
 func (controller *userControllerImpl) UpdateUserProfile(c *gin.Context) {
 	var updateUserReq request.UpdateUserProfileRequest
@@ -167,7 +172,7 @@ func (controller *userControllerImpl) UpdateUserProfile(c *gin.Context) {
 }
 
 // DeleteUserProfile godoc
-// @Summary Delete User.
+// @Summary Delete user.
 // @Description Delete a user profile by ID.
 // @Tags Users
 // @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
@@ -175,6 +180,7 @@ func (controller *userControllerImpl) UpdateUserProfile(c *gin.Context) {
 // @Produce json
 // @Success 200 {object} web.WebSuccess[string]
 // @Failure 400 {object} web.WebBadRequestError
+// @Failure 500 {object} web.WebInternalServerError
 // @Router /api/users [delete]
 func (controller *userControllerImpl) DeleteUserProfile(c *gin.Context) {
 	userID, _, err := utils.ExtractTokenClaims(c)

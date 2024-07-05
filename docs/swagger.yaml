@@ -51,6 +51,26 @@ definitions:
     - password
     - username
     type: object
+  request.ReviewCreateRequest:
+    properties:
+      car_id:
+        type: integer
+      content:
+        type: string
+      title:
+        type: string
+    required:
+    - car_id
+    - content
+    - title
+    type: object
+  request.ReviewUpdateRequest:
+    properties:
+      content:
+        type: string
+      title:
+        type: string
+    type: object
   request.UpdatePasswordRequest:
     properties:
       password:
@@ -101,6 +121,22 @@ definitions:
         example: 2020
         type: integer
     type: object
+  response.FindReviewResponse:
+    properties:
+      car:
+        $ref: '#/definitions/response.CarResponse'
+      content:
+        example: Lorem ipsum dolor sit amet
+        type: string
+      id:
+        example: 1
+        type: integer
+      title:
+        example: Title
+        type: string
+      user:
+        $ref: '#/definitions/response.ReviewUserResponse'
+    type: object
   response.LoginResponse:
     properties:
       role:
@@ -119,6 +155,33 @@ definitions:
         type: string
       username:
         example: luigi
+        type: string
+    type: object
+  response.ReviewResponse:
+    properties:
+      car_id:
+        example: 2
+        type: integer
+      content:
+        example: Lorem ipsum dolor sit amet
+        type: string
+      id:
+        example: 1
+        type: integer
+      title:
+        example: Title
+        type: string
+      user_id:
+        example: 3
+        type: integer
+    type: object
+  response.ReviewUserResponse:
+    properties:
+      id:
+        example: 1
+        type: integer
+      username:
+        example: John Doe
         type: string
     type: object
   response.UpdateUserProfileResponse:
@@ -181,7 +244,7 @@ definitions:
         example: 400
         type: integer
       errors:
-        example: bad request
+        example: Bad Request
         type: string
     type: object
   web.WebForbiddenError:
@@ -190,7 +253,16 @@ definitions:
         example: 403
         type: integer
       errors:
-        example: forbidden
+        example: Forbidden
+        type: string
+    type: object
+  web.WebInternalServerError:
+    properties:
+      code:
+        example: 500
+        type: integer
+      errors:
+        example: Internal Server Error
         type: string
     type: object
   web.WebNotFoundError:
@@ -199,7 +271,7 @@ definitions:
         example: 404
         type: integer
       errors:
-        example: not found
+        example: Not Found
         type: string
     type: object
   web.WebSuccess-array_response_CarResponse:
@@ -215,6 +287,19 @@ definitions:
         example: success
         type: string
     type: object
+  web.WebSuccess-array_response_FindReviewResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/response.FindReviewResponse'
+        type: array
+      message:
+        example: success
+        type: string
+    type: object
   web.WebSuccess-response_CarResponse:
     properties:
       code:
@@ -222,6 +307,17 @@ definitions:
         type: integer
       data:
         $ref: '#/definitions/response.CarResponse'
+      message:
+        example: success
+        type: string
+    type: object
+  web.WebSuccess-response_FindReviewResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        $ref: '#/definitions/response.FindReviewResponse'
       message:
         example: success
         type: string
@@ -244,6 +340,17 @@ definitions:
         type: integer
       data:
         $ref: '#/definitions/response.RegisterResponse'
+      message:
+        example: success
+        type: string
+    type: object
+  web.WebSuccess-response_ReviewResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data:
+        $ref: '#/definitions/response.ReviewResponse'
       message:
         example: success
         type: string
@@ -287,7 +394,7 @@ definitions:
         example: 401
         type: integer
       errors:
-        example: unauthorized
+        example: Unauthorized
         type: string
     type: object
 info:
@@ -318,7 +425,11 @@ paths:
           description: Unauthorized
           schema:
             $ref: '#/definitions/web.WebUnauthorizedError'
-      summary: User Login.
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      summary: User login.
       tags:
       - Auth
   /api/auth/register:
@@ -342,7 +453,11 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/web.WebBadRequestError'
-      summary: User Register.
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      summary: User register.
       tags:
       - Auth
   /api/cars:
@@ -351,29 +466,21 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Created
+        "200":
+          description: OK
           schema:
             $ref: '#/definitions/web.WebSuccess-array_response_CarResponse'
-        "400":
-          description: Bad Request
+        "500":
+          description: Internal Server Error
           schema:
-            $ref: '#/definitions/web.WebBadRequestError'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/web.WebForbiddenError'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/web.WebNotFoundError'
+            $ref: '#/definitions/web.WebInternalServerError'
       summary: Find all car.
       tags:
       - Cars
     post:
       description: Create a car.
       parameters:
-      - description: the body to register a user
+      - description: the body to create a car
         in: body
         name: Body
         required: true
@@ -399,6 +506,10 @@ paths:
           description: Forbidden
           schema:
             $ref: '#/definitions/web.WebForbiddenError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
       security:
       - BearerToken: []
       summary: Create car.
@@ -421,8 +532,8 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Created
+        "200":
+          description: OK
           schema:
             $ref: '#/definitions/web.WebSuccess-string'
         "400":
@@ -437,6 +548,10 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
       security:
       - BearerToken: []
       summary: Delete car.
@@ -453,22 +568,18 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Created
+        "200":
+          description: OK
           schema:
             $ref: '#/definitions/web.WebSuccess-response_CarResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/web.WebBadRequestError'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/web.WebForbiddenError'
         "404":
           description: Not Found
           schema:
             $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
       summary: Find car.
       tags:
       - Cars
@@ -480,7 +591,7 @@ paths:
         name: id
         required: true
         type: integer
-      - description: the body to register a user
+      - description: the body to update a car
         in: body
         name: Body
         required: true
@@ -494,8 +605,8 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Created
+        "200":
+          description: OK
           schema:
             $ref: '#/definitions/web.WebSuccess-response_CarResponse'
         "400":
@@ -510,11 +621,177 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
       security:
       - BearerToken: []
       summary: Update car.
       tags:
       - Cars
+  /api/reviews:
+    get:
+      description: Find all review.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-array_response_FindReviewResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      summary: Find all review.
+      tags:
+      - Reviews
+    post:
+      description: Create a review.
+      parameters:
+      - description: the body to create a review
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.ReviewCreateRequest'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_ReviewResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Create review.
+      tags:
+      - Reviews
+  /api/reviews/{id}:
+    delete:
+      description: Delete a review.
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Delete review.
+      tags:
+      - Reviews
+    get:
+      description: Find a review by id.
+      parameters:
+      - description: review ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_FindReviewResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      summary: Find review.
+      tags:
+      - Reviews
+    patch:
+      description: Update a review.
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: the body to update a review
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.ReviewUpdateRequest'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_ReviewResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Update review.
+      tags:
+      - Reviews
   /api/users:
     delete:
       description: Delete a user profile by ID.
@@ -535,9 +812,13 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/web.WebBadRequestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
       security:
       - BearerToken: []
-      summary: Delete User.
+      summary: Delete user.
       tags:
       - Users
   /api/users/password:
@@ -566,6 +847,10 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/web.WebBadRequestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
       security:
       - BearerToken: []
       summary: Update user password.
@@ -597,9 +882,13 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/web.WebBadRequestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
       security:
       - BearerToken: []
-      summary: Update User Profile.
+      summary: Update user profile.
       tags:
       - Users
   /api/users/profile/{id}:
@@ -626,6 +915,10 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
       summary: Get user profile.
       tags:
       - Users

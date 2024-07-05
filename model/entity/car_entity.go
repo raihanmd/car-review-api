@@ -13,4 +13,5 @@ type Car struct {
 	// FavoritedBy []User   `gorm:"many2many:favorites;"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
+	// Review    Review `gorm:"foreignKey:CarID"`
 }

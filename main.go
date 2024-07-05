@@ -15,11 +15,11 @@ func init() {
 }
 
 func main() {
-	swaggerSchemes := []string{"htpps"}
+	swaggerSchemes := []string{"https"}
 	if os.Getenv("ENVIRONMENT") != "production" {
 		err := godotenv.Load()
 		helper.PanicIfError(err)
-		swaggerSchemes = []string{"http", "https"}
+		swaggerSchemes = []string{"http"}
 	}
 
 	docs.SwaggerInfo.Title = "Car Review REST API"

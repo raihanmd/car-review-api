@@ -24,7 +24,7 @@ const docTemplate = `{
                 "tags": [
                     "Auth"
                 ],
-                "summary": "User Login.",
+                "summary": "User login.",
                 "parameters": [
                     {
                         "description": "the body to login a user",
@@ -54,6 +54,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/web.WebUnauthorizedError"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
                     }
                 }
             }
@@ -67,7 +73,7 @@ const docTemplate = `{
                 "tags": [
                     "Auth"
                 ],
-                "summary": "User Register.",
+                "summary": "User register.",
                 "parameters": [
                     {
                         "description": "the body to register a user",
@@ -91,6 +97,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/web.WebBadRequestError"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
                     }
                 }
             }
@@ -106,28 +118,16 @@ const docTemplate = `{
                 ],
                 "summary": "Find all car.",
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/web.WebSuccess-array_response_CarResponse"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
+                    "500": {
+                        "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/web.WebBadRequestError"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/web.WebForbiddenError"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/web.WebNotFoundError"
+                            "$ref": "#/definitions/web.WebInternalServerError"
                         }
                     }
                 }
@@ -148,7 +148,7 @@ const docTemplate = `{
                 "summary": "Create car.",
                 "parameters": [
                     {
-                        "description": "the body to register a user",
+                        "description": "the body to create a car",
                         "name": "Body",
                         "in": "body",
                         "required": true,
@@ -182,6 +182,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/web.WebForbiddenError"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
                     }
                 }
             }
@@ -206,28 +212,22 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/web.WebSuccess-response_CarResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/web.WebBadRequestError"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/web.WebForbiddenError"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
                         }
                     }
                 }
@@ -263,8 +263,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/web.WebSuccess-string"
                         }
@@ -285,6 +285,12 @@ const docTemplate = `{
                         "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
                         }
                     }
                 }
@@ -312,7 +318,7 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "the body to register a user",
+                        "description": "the body to update a car",
                         "name": "Body",
                         "in": "body",
                         "required": true,
@@ -329,8 +335,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/web.WebSuccess-response_CarResponse"
                         }
@@ -352,6 +358,261 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/web.WebNotFoundError"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reviews": {
+            "get": {
+                "description": "Find all review.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Find all review.",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-array_response_FindReviewResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Create a review.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Create review.",
+                "parameters": [
+                    {
+                        "description": "the body to create a review",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ReviewCreateRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization. How to input in swagger : 'Bearer \u003cinsert_your_token_here\u003e'",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-response_ReviewResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reviews/{id}": {
+            "get": {
+                "description": "Find a review by id.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Find review.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "review ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-response_FindReviewResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Delete a review.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Delete review.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Review ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization. How to input in swagger : 'Bearer \u003cinsert_your_token_here\u003e'",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Update a review.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Update review.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Review ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "the body to update a review",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ReviewUpdateRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization. How to input in swagger : 'Bearer \u003cinsert_your_token_here\u003e'",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-response_ReviewResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
                     }
                 }
             }
@@ -370,7 +631,7 @@ const docTemplate = `{
                 "tags": [
                     "Users"
                 ],
-                "summary": "Delete User.",
+                "summary": "Delete user.",
                 "parameters": [
                     {
                         "type": "string",
@@ -391,6 +652,12 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
                         }
                     }
                 }
@@ -441,6 +708,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/web.WebBadRequestError"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
                     }
                 }
             }
@@ -459,7 +732,7 @@ const docTemplate = `{
                 "tags": [
                     "Users"
                 ],
-                "summary": "Update User Profile.",
+                "summary": "Update user profile.",
                 "parameters": [
                     {
                         "description": "the body to update user profile",
@@ -489,6 +762,12 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
                         }
                     }
                 }
@@ -530,6 +809,12 @@ const docTemplate = `{
                         "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
                         }
                     }
                 }
@@ -612,6 +897,36 @@ const docTemplate = `{
                 }
             }
         },
+        "request.ReviewCreateRequest": {
+            "type": "object",
+            "required": [
+                "car_id",
+                "content",
+                "title"
+            ],
+            "properties": {
+                "car_id": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.ReviewUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "request.UpdatePasswordRequest": {
             "type": "object",
             "required": [
@@ -682,6 +997,29 @@ const docTemplate = `{
                 }
             }
         },
+        "response.FindReviewResponse": {
+            "type": "object",
+            "properties": {
+                "car": {
+                    "$ref": "#/definitions/response.CarResponse"
+                },
+                "content": {
+                    "type": "string",
+                    "example": "Lorem ipsum dolor sit amet"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Title"
+                },
+                "user": {
+                    "$ref": "#/definitions/response.ReviewUserResponse"
+                }
+            }
+        },
         "response.LoginResponse": {
             "type": "object",
             "properties": {
@@ -708,6 +1046,44 @@ const docTemplate = `{
                 "username": {
                     "type": "string",
                     "example": "luigi"
+                }
+            }
+        },
+        "response.ReviewResponse": {
+            "type": "object",
+            "properties": {
+                "car_id": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "content": {
+                    "type": "string",
+                    "example": "Lorem ipsum dolor sit amet"
+                },
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "title": {
+                    "type": "string",
+                    "example": "Title"
+                },
+                "user_id": {
+                    "type": "integer",
+                    "example": 3
+                }
+            }
+        },
+        "response.ReviewUserResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "example": 1
+                },
+                "username": {
+                    "type": "string",
+                    "example": "John Doe"
                 }
             }
         },
@@ -794,7 +1170,7 @@ const docTemplate = `{
                 },
                 "errors": {
                     "type": "string",
-                    "example": "bad request"
+                    "example": "Bad Request"
                 }
             }
         },
@@ -807,7 +1183,20 @@ const docTemplate = `{
                 },
                 "errors": {
                     "type": "string",
-                    "example": "forbidden"
+                    "example": "Forbidden"
+                }
+            }
+        },
+        "web.WebInternalServerError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 500
+                },
+                "errors": {
+                    "type": "string",
+                    "example": "Internal Server Error"
                 }
             }
         },
@@ -820,7 +1209,7 @@ const docTemplate = `{
                 },
                 "errors": {
                     "type": "string",
-                    "example": "not found"
+                    "example": "Not Found"
                 }
             }
         },
@@ -843,6 +1232,25 @@ const docTemplate = `{
                 }
             }
         },
+        "web.WebSuccess-array_response_FindReviewResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 200
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.FindReviewResponse"
+                    }
+                },
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
         "web.WebSuccess-response_CarResponse": {
             "type": "object",
             "properties": {
@@ -852,6 +1260,22 @@ const docTemplate = `{
                 },
                 "data": {
                     "$ref": "#/definitions/response.CarResponse"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "web.WebSuccess-response_FindReviewResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 200
+                },
+                "data": {
+                    "$ref": "#/definitions/response.FindReviewResponse"
                 },
                 "message": {
                     "type": "string",
@@ -884,6 +1308,22 @@ const docTemplate = `{
                 },
                 "data": {
                     "$ref": "#/definitions/response.RegisterResponse"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "success"
+                }
+            }
+        },
+        "web.WebSuccess-response_ReviewResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 200
+                },
+                "data": {
+                    "$ref": "#/definitions/response.ReviewResponse"
                 },
                 "message": {
                     "type": "string",
@@ -948,7 +1388,7 @@ const docTemplate = `{
                 },
                 "errors": {
                     "type": "string",
-                    "example": "unauthorized"
+                    "example": "Unauthorized"
                 }
             }
         }

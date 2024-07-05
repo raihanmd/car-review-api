@@ -44,11 +44,10 @@ func NewRouter() *gin.Engine {
 	cfg := zap.Config{
 		OutputPaths: []string{"./log/test.log", "stdout"},
 		EncoderConfig: zapcore.EncoderConfig{
-			MessageKey:    "message",
-			LevelKey:      "level",
-			TimeKey:       "time_stamp",
-			StacktraceKey: "stacktrace",
-			EncodeTime:    zapcore.ISO8601TimeEncoder,
+			MessageKey: "message",
+			LevelKey:   "level",
+			TimeKey:    "time_stamp",
+			EncodeTime: zapcore.ISO8601TimeEncoder,
 		},
 		Encoding: "json",
 		Level:    zap.NewAtomicLevelAt(zap.DebugLevel),
@@ -60,11 +59,20 @@ func NewRouter() *gin.Engine {
 
 	db := NewConnection()
 
+	// ======================== USER =======================
+
 	userService := services.NewUserService()
 	userController := controllers.NewUserController(userService)
 
+	// ======================== CARD =======================
+
 	carService := services.NewCarService()
 	carController := controllers.NewCarController(carService)
+
+	// ======================== REVIEW =======================
+
+	reviewService := services.NewreviewService()
+	reviewController := controllers.NewreviewController(reviewService)
 
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowAllOrigins = true
@@ -115,6 +123,19 @@ func NewRouter() *gin.Engine {
 	carRouter.POST("/", carController.Create)
 	carRouter.PATCH("/:id", carController.Update)
 	carRouter.DELETE("/:id", carController.Delete)
+
+	// ======================== REVIEW ROUTE =======================
+
+	reviewRouter := apiRouter.Group("/reviews")
+
+	reviewRouter.GET("/", reviewController.FindAll)
+	reviewRouter.GET("/:id", reviewController.FindById)
+
+	reviewRouter.Use(middlewares.JwtAuthMiddleware)
+
+	reviewRouter.POST("/", reviewController.Create)
+	reviewRouter.PATCH("/:id", reviewController.Update)
+	reviewRouter.DELETE("/:id", reviewController.Delete)
 
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.DefaultModelsExpandDepth(-1)))
 
