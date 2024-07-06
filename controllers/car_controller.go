@@ -72,7 +72,7 @@ func (controller *carControllerImpl) Create(c *gin.Context) {
 // @Failure 500 {object} web.WebInternalServerError
 // @Router /api/cars/{id} [patch]
 func (controller *carControllerImpl) Update(c *gin.Context) {
-	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	carID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	helper.PanicIfError(err)
 
 	var carUpdateReq request.CarUpdateRequest
@@ -82,7 +82,7 @@ func (controller *carControllerImpl) Update(c *gin.Context) {
 
 	utils.UserRoleMustAdmin(c)
 
-	carRes, err := controller.CarService.Update(c, &carUpdateReq, uint(userID))
+	carRes, err := controller.CarService.Update(c, &carUpdateReq, uint(carID))
 	helper.PanicIfError(err)
 
 	helper.ToResponseJSON(c, http.StatusOK, carRes)
@@ -103,12 +103,12 @@ func (controller *carControllerImpl) Update(c *gin.Context) {
 // @Failure 500 {object} web.WebInternalServerError
 // @Router /api/cars/{id} [delete]
 func (controller *carControllerImpl) Delete(c *gin.Context) {
-	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	carID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	helper.PanicIfError(err)
 
 	utils.UserRoleMustAdmin(c)
 
-	err = controller.CarService.Delete(c, uint(userID))
+	err = controller.CarService.Delete(c, uint(carID))
 	helper.PanicIfError(err)
 
 	helper.ToResponseJSON(c, http.StatusOK, "car deleted")
@@ -140,10 +140,10 @@ func (controller *carControllerImpl) FindAll(c *gin.Context) {
 // @Failure 500 {object} web.WebInternalServerError
 // @Router /api/cars/{id} [get]
 func (controller *carControllerImpl) FindById(c *gin.Context) {
-	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	carID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	helper.PanicIfError(err)
 
-	car, err := controller.CarService.FindByID(c, uint(userID))
+	car, err := controller.CarService.FindByID(c, uint(carID))
 	helper.PanicIfError(err)
 
 	helper.ToResponseJSON(c, http.StatusOK, car)

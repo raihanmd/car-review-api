@@ -46,7 +46,7 @@ func (service *carServiceImpl) Update(c *gin.Context, carUpdateReq *request.CarU
 
 	updateCar := service.toCarEntity(carUpdateReq)
 
-	var responseCar entity.Car
+	var car entity.Car
 
 	err := db.Transaction(func(tx *gorm.DB) error {
 		result := db.Model(&entity.Car{}).Where("id = ?", carID).Updates(updateCar)
@@ -63,7 +63,7 @@ func (service *carServiceImpl) Update(c *gin.Context, carUpdateReq *request.CarU
 			return err
 		}
 
-		if err := tx.Preload("CarSpecification").Take(&responseCar, "id = ?", carID).Error; err != nil {
+		if err := tx.Preload("CarSpecification").Take(&car, "id = ?", carID).Error; err != nil {
 			return err
 		}
 
@@ -76,7 +76,7 @@ func (service *carServiceImpl) Update(c *gin.Context, carUpdateReq *request.CarU
 
 	logger.Info("car updated successfully", zap.Uint("carID", carID))
 
-	return service.toCarResponse(&responseCar), nil
+	return service.toCarResponse(&car), nil
 }
 
 func (service *carServiceImpl) Delete(c *gin.Context, carID uint) error {
