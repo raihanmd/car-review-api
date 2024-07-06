@@ -236,3 +236,41 @@
 {"time_stamp":"2024-07-05T22:07:13.892+0700","message":"global error handler","error":"ERROR: update or delete on table \"cars\" violates foreign key constraint \"fk_cars_car_specification\" on table \"car_specifications\" (SQLSTATE 23503)"}
 {"time_stamp":"2024-07-05T22:10:21.198+0700","message":"car deleted successfully","carID":5}
 {"time_stamp":"2024-07-05T22:10:27.001+0700","message":"global error handler","error":"car not found"}
+{"time_stamp":"2024-07-06T09:30:34.939+0700","message":"global error handler","error":"path not found, use https://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-06T09:30:36.727+0700","message":"global error handler","error":"path not found, use https://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-06T09:30:51.584+0700","message":"success registering user","userID":4}
+{"time_stamp":"2024-07-06T09:31:08.188+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-06T09:31:12.336+0700","message":"user success logged in","userID":4}
+{"time_stamp":"2024-07-06T09:31:26.475+0700","message":"global error handler","error":"path not found, use https://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-06T09:34:23.115+0700","message":"user password updated successfully","userID":4}
+{"time_stamp":"2024-07-06T09:34:26.919+0700","message":"user success logged in","userID":4}
+{"time_stamp":"2024-07-06T09:34:29.098+0700","message":"user success logged in","userID":4}
+{"time_stamp":"2024-07-06T09:34:39.664+0700","message":"user password updated successfully","userID":4}
+{"time_stamp":"2024-07-06T09:35:30.536+0700","message":"user password updated successfully","userID":4}
+{"time_stamp":"2024-07-06T09:35:51.911+0700","message":"user success logged in","userID":4}
+{"time_stamp":"2024-07-06T09:36:00.471+0700","message":"user success logged in","userID":4}
+{"time_stamp":"2024-07-06T09:36:11.028+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-06T09:36:12.802+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-06T09:37:19.280+0700","message":"user failed login","userID":1}
+{"time_stamp":"2024-07-06T09:37:19.281+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-06T09:37:32.979+0700","message":"user failed login","userID":4}
+{"time_stamp":"2024-07-06T09:37:32.979+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-06T09:37:48.065+0700","message":"user failed login","userID":4}
+{"time_stamp":"2024-07-06T09:37:48.065+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-06T09:37:58.773+0700","message":"user failed login","userID":4}
+{"time_stamp":"2024-07-06T09:37:58.773+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-06T09:38:09.143+0700","message":"user failed login","userID":3}
+{"time_stamp":"2024-07-06T09:38:09.154+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-06T09:39:12.271+0700","message":"user failed login","error":"crypto/bcrypt: hashedSecret too short to be a bcrypted password"}
+{"time_stamp":"2024-07-06T09:39:12.271+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-06T09:39:56.722+0700","message":"user success logged in","userID":3}
+{"time_stamp":"2024-07-06T09:40:00.077+0700","message":"user failed login","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"time_stamp":"2024-07-06T09:40:00.077+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-06T09:40:03.700+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-06T09:40:10.727+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-06T09:40:13.828+0700","message":"user failed login","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"time_stamp":"2024-07-06T09:40:13.828+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-06T09:40:18.315+0700","message":"user success logged in","userID":4}
+{"time_stamp":"2024-07-06T09:41:24.281+0700","message":"success updating user profile","userID":4}
+{"time_stamp":"2024-07-06T09:41:35.629+0700","message":"user profile and user deleted successfully","userID":4}
+{"time_stamp":"2024-07-06T09:41:48.500+0700","message":"success registering user","userID":5}

@@ -103,11 +103,13 @@ func NewRouter() *gin.Engine {
 
 	// ======================== USERS ROUTE =======================
 
+	userRouter := apiRouter.Group("/users")
+
 	apiRouter.GET("/users/profile/:id", userController.GetUserProfile)
 
-	userRouter := apiRouter.Group("/users", middlewares.JwtAuthMiddleware)
+	userRouter.Use(middlewares.JwtAuthMiddleware)
 
-	userRouter.PUT("/password", userController.UpdatePassword)
+	userRouter.PATCH("/password", userController.UpdatePassword)
 	userRouter.PATCH("/profile", userController.UpdateUserProfile)
 	userRouter.DELETE("/", userController.DeleteUserProfile)
 

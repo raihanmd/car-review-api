@@ -12,7 +12,6 @@ import (
 	"github.com/raihanmd/car-review-sb/model/web/response"
 	"github.com/raihanmd/car-review-sb/utils"
 	"go.uber.org/zap"
-	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -74,12 +73,13 @@ func (service *userServiceImpl) Login(c *gin.Context, username, password string)
 
 	user := entity.User{}
 
-	if err = db.Model(&entity.User{}).Where("username = ?", username).Omit("password").Take(&user).Error; err != nil {
+	if err = db.Model(&entity.User{}).Where("username = ?", username).Take(&user).Error; err != nil {
 		return nil, exceptions.NewCustomError(http.StatusUnauthorized, "username or password is incorrect")
 	}
 
 	err = helper.VerifyPassword(password, user.Password)
-	if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
+	if err != nil {
+		logger.Info("user failed login", zap.Any("error", err))
 		return nil, exceptions.NewCustomError(http.StatusUnauthorized, "username or password is incorrect")
 	}
 
