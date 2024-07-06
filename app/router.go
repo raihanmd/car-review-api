@@ -74,6 +74,16 @@ func NewRouter() *gin.Engine {
 	reviewService := services.NewreviewService()
 	reviewController := controllers.NewreviewController(reviewService)
 
+	// ======================== BRAND =======================
+
+	brandService := services.NewBrandService()
+	brandController := controllers.NewBrandController(brandService)
+
+	// ======================== FAVOURITE =======================
+
+	favouriteService := services.NewFavouriteService()
+	favouriteController := controllers.NewFavouriteController(favouriteService)
+
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowAllOrigins = true
 	corsConfig.AllowHeaders = []string{"Content-Type", "X-XSRF-TOKEN", "Accept", "Origin", "X-Requested-With", "Authorization"}
@@ -138,6 +148,25 @@ func NewRouter() *gin.Engine {
 	reviewRouter.POST("/", reviewController.Create)
 	reviewRouter.PATCH("/:id", reviewController.Update)
 	reviewRouter.DELETE("/:id", reviewController.Delete)
+
+	// ======================== BRAND ROUTE =======================
+
+	brandRouter := apiRouter.Group("/brands")
+
+	brandRouter.GET("/", brandController.FindAll)
+
+	brandRouter.Use(middlewares.JwtAuthMiddleware)
+
+	brandRouter.POST("/", brandController.Create)
+	brandRouter.PATCH("/:id", brandController.Update)
+	brandRouter.DELETE("/:id", brandController.Delete)
+
+	// ======================== FAVOURITE ROUTE =======================
+
+	favouriteRouter := apiRouter.Group("/favourites")
+
+	favouriteRouter.POST("/:carID", favouriteController.FavouriteCar)
+	favouriteRouter.DELETE("/:carID", favouriteController.UnfavouriteCar)
 
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.DefaultModelsExpandDepth(-1)))
 

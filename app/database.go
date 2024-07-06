@@ -14,7 +14,7 @@ func NewConnection() *gorm.DB {
 	})
 	helper.PanicIfError(err)
 
-	err = db.AutoMigrate(&entity.User{}, &entity.Car{}, &entity.CarSpecification{}, &entity.Brand{}, &entity.Review{}, &entity.Comment{}, &entity.Rating{}, &entity.Favorite{}, &entity.Profile{})
+	err = db.AutoMigrate(&entity.User{}, &entity.Car{}, &entity.CarSpecification{}, &entity.Brand{}, &entity.Review{}, &entity.Comment{}, &entity.Favourite{}, &entity.Profile{})
 	helper.PanicIfError(err)
 
 	// create full text index on reviews.title

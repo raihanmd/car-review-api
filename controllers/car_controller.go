@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/raihanmd/car-review-sb/exceptions"
 	"github.com/raihanmd/car-review-sb/helper"
 	_ "github.com/raihanmd/car-review-sb/model/web"
 	"github.com/raihanmd/car-review-sb/model/web/request"
@@ -73,7 +74,9 @@ func (controller *carControllerImpl) Create(c *gin.Context) {
 // @Router /api/cars/{id} [patch]
 func (controller *carControllerImpl) Update(c *gin.Context) {
 	carID, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+	}
 
 	var carUpdateReq request.CarUpdateRequest
 
@@ -104,7 +107,9 @@ func (controller *carControllerImpl) Update(c *gin.Context) {
 // @Router /api/cars/{id} [delete]
 func (controller *carControllerImpl) Delete(c *gin.Context) {
 	carID, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+	}
 
 	utils.UserRoleMustAdmin(c)
 
@@ -141,7 +146,9 @@ func (controller *carControllerImpl) FindAll(c *gin.Context) {
 // @Router /api/cars/{id} [get]
 func (controller *carControllerImpl) FindById(c *gin.Context) {
 	carID, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+	}
 
 	car, err := controller.CarService.FindByID(c, uint(carID))
 	helper.PanicIfError(err)

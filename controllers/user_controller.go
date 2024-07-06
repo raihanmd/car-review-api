@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/raihanmd/car-review-sb/exceptions"
 	"github.com/raihanmd/car-review-sb/helper"
 	"github.com/raihanmd/car-review-sb/model/entity"
 	_ "github.com/raihanmd/car-review-sb/model/web"
@@ -123,7 +124,9 @@ func (controller *userControllerImpl) UpdatePassword(c *gin.Context) {
 // @Router /api/users/profile/{id} [get]
 func (controller *userControllerImpl) GetUserProfile(c *gin.Context) {
 	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+	}
 
 	user, err := controller.UserService.GetUserProfile(c, uint(userID))
 	helper.PanicIfError(err)

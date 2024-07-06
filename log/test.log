@@ -274,3 +274,18 @@
 {"time_stamp":"2024-07-06T09:41:24.281+0700","message":"success updating user profile","userID":4}
 {"time_stamp":"2024-07-06T09:41:35.629+0700","message":"user profile and user deleted successfully","userID":4}
 {"time_stamp":"2024-07-06T09:41:48.500+0700","message":"success registering user","userID":5}
+{"time_stamp":"2024-07-06T10:19:43.679+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-06T10:19:54.562+0700","message":"user success logged in","userID":3}
+{"time_stamp":"2024-07-06T10:20:08.353+0700","message":"global error handler","error":"path not found, use https://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-06T10:21:59.229+0700","message":"global error handler","error":"only admin can manipulate data"}
+{"time_stamp":"2024-07-06T10:22:09.730+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-06T10:23:08.877+0700","message":"global error handler","error":"only admin can manipulate data"}
+{"time_stamp":"2024-07-06T10:23:33.308+0700","message":"global error handler","error":"ERROR: duplicate key value violates unique constraint \"uni_brands_name\" (SQLSTATE 23505)"}
+{"time_stamp":"2024-07-06T10:28:05.940+0700","message":"global error handler","error":"name already exist"}
+{"time_stamp":"2024-07-06T10:28:16.227+0700","message":"brand created successfully","brandID":5}
+{"time_stamp":"2024-07-06T10:28:46.393+0700","message":"brand updated successfully","brandID":5}
+{"time_stamp":"2024-07-06T10:28:58.788+0700","message":"brand deleted successfully","brandID":5}
+{"time_stamp":"2024-07-06T10:57:11.209+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-06T10:57:17.450+0700","message":"user success logged in","userID":3}
+{"time_stamp":"2024-07-06T10:57:33.746+0700","message":"car favourited successfully","carID":1,"userID":3}
+{"time_stamp":"2024-07-06T10:57:47.875+0700","message":"car favourited successfully","carID":1,"userID":3}

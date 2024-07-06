@@ -11,9 +11,5 @@ type Car struct {
 	CarSpecification CarSpecification `gorm:"foreignKey:CarID"`
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
-	// Reviews     []Review `gorm:"foreignKey:CarID"`
-	// Ratings     []Rating `gorm:"foreignKey:CarID"`
-	// FavoritedBy []User   `gorm:"many2many:favorites;"`
-	// Review    Review `gorm:"foreignKey:CarID"`
-	Brand Brand `gorm:"foreignKey:BrandID"`
+	Brand            Brand `gorm:"foreignKey:BrandID"`
 }

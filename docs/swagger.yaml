@@ -1,4 +1,12 @@
 definitions:
+  request.BrandRequest:
+    properties:
+      name:
+        maxLength: 100
+        type: string
+    required:
+    - name
+    type: object
   request.CarCreateRequest:
     properties:
       acceleration:
@@ -212,6 +220,16 @@ definitions:
         minLength: 3
         type: string
         x-order: "0"
+    type: object
+  response.BrandResponse:
+    properties:
+      id:
+        example: 1
+        type: integer
+        x-order: "0"
+      name:
+        type: string
+        x-order: "1"
     type: object
   response.CarResponse:
     properties:
@@ -493,6 +511,22 @@ definitions:
         example: Not Found
         type: string
     type: object
+  web.WebSuccess-array_response_BrandResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+        x-order: "0"
+      data:
+        items:
+          $ref: '#/definitions/response.BrandResponse'
+        type: array
+        x-order: "2"
+      message:
+        example: success
+        type: string
+        x-order: "1"
+    type: object
   web.WebSuccess-array_response_CarResponse:
     properties:
       code:
@@ -519,6 +553,21 @@ definitions:
         items:
           $ref: '#/definitions/response.FindReviewResponse'
         type: array
+        x-order: "2"
+      message:
+        example: success
+        type: string
+        x-order: "1"
+    type: object
+  web.WebSuccess-response_BrandResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+        x-order: "0"
+      data:
+        allOf:
+        - $ref: '#/definitions/response.BrandResponse'
         x-order: "2"
       message:
         example: success
@@ -716,6 +765,150 @@ paths:
       summary: User register.
       tags:
       - Auth
+  /api/brands:
+    get:
+      description: Find all brand.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-array_response_BrandResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      summary: Find all brand.
+      tags:
+      - Brands
+    post:
+      description: Create a brand.
+      parameters:
+      - description: the body to create a brand
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.BrandRequest'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_BrandResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/web.WebForbiddenError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Create brand.
+      tags:
+      - Brands
+  /api/brands/{id}:
+    delete:
+      description: Delete a brand.
+      parameters:
+      - description: brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/web.WebForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Delete brand.
+      tags:
+      - Brands
+    patch:
+      description: Update a brand.
+      parameters:
+      - description: brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: the body to update a brand
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.BrandRequest'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_BrandResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/web.WebForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Update brand.
+      tags:
+      - Brands
   /api/cars:
     get:
       description: Find all car.
@@ -886,6 +1079,81 @@ paths:
       summary: Update car.
       tags:
       - Cars
+  /api/favourites/{carID}:
+    delete:
+      description: Unfavourite a car.
+      parameters:
+      - description: car ID
+        in: path
+        name: carID
+        required: true
+        type: integer
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/web.WebForbiddenError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Unfavourite a car.
+      tags:
+      - Favourites
+    post:
+      description: Favourite a car.
+      parameters:
+      - description: car ID
+        in: path
+        name: carID
+        required: true
+        type: integer
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/web.WebForbiddenError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Favourite a car.
+      tags:
+      - Favourites
   /api/reviews:
     get:
       description: Find all review.
