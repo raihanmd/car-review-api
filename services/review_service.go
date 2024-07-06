@@ -35,10 +35,11 @@ func (service *reviewServiceImpl) Create(c *gin.Context, reviewCreateReq *reques
 	var responseReview response.ReviewResponse
 
 	newReview := entity.Review{
-		UserID:  userID,
-		CarID:   reviewCreateReq.CarID,
-		Title:   reviewCreateReq.Title,
-		Content: reviewCreateReq.Content,
+		UserID:   userID,
+		CarID:    reviewCreateReq.CarID,
+		Title:    reviewCreateReq.Title,
+		Content:  reviewCreateReq.Content,
+		ImageUrl: reviewCreateReq.ImageUrl,
 	}
 
 	if err := db.Model(&entity.Review{}).Create(&newReview).Take(&responseReview, "car_id = ?", newReview.CarID).Error; err != nil {
@@ -112,7 +113,7 @@ func (service *reviewServiceImpl) FindAll(c *gin.Context) (*[]response.FindRevie
 
 	var reviews []map[string]any
 
-	if err := db.Table("reviews").Select("reviews.*, reviews.id as review_id, cars.*, cars.id as car_id, users.username, users.id as user_id").
+	if err := db.Table("reviews").Select("reviews.*, reviews.id as review_id, cars.id as car_id, users.username, users.id as user_id").
 		Joins("left join cars on reviews.car_id = cars.id").
 		Joins("left join users on reviews.user_id = users.id").
 		Find(&reviews).Error; err != nil {
@@ -123,18 +124,14 @@ func (service *reviewServiceImpl) FindAll(c *gin.Context) (*[]response.FindRevie
 
 	for _, v := range reviews {
 		review := response.FindReviewResponse{
-			ID:        v["review_id"].(uint),
+			ID:        uint(v["review_id"].(int64)),
 			Title:     v["title"].(string),
 			Content:   v["content"].(string),
-			Image:     v["image"].(string),
+			ImageUrl:  v["image_url"].(string),
 			CreatedAt: v["created_at"].(time.Time),
 			UpdatedAt: v["updated_at"].(time.Time),
-			Car: response.CarResponse{
-				ID:       v["car_id"].(uint),
-				BrandID:  v["brand_id"].(uint),
-				Model:    v["model"].(string),
-				Year:     v["year"].(int16),
-				ImageUrl: v["image_url"].(string),
+			Car: response.ReviewCarResponse{
+				ID: uint(v["car_id"].(int64)),
 			},
 			User: response.ReviewUserResponse{
 				ID:       uint(v["user_id"].(int64)),
@@ -153,32 +150,28 @@ func (service *reviewServiceImpl) FindByID(c *gin.Context, reviewId uint) (*resp
 
 	var review map[string]any
 
-	if err := db.Table("reviews").Select("reviews.*, reviews.id as review_id, cars.*, cars.id as car_id, users.username, users.id as user_id").
+	if err := db.Table("reviews").Select("reviews.*, reviews.id as review_id, cars.id as car_id, users.username, users.id as user_id").
 		Joins("left join cars on reviews.car_id = cars.id").
 		Joins("left join users on reviews.user_id = users.id").
 		Take(&review, "reviews.id = ?", reviewId).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, exceptions.NewCustomError(http.StatusNotFound, "reviewnot found")
+			return nil, exceptions.NewCustomError(http.StatusNotFound, "review not found")
 		}
 		return nil, err
 	}
 
 	return &response.FindReviewResponse{
-		ID:        review["review_id"].(uint),
+		ID:        uint(review["review_id"].(int64)),
 		Title:     review["title"].(string),
 		Content:   review["content"].(string),
-		Image:     review["image"].(string),
+		ImageUrl:  review["image_url"].(string),
 		CreatedAt: review["created_at"].(time.Time),
 		UpdatedAt: review["updated_at"].(time.Time),
-		Car: response.CarResponse{
-			ID:       review["car_id"].(uint),
-			BrandID:  review["brand_id"].(uint),
-			Model:    review["model"].(string),
-			Year:     review["year"].(int16),
-			ImageUrl: review["image_url"].(string),
+		Car: response.ReviewCarResponse{
+			ID: uint(review["car_id"].(int64)),
 		},
 		User: response.ReviewUserResponse{
-			ID:       review["user_id"].(uint),
+			ID:       uint(review["user_id"].(int64)),
 			Username: review["username"].(string),
 		},
 	}, nil

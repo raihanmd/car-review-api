@@ -36,7 +36,6 @@ func NewFavouriteController(favouriteService services.FavouriteService) Favourit
 // @Produce json
 // @Success 201 {object} web.WebSuccess[string]
 // @Failure 400 {object} web.WebBadRequestError
-// @Failure 403 {object} web.WebForbiddenError
 // @Failure 500 {object} web.WebInternalServerError
 // @Router /api/favourites/{carID} [post]
 func (controller *favouriteControllerImpl) FavouriteCar(c *gin.Context) {
@@ -64,7 +63,6 @@ func (controller *favouriteControllerImpl) FavouriteCar(c *gin.Context) {
 // @Produce json
 // @Success 201 {object} web.WebSuccess[string]
 // @Failure 400 {object} web.WebBadRequestError
-// @Failure 403 {object} web.WebForbiddenError
 // @Failure 500 {object} web.WebInternalServerError
 // @Router /api/favourites/{carID} [delete]
 func (controller *favouriteControllerImpl) UnfavouriteCar(c *gin.Context) {

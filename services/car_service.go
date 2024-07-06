@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/raihanmd/car-review-sb/exceptions"
 	"github.com/raihanmd/car-review-sb/helper"
 	"github.com/raihanmd/car-review-sb/model/entity"
@@ -33,6 +34,12 @@ func (service *carServiceImpl) Create(c *gin.Context, carCreateReq *request.CarC
 	newCar := service.toCarEntity(carCreateReq)
 
 	if err := db.Create(newCar).Error; err != nil {
+		if pgErr, ok := err.(*pgconn.PgError); ok {
+			// violation foreign key brand_id
+			if pgErr.Code == "23503" {
+				return nil, exceptions.NewCustomError(http.StatusNotFound, "brand not found")
+			}
+		}
 		return nil, err
 	}
 
@@ -56,6 +63,12 @@ func (service *carServiceImpl) Update(c *gin.Context, carUpdateReq *request.CarU
 		}
 
 		if result.Error != nil {
+			if pgErr, ok := result.Error.(*pgconn.PgError); ok {
+				// violation foreign key brand_id
+				if pgErr.Code == "23503" {
+					return exceptions.NewCustomError(http.StatusNotFound, "brand not found")
+				}
+			}
 			return result.Error
 		}
 

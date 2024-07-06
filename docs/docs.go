@@ -590,6 +590,186 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/comments": {
+            "post": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Create a comment.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Create comment.",
+                "parameters": [
+                    {
+                        "description": "the body to create a comment",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CommentCreateRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization. How to input in swagger : 'Bearer \u003cinsert_your_token_here\u003e'",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-response_CommentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/comments/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Delete a comment.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Delete comment.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Comment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization. How to input in swagger : 'Bearer \u003cinsert_your_token_here\u003e'",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Update a comment.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Comments"
+                ],
+                "summary": "Update comment.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Comment ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "the body to update a comment",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.CommentUpdateRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization. How to input in swagger : 'Bearer \u003cinsert_your_token_here\u003e'",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-response_CommentResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            }
+        },
         "/api/favourites/{carID}": {
             "post": {
                 "security": [
@@ -632,12 +812,6 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/web.WebBadRequestError"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/web.WebForbiddenError"
                         }
                     },
                     "500": {
@@ -689,12 +863,6 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/web.WebBadRequestError"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/web.WebForbiddenError"
                         }
                     },
                     "500": {
@@ -932,6 +1100,53 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/web.WebSuccess-response_ReviewResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/reviews/{id}/comment": {
+            "get": {
+                "description": "Find a comment by review id.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Find comment by review id.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Review ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-array_response_CommentResponse"
                         }
                     },
                     "400": {
@@ -1321,6 +1536,35 @@ const docTemplate = `{
                 }
             }
         },
+        "request.CommentCreateRequest": {
+            "type": "object",
+            "required": [
+                "content",
+                "review_id"
+            ],
+            "properties": {
+                "review_id": {
+                    "type": "integer",
+                    "x-order": "0"
+                },
+                "content": {
+                    "type": "string",
+                    "x-order": "1"
+                }
+            }
+        },
+        "request.CommentUpdateRequest": {
+            "type": "object",
+            "required": [
+                "content"
+            ],
+            "properties": {
+                "content": {
+                    "type": "string",
+                    "x-order": "0"
+                }
+            }
+        },
         "request.LoginRequest": {
             "type": "object",
             "required": [
@@ -1363,7 +1607,7 @@ const docTemplate = `{
             "required": [
                 "car_id",
                 "content",
-                "image",
+                "image_url",
                 "title"
             ],
             "properties": {
@@ -1380,7 +1624,7 @@ const docTemplate = `{
                     "type": "string",
                     "x-order": "2"
                 },
-                "image": {
+                "image_url": {
                     "type": "string",
                     "x-order": "3"
                 }
@@ -1388,9 +1632,6 @@ const docTemplate = `{
         },
         "request.ReviewUpdateRequest": {
             "type": "object",
-            "required": [
-                "image"
-            ],
             "properties": {
                 "title": {
                     "type": "string",
@@ -1400,7 +1641,7 @@ const docTemplate = `{
                     "type": "string",
                     "x-order": "1"
                 },
-                "image": {
+                "image_url": {
                     "type": "string",
                     "x-order": "2"
                 }
@@ -1556,6 +1797,39 @@ const docTemplate = `{
                 }
             }
         },
+        "response.CommentResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 1
+                },
+                "review_id": {
+                    "type": "integer",
+                    "x-order": "1",
+                    "example": 2
+                },
+                "user_id": {
+                    "type": "integer",
+                    "x-order": "2",
+                    "example": 3
+                },
+                "content": {
+                    "type": "string",
+                    "x-order": "3",
+                    "example": "Lorem ipsum dolor sit amet"
+                },
+                "created_at": {
+                    "type": "string",
+                    "example": "2022-01-01T00:00:00Z"
+                },
+                "updated_at": {
+                    "type": "string",
+                    "example": "2022-01-01T00:00:00Z"
+                }
+            }
+        },
         "response.FindReviewResponse": {
             "type": "object",
             "properties": {
@@ -1574,7 +1848,7 @@ const docTemplate = `{
                     "x-order": "2",
                     "example": "Lorem ipsum dolor sit amet"
                 },
-                "image": {
+                "image_url": {
                     "type": "string",
                     "x-order": "3",
                     "example": "image url"
@@ -1582,7 +1856,7 @@ const docTemplate = `{
                 "car": {
                     "allOf": [
                         {
-                            "$ref": "#/definitions/response.CarResponse"
+                            "$ref": "#/definitions/response.ReviewCarResponse"
                         }
                     ],
                     "x-order": "4"
@@ -1642,6 +1916,16 @@ const docTemplate = `{
                 }
             }
         },
+        "response.ReviewCarResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 1
+                }
+            }
+        },
         "response.ReviewResponse": {
             "type": "object",
             "properties": {
@@ -1670,7 +1954,7 @@ const docTemplate = `{
                     "x-order": "4",
                     "example": "Lorem ipsum dolor sit amet"
                 },
-                "image": {
+                "image_url": {
                     "type": "string",
                     "x-order": "5",
                     "example": "image url"
@@ -1888,6 +2172,28 @@ const docTemplate = `{
                 }
             }
         },
+        "web.WebSuccess-array_response_CommentResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 200
+                },
+                "message": {
+                    "type": "string",
+                    "x-order": "1",
+                    "example": "success"
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/response.CommentResponse"
+                    },
+                    "x-order": "2"
+                }
+            }
+        },
         "web.WebSuccess-array_response_FindReviewResponse": {
             "type": "object",
             "properties": {
@@ -1950,6 +2256,29 @@ const docTemplate = `{
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.CarResponse"
+                        }
+                    ],
+                    "x-order": "2"
+                }
+            }
+        },
+        "web.WebSuccess-response_CommentResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 200
+                },
+                "message": {
+                    "type": "string",
+                    "x-order": "1",
+                    "example": "success"
+                },
+                "data": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/response.CommentResponse"
                         }
                     ],
                     "x-order": "2"

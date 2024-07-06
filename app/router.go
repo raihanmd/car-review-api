@@ -84,6 +84,11 @@ func NewRouter() *gin.Engine {
 	favouriteService := services.NewFavouriteService()
 	favouriteController := controllers.NewFavouriteController(favouriteService)
 
+	// ======================== COMMENT =======================
+
+	commentService := services.NewCommentService()
+	commentController := controllers.NewCommentController(commentService)
+
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowAllOrigins = true
 	corsConfig.AllowHeaders = []string{"Content-Type", "X-XSRF-TOKEN", "Accept", "Origin", "X-Requested-With", "Authorization"}
@@ -143,6 +148,8 @@ func NewRouter() *gin.Engine {
 	reviewRouter.GET("/", reviewController.FindAll)
 	reviewRouter.GET("/:id", reviewController.FindById)
 
+	reviewRouter.GET("/:id/comment", commentController.FindByReviewId) // comment controller
+
 	reviewRouter.Use(middlewares.JwtAuthMiddleware)
 
 	reviewRouter.POST("/", reviewController.Create)
@@ -167,6 +174,14 @@ func NewRouter() *gin.Engine {
 
 	favouriteRouter.POST("/:carID", favouriteController.FavouriteCar)
 	favouriteRouter.DELETE("/:carID", favouriteController.UnfavouriteCar)
+
+	// ======================== COMMENT ROUTE =======================
+
+	commentRouter := apiRouter.Group("/comments")
+
+	commentRouter.POST("/", commentController.Create)
+	commentRouter.PATCH("/:id", commentController.Update)
+	commentRouter.DELETE("/:id", commentController.Delete)
 
 	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, ginSwagger.DefaultModelsExpandDepth(-1)))
 

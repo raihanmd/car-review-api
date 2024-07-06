@@ -86,7 +86,7 @@ func (controller *reviewControllerImpl) Update(c *gin.Context) {
 	userID, _, err := utils.ExtractTokenClaims(c)
 	helper.PanicIfError(err)
 
-	reviewRes, err := controller.ReviewService.Update(c, &reviewUpdateReq, uint(userID), uint(reviewID))
+	reviewRes, err := controller.ReviewService.Update(c, &reviewUpdateReq, userID, uint(reviewID))
 	helper.PanicIfError(err)
 
 	helper.ToResponseJSON(c, http.StatusOK, reviewRes)
@@ -114,7 +114,7 @@ func (controller *reviewControllerImpl) Delete(c *gin.Context) {
 	userID, _, err := utils.ExtractTokenClaims(c)
 	helper.PanicIfError(err)
 
-	err = controller.ReviewService.Delete(c, uint(userID), uint(reviewID))
+	err = controller.ReviewService.Delete(c, userID, uint(reviewID))
 	helper.PanicIfError(err)
 
 	helper.ToResponseJSON(c, http.StatusOK, "review deleted")
