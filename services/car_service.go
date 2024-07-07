@@ -8,6 +8,7 @@ import (
 	"github.com/raihanmd/car-review-sb/exceptions"
 	"github.com/raihanmd/car-review-sb/helper"
 	"github.com/raihanmd/car-review-sb/model/entity"
+	"github.com/raihanmd/car-review-sb/model/web"
 	"github.com/raihanmd/car-review-sb/model/web/request"
 	"github.com/raihanmd/car-review-sb/model/web/response"
 	"go.uber.org/zap"
@@ -18,7 +19,7 @@ type CarService interface {
 	Create(*gin.Context, *request.CarCreateRequest) (*response.CarResponse, error)
 	Update(*gin.Context, *request.CarUpdateRequest, uint) (*response.CarResponse, error)
 	Delete(*gin.Context, uint) error
-	FindAll(*gin.Context) (*[]response.CarResponse, error)
+	FindAll(*gin.Context, *request.CarQueryRequest, *web.PaginationRequest) (*[]response.CarResponse, *web.Metadata, error)
 	FindByID(*gin.Context, uint) (*response.CarResponse, error)
 }
 
@@ -124,22 +125,60 @@ func (service *carServiceImpl) Delete(c *gin.Context, carID uint) error {
 	return nil
 }
 
-func (service *carServiceImpl) FindAll(c *gin.Context) (*[]response.CarResponse, error) {
+func (service *carServiceImpl) FindAll(c *gin.Context, carQueryReq *request.CarQueryRequest, pagination *web.PaginationRequest) (*[]response.CarResponse, *web.Metadata, error) {
 	db, _ := helper.GetDBAndLogger(c)
 
 	var cars []entity.Car
 
-	if err := db.Preload("CarSpecification").Find(&cars).Error; err != nil {
-		return nil, err
+	query := db.Model(&entity.Car{})
+
+	query.Count(&pagination.TotalData)
+
+	offset := (pagination.Page - 1) * pagination.Limit
+	query = query.Preload("CarSpecification").Limit(pagination.Limit).Offset(offset)
+
+	subquery := db.Model(&entity.CarSpecification{}).Select("car_id")
+
+	// Car Filtering
+	{
+		if carQueryReq.BrandID != nil {
+			subquery = subquery.Where("brand_id = ?", *carQueryReq.BrandID)
+		}
+
+		if carQueryReq.Model != nil {
+			subquery = subquery.Where("model ILIKE ?", "%"+*carQueryReq.Model+"%")
+		}
+
+		if carQueryReq.MinYear != nil {
+			subquery = subquery.Where("year >= ?", *carQueryReq.MinYear)
+		}
+
+		if carQueryReq.MaxYear != nil {
+			subquery = subquery.Where("year <= ?", *carQueryReq.MaxYear)
+		}
 	}
 
-	var responseCars []response.CarResponse
+	query = query.Where("id IN (?)", subquery)
 
+	if err := query.Find(&cars).Error; err != nil {
+		return nil, nil, err
+	}
+
+	pagination.TotalPages = int((pagination.TotalData + int64(pagination.Limit) - 1) / int64(pagination.Limit))
+
+	var responseCars []response.CarResponse
 	for _, car := range cars {
 		responseCars = append(responseCars, *service.toCarResponse(&car))
 	}
 
-	return &responseCars, nil
+	metadata := web.Metadata{
+		Page:       &pagination.Page,
+		Limit:      &pagination.Limit,
+		TotalData:  &pagination.TotalData,
+		TotalPages: &pagination.TotalPages,
+	}
+
+	return &responseCars, &metadata, nil
 }
 
 func (service *carServiceImpl) FindByID(c *gin.Context, carId uint) (*response.CarResponse, error) {

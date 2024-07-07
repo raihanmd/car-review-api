@@ -59,34 +59,35 @@ func NewRouter() *gin.Engine {
 
 	db := NewConnection()
 
+	userService := services.NewUserService()
+	carService := services.NewCarService()
+	reviewService := services.NewreviewService()
+	brandService := services.NewBrandService()
+	favouriteService := services.NewFavouriteService()
+	commentService := services.NewCommentService()
+
 	// ======================== USER =======================
 
-	userService := services.NewUserService()
-	userController := controllers.NewUserController(userService)
+	userController := controllers.NewUserController(userService, favouriteService)
 
 	// ======================== CARD =======================
 
-	carService := services.NewCarService()
 	carController := controllers.NewCarController(carService)
 
 	// ======================== REVIEW =======================
 
-	reviewService := services.NewreviewService()
-	reviewController := controllers.NewreviewController(reviewService)
+	reviewController := controllers.NewreviewController(reviewService, commentService)
 
 	// ======================== BRAND =======================
 
-	brandService := services.NewBrandService()
 	brandController := controllers.NewBrandController(brandService)
 
 	// ======================== FAVOURITE =======================
 
-	favouriteService := services.NewFavouriteService()
 	favouriteController := controllers.NewFavouriteController(favouriteService)
 
 	// ======================== COMMENT =======================
 
-	commentService := services.NewCommentService()
 	commentController := controllers.NewCommentController(commentService)
 
 	corsConfig := cors.DefaultConfig()
@@ -121,6 +122,7 @@ func NewRouter() *gin.Engine {
 	userRouter := apiRouter.Group("/users")
 
 	apiRouter.GET("/users/profile/:id", userController.GetUserProfile)
+	apiRouter.GET("/users/favourites", userController.GetFavourites)
 
 	userRouter.Use(middlewares.JwtAuthMiddleware)
 
@@ -148,7 +150,7 @@ func NewRouter() *gin.Engine {
 	reviewRouter.GET("/", reviewController.FindAll)
 	reviewRouter.GET("/:id", reviewController.FindById)
 
-	reviewRouter.GET("/:id/comment", commentController.FindByReviewId) // comment controller
+	reviewRouter.GET("/:id/comments", reviewController.FindComments) // comment controller
 
 	reviewRouter.Use(middlewares.JwtAuthMiddleware)
 

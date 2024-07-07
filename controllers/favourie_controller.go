@@ -50,7 +50,7 @@ func (controller *favouriteControllerImpl) FavouriteCar(c *gin.Context) {
 	err = controller.FavouriteService.FavouriteCar(c, uint(carID), userID)
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, fmt.Sprintf("success add favourite for carID %v by userID %v", carID, userID))
+	helper.ToResponseJSON(c, http.StatusOK, fmt.Sprintf("success add favourite for carID %v by userID %v", carID, userID), nil)
 }
 
 // Unfavourite a car godoc
@@ -77,5 +77,5 @@ func (controller *favouriteControllerImpl) UnfavouriteCar(c *gin.Context) {
 	err = controller.FavouriteService.UnfavouriteCar(c, uint(carID), userID)
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, fmt.Sprintf("success unfavourite for carID %v by userID %v", carID, userID))
+	helper.ToResponseJSON(c, http.StatusOK, fmt.Sprintf("success unfavourite for carID %v by userID %v", carID, userID), nil)
 }

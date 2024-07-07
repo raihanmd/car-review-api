@@ -53,7 +53,7 @@ func (controller *brandControllerImpl) Create(c *gin.Context) {
 	brandRes, err := controller.BrandService.Create(c, &brandCreateReq)
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusCreated, brandRes)
+	helper.ToResponseJSON(c, http.StatusCreated, brandRes, nil)
 }
 
 // Update brand godoc
@@ -87,7 +87,7 @@ func (controller *brandControllerImpl) Update(c *gin.Context) {
 	brandRes, err := controller.BrandService.Update(c, &brandUpdateReq, uint(brandID))
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, brandRes)
+	helper.ToResponseJSON(c, http.StatusOK, brandRes, nil)
 }
 
 // Delete brand godoc
@@ -115,7 +115,7 @@ func (controller *brandControllerImpl) Delete(c *gin.Context) {
 	err = controller.BrandService.Delete(c, uint(brandID))
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, "brand deleted")
+	helper.ToResponseJSON(c, http.StatusOK, "brand deleted", nil)
 }
 
 // Find all brand godoc
@@ -130,5 +130,5 @@ func (controller *brandControllerImpl) FindAll(c *gin.Context) {
 	brands, err := controller.BrandService.FindAll(c)
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, brands)
+	helper.ToResponseJSON(c, http.StatusOK, brands, nil)
 }

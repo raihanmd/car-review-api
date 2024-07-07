@@ -15,10 +15,10 @@ type UpdatePasswordRequest struct {
 }
 
 type UpdateUserProfileRequest struct {
-	Username string  `json:"username" binding:"omitempty,min=3,max=20,no_space,lowercase" extensions:"x-order=0"`
-	Email    *string `json:"email" binding:"omitempty,email" extensions:"x-order=1"`
-	FullName *string `json:"full_name" binding:"omitempty,min=3,max=100" extensions:"x-order=2"`
-	Bio      *string `json:"bio" binding:"omitempty,max=500" extensions:"x-order=3"`
-	Age      *int    `json:"age" binding:"omitempty,min=0" extensions:"x-order=4"`
-	Gender   *string `json:"gender" binding:"omitempty,uppercase,oneof=MALE FEMALE" extensions:"x-order=5"`
+	Username string  `json:"username" binding:"min=3,max=20,no_space,lowercase" extensions:"x-order=0"`
+	Email    *string `json:"email" binding:"email" extensions:"x-order=1"`
+	FullName *string `json:"full_name" binding:"min=3,max=100" extensions:"x-order=2"`
+	Bio      *string `json:"bio" binding:"max=500" extensions:"x-order=3"`
+	Age      *int    `json:"age" binding:"min=0" extensions:"x-order=4"`
+	Gender   *string `json:"gender" binding:"uppercase,oneof=MALE FEMALE" extensions:"x-order=5"`
 }

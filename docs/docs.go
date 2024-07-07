@@ -339,6 +339,46 @@ const docTemplate = `{
                     "Cars"
                 ],
                 "summary": "Find all car.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Brand ID",
+                        "name": "brand_id",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Model",
+                        "name": "model",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Minimum Year",
+                        "name": "min_year",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Maximum Year",
+                        "name": "max_year",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -884,6 +924,34 @@ const docTemplate = `{
                     "Reviews"
                 ],
                 "summary": "Find all review.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Title",
+                        "name": "title",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Car ID",
+                        "name": "car_id",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -972,7 +1040,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "review ID",
+                        "description": "Review ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -1123,7 +1191,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/reviews/{id}/comment": {
+        "/api/reviews/{id}/comments": {
             "get": {
                 "description": "Find a comment by review id.",
                 "produces": [
@@ -1205,6 +1273,58 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/favourites": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Get user profile data.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user favourites.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization. How to input in swagger : 'Bearer \u003cinsert_your_token_here\u003e'",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-response_FavouriteResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
                         }
                     },
                     "500": {
@@ -1830,6 +1950,16 @@ const docTemplate = `{
                 }
             }
         },
+        "response.FavouriteResponse": {
+            "type": "object",
+            "properties": {
+                "car_id": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 1
+                }
+            }
+        },
         "response.FindReviewResponse": {
             "type": "object",
             "properties": {
@@ -2076,6 +2206,27 @@ const docTemplate = `{
                 }
             }
         },
+        "web.Metadata": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "type": "integer",
+                    "x-order": "0"
+                },
+                "limit": {
+                    "type": "integer",
+                    "x-order": "1"
+                },
+                "total_pages": {
+                    "type": "integer",
+                    "x-order": "2"
+                },
+                "total_data": {
+                    "type": "integer",
+                    "x-order": "3"
+                }
+            }
+        },
         "web.WebBadRequestError": {
             "type": "object",
             "properties": {
@@ -2147,6 +2298,14 @@ const docTemplate = `{
                         "$ref": "#/definitions/response.BrandResponse"
                     },
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },
@@ -2169,6 +2328,14 @@ const docTemplate = `{
                         "$ref": "#/definitions/response.CarResponse"
                     },
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },
@@ -2191,6 +2358,14 @@ const docTemplate = `{
                         "$ref": "#/definitions/response.CommentResponse"
                     },
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },
@@ -2213,6 +2388,14 @@ const docTemplate = `{
                         "$ref": "#/definitions/response.FindReviewResponse"
                     },
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },
@@ -2236,6 +2419,14 @@ const docTemplate = `{
                         }
                     ],
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },
@@ -2259,6 +2450,14 @@ const docTemplate = `{
                         }
                     ],
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },
@@ -2282,6 +2481,45 @@ const docTemplate = `{
                         }
                     ],
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
+                }
+            }
+        },
+        "web.WebSuccess-response_FavouriteResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 200
+                },
+                "message": {
+                    "type": "string",
+                    "x-order": "1",
+                    "example": "success"
+                },
+                "data": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/response.FavouriteResponse"
+                        }
+                    ],
+                    "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },
@@ -2305,6 +2543,14 @@ const docTemplate = `{
                         }
                     ],
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },
@@ -2328,6 +2574,14 @@ const docTemplate = `{
                         }
                     ],
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },
@@ -2351,6 +2605,14 @@ const docTemplate = `{
                         }
                     ],
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },
@@ -2374,6 +2636,14 @@ const docTemplate = `{
                         }
                     ],
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },
@@ -2397,6 +2667,14 @@ const docTemplate = `{
                         }
                     ],
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },
@@ -2420,6 +2698,14 @@ const docTemplate = `{
                         }
                     ],
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },
@@ -2439,6 +2725,14 @@ const docTemplate = `{
                 "data": {
                     "type": "string",
                     "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
                 }
             }
         },

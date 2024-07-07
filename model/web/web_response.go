@@ -1,9 +1,17 @@
 package web
 
 type WebSuccess[T any] struct {
-	Code    int    `json:"code" example:"200" extensions:"x-order=0"`
-	Message string `json:"message" example:"success" extensions:"x-order=1"`
-	Data    T      `json:"data" extensions:"x-order=2"`
+	Code     int       `json:"code" example:"200" extensions:"x-order=0"`
+	Message  string    `json:"message" example:"success" extensions:"x-order=1"`
+	Data     T         `json:"data" extensions:"x-order=2"`
+	Metadata *Metadata `json:"metadata" extensions:"x-order=3"`
+}
+
+type Metadata struct {
+	Page       *int   `json:"page" form:"limit" extensions:"x-order=0"`
+	Limit      *int   `json:"limit" form:"page" extensions:"x-order=1"`
+	TotalPages *int   `json:"total_pages" extensions:"x-order=2"`
+	TotalData  *int64 `json:"total_data" extensions:"x-order=3"`
 }
 
 type WebError struct {

@@ -347,3 +347,26 @@
 {"time_stamp":"2024-07-06T13:40:45.713+0700","message":"comment updated successfully","commentID":4}
 {"time_stamp":"2024-07-06T13:40:59.660+0700","message":"Comments fetched successfully","reviewID":7,"count":4}
 {"time_stamp":"2024-07-06T13:41:21.073+0700","message":"Comment deleted successfully","commentID":4}
+{"time_stamp":"2024-07-07T10:55:30.441+0700","message":"global error handler","error":"path not found, use https://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-07T10:55:30.755+0700","message":"global error handler","error":"path not found, use https://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-07T13:18:50.252+0700","message":"global error handler","error":"ERROR: column \"horse_power\" does not exist (SQLSTATE 42703)"}
+{"time_stamp":"2024-07-07T16:01:11.100+0700","message":"global error handler","error":"path not found, use https://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-07T16:01:11.261+0700","message":"global error handler","error":"path not found, use https://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-07T16:03:59.272+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-07T16:03:59.272+0700","message":"global error handler","error":"runtime error: invalid memory address or nil pointer dereference"}
+{"time_stamp":"2024-07-07T16:05:02.158+0700","message":"success registering user","userID":6}
+{"time_stamp":"2024-07-07T16:05:02.158+0700","message":"global error handler","error":"runtime error: invalid memory address or nil pointer dereference"}
+{"time_stamp":"2024-07-07T16:07:04.256+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-07T16:09:48.675+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-07T16:11:42.978+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-07T16:11:42.979+0700","message":"global error handler","error":"runtime error: invalid memory address or nil pointer dereference"}
+{"time_stamp":"2024-07-07T16:14:48.443+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-07T16:14:59.924+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-07T16:19:20.137+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-07T16:19:20.178+0700","message":"global error handler","error":"runtime error: invalid memory address or nil pointer dereference"}
+{"time_stamp":"2024-07-07T16:20:59.766+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-07T16:21:57.986+0700","message":"user success logged in","userID":1}
+{"time_stamp":"2024-07-07T16:22:48.894+0700","message":"user success logged in","userID":3}
+{"time_stamp":"2024-07-07T16:29:07.462+0700","message":"car favourited successfully","carID":2,"userID":3}
+{"time_stamp":"2024-07-07T16:29:12.873+0700","message":"car favourited successfully","carID":555,"userID":3}
+{"time_stamp":"2024-07-07T16:32:51.571+0700","message":"global error handler","error":"review not found"}

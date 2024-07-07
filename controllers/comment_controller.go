@@ -18,7 +18,6 @@ type CommentController interface {
 	Create(*gin.Context)
 	Update(*gin.Context)
 	Delete(*gin.Context)
-	FindByReviewId(*gin.Context)
 }
 
 type commentControllerImpl struct {
@@ -53,7 +52,7 @@ func (controller *commentControllerImpl) Create(c *gin.Context) {
 	commentRes, err := controller.CommentService.Create(c, &commentCreateReq, userID)
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusCreated, commentRes)
+	helper.ToResponseJSON(c, http.StatusCreated, commentRes, nil)
 }
 
 // Update comment godoc
@@ -87,7 +86,7 @@ func (controller *commentControllerImpl) Update(c *gin.Context) {
 	commentRes, err := controller.CommentService.Update(c, &commentUpdateReq, userID, uint(commentID))
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, commentRes)
+	helper.ToResponseJSON(c, http.StatusOK, commentRes, nil)
 }
 
 // Delete comment godoc
@@ -115,28 +114,5 @@ func (controller *commentControllerImpl) Delete(c *gin.Context) {
 	err = controller.CommentService.Delete(c, userID, uint(commentID))
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, "comment deleted")
-}
-
-// Find comment by review id godoc
-// @Summary Find comment by review id.
-// @Description Find a comment by review id.
-// @Tags Reviews
-// @Param id path int true "Review ID"
-// @Produce json
-// @Success 201 {object} web.WebSuccess[[]response.CommentResponse]
-// @Failure 400 {object} web.WebBadRequestError
-// @Failure 404 {object} web.WebNotFoundError
-// @Failure 500 {object} web.WebInternalServerError
-// @Router /api/reviews/{id}/comment [get]
-func (controller *commentControllerImpl) FindByReviewId(c *gin.Context) {
-	reviewID, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "reviewID must be an integer"))
-	}
-
-	comments, err := controller.CommentService.FindByReviewId(c, uint(reviewID))
-	helper.PanicIfError(err)
-
-	helper.ToResponseJSON(c, http.StatusOK, comments)
+	helper.ToResponseJSON(c, http.StatusOK, "comment deleted", nil)
 }
