@@ -1,9 +1,8 @@
 package entity
 
-import "time"
-
-type Favorite struct {
-	UserID    uint `gorm:"primaryKey"`
-	CarID     uint `gorm:"primaryKey"`
-	CreatedAt time.Time
+type Favourite struct {
+	UserID uint `gorm:"index:idx_favourite,unique"`
+	CarID  uint `gorm:"index:idx_favourite,unique"`
+	User   User `gorm:"foreignKey:UserID"`
+	Car    Car  `gorm:"foreignKey:CarID"`
 }

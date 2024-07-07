@@ -1,4 +1,4 @@
-package app
+package test
 
 import (
 	"fmt"
@@ -14,15 +14,32 @@ import (
 	"github.com/raihanmd/car-review-sb/exceptions"
 	"github.com/raihanmd/car-review-sb/helper"
 	"github.com/raihanmd/car-review-sb/middlewares"
+	"github.com/raihanmd/car-review-sb/model/entity"
 	"github.com/raihanmd/car-review-sb/services"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
-
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-func NewRouter() *gin.Engine {
+func NewUnitTestDatabase() *gorm.DB {
+	db, err := gorm.Open(postgres.Open(helper.MustGetEnv("DB_DSN")), &gorm.Config{})
+	helper.PanicIfError(err)
+
+	err = db.AutoMigrate(&entity.User{}, &entity.Car{}, &entity.CarSpecification{}, &entity.Brand{}, &entity.Review{}, &entity.Comment{}, &entity.Favourite{}, &entity.Profile{})
+	helper.PanicIfError(err)
+
+	db.Exec("CREATE INDEX IF NOT EXISTS idx_title_fulltext ON reviews USING GIN (to_tsvector('english', title))")
+
+	db.Exec("CREATE EXTENSION IF NOT EXISTS pg_trgm;")
+	db.Exec("CREATE INDEX idx_model_gin ON cars USING GIN (model gin_trgm_ops);")
+
+	return db
+}
+
+func NewRouter(db *gorm.DB) *gin.Engine {
 	r := gin.Default()
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
@@ -42,7 +59,7 @@ func NewRouter() *gin.Engine {
 	}
 
 	cfg := zap.Config{
-		OutputPaths: []string{"./log/test.log", "stdout"},
+		OutputPaths: []string{"./log/log.log"},
 		EncoderConfig: zapcore.EncoderConfig{
 			MessageKey: "message",
 			LevelKey:   "level",
@@ -56,8 +73,6 @@ func NewRouter() *gin.Engine {
 	logger, err := cfg.Build()
 	helper.PanicIfError(err)
 	defer logger.Sync()
-
-	db := NewConnection()
 
 	userService := services.NewUserService()
 	carService := services.NewCarService()

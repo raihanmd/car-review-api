@@ -5,8 +5,9 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/raihanmd/car-review-sb/exceptions"
 	"github.com/raihanmd/car-review-sb/helper"
-	_ "github.com/raihanmd/car-review-sb/model/web"
+	"github.com/raihanmd/car-review-sb/model/web"
 	"github.com/raihanmd/car-review-sb/model/web/request"
 	_ "github.com/raihanmd/car-review-sb/model/web/response"
 	"github.com/raihanmd/car-review-sb/services"
@@ -53,7 +54,7 @@ func (controller *carControllerImpl) Create(c *gin.Context) {
 	carRes, err := controller.CarService.Create(c, &carCreateReq)
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusCreated, carRes)
+	helper.ToResponseJSON(c, http.StatusCreated, carRes, nil)
 }
 
 // Update car godoc
@@ -72,8 +73,10 @@ func (controller *carControllerImpl) Create(c *gin.Context) {
 // @Failure 500 {object} web.WebInternalServerError
 // @Router /api/cars/{id} [patch]
 func (controller *carControllerImpl) Update(c *gin.Context) {
-	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	helper.PanicIfError(err)
+	carID, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+	}
 
 	var carUpdateReq request.CarUpdateRequest
 
@@ -82,10 +85,10 @@ func (controller *carControllerImpl) Update(c *gin.Context) {
 
 	utils.UserRoleMustAdmin(c)
 
-	carRes, err := controller.CarService.Update(c, &carUpdateReq, uint(userID))
+	carRes, err := controller.CarService.Update(c, &carUpdateReq, uint(carID))
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, carRes)
+	helper.ToResponseJSON(c, http.StatusOK, carRes, nil)
 }
 
 // Delete car godoc
@@ -103,30 +106,56 @@ func (controller *carControllerImpl) Update(c *gin.Context) {
 // @Failure 500 {object} web.WebInternalServerError
 // @Router /api/cars/{id} [delete]
 func (controller *carControllerImpl) Delete(c *gin.Context) {
-	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	helper.PanicIfError(err)
+	carID, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+	}
 
 	utils.UserRoleMustAdmin(c)
 
-	err = controller.CarService.Delete(c, uint(userID))
+	err = controller.CarService.Delete(c, uint(carID))
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, "car deleted")
+	helper.ToResponseJSON(c, http.StatusOK, "car deleted", nil)
 }
 
 // Find all car godoc
 // @Summary Find all car.
 // @Description Find all car.
 // @Tags Cars
+// @Param limit query int false "Limit" default(10)
+// @Param page query int false "Page" default(1)
+// @Param brand_id query int false "Brand ID"
+// @Param model query string false "Model"
+// @Param min_year query int false "Minimum Year"
+// @Param max_year query int false "Maximum Year"
 // @Produce json
 // @Success 200 {object} web.WebSuccess[[]response.CarResponse]
 // @Failure 500 {object} web.WebInternalServerError
 // @Router /api/cars [get]
 func (controller *carControllerImpl) FindAll(c *gin.Context) {
-	cars, err := controller.CarService.FindAll(c)
+	var pagination web.PaginationRequest
+	var carQueryReq request.CarQueryRequest
+
+	if err := c.ShouldBindQuery(&pagination); err != nil {
+		panic(err)
+	}
+
+	if err := c.ShouldBindQuery(&carQueryReq); err != nil {
+		panic(err)
+	}
+
+	if pagination.Limit == 0 {
+		pagination.Limit = 10
+	}
+	if pagination.Page == 0 {
+		pagination.Page = 1
+	}
+
+	cars, metadata, err := controller.CarService.FindAll(c, &carQueryReq, &pagination)
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, cars)
+	helper.ToResponseJSON(c, http.StatusOK, cars, metadata)
 }
 
 // Find car godoc
@@ -140,11 +169,13 @@ func (controller *carControllerImpl) FindAll(c *gin.Context) {
 // @Failure 500 {object} web.WebInternalServerError
 // @Router /api/cars/{id} [get]
 func (controller *carControllerImpl) FindById(c *gin.Context) {
-	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	carID, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+	}
+
+	car, err := controller.CarService.FindByID(c, uint(carID))
 	helper.PanicIfError(err)
 
-	car, err := controller.CarService.FindByID(c, uint(userID))
-	helper.PanicIfError(err)
-
-	helper.ToResponseJSON(c, http.StatusOK, car)
+	helper.ToResponseJSON(c, http.StatusOK, car, nil)
 }

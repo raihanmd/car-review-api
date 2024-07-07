@@ -1,0 +1,89 @@
+package services
+
+import (
+	"errors"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/raihanmd/car-review-sb/exceptions"
+	"github.com/raihanmd/car-review-sb/helper"
+	"github.com/raihanmd/car-review-sb/model/entity"
+	"github.com/raihanmd/car-review-sb/model/web/response"
+	"go.uber.org/zap"
+)
+
+type FavouriteService interface {
+	FavouriteCar(c *gin.Context, carID uint, userID uint) error
+	UnfavouriteCar(c *gin.Context, carID uint, userID uint) error
+	GetUserFavourites(c *gin.Context, userID uint) (*[]response.FavouriteResponse, error)
+}
+
+type favouriteServiceImpl struct{}
+
+func NewFavouriteService() FavouriteService {
+	return &favouriteServiceImpl{}
+}
+
+func (service *favouriteServiceImpl) FavouriteCar(c *gin.Context, carID uint, userID uint) error {
+	db, logger := helper.GetDBAndLogger(c)
+
+	favourite := entity.Favourite{
+		UserID: userID,
+		CarID:  carID,
+	}
+
+	if err := db.Create(&favourite).Error; err != nil {
+		if pgErr, ok := err.(*pgconn.PgError); ok {
+			// unique violation
+			if pgErr.Code == "23505" {
+				return exceptions.NewCustomError(http.StatusBadRequest, "car is already favourited by the user")
+			}
+			// violation foreign key car_id
+			if pgErr.Code == "23503" {
+				return exceptions.NewCustomError(http.StatusNotFound, "car not found")
+			}
+		}
+		return err
+	}
+
+	logger.Info("car favourited successfully", zap.Uint("carID", carID), zap.Uint("userID", userID))
+
+	return nil
+}
+
+func (service *favouriteServiceImpl) UnfavouriteCar(c *gin.Context, carID uint, userID uint) error {
+	db, _ := helper.GetDBAndLogger(c)
+
+	result := db.Where("user_id = ? AND car_id = ?", userID, carID).Delete(&entity.Favourite{})
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return errors.New("favourite not found")
+	}
+
+	return nil
+}
+
+func (service *favouriteServiceImpl) GetUserFavourites(c *gin.Context, userID uint) (*[]response.FavouriteResponse, error) {
+	db, _ := helper.GetDBAndLogger(c)
+
+	var favourites []entity.Favourite
+
+	if err := db.Select("car_id").Where("user_id = ?", userID).Find(&favourites).Error; err != nil {
+		return nil, err
+	}
+
+	var favouriteResponses []response.FavouriteResponse
+
+	for _, favourite := range favourites {
+		favouriteResponses = append(favouriteResponses, response.FavouriteResponse{
+			CarID: favourite.CarID,
+		})
+	}
+
+	return &favouriteResponses, nil
+}

@@ -1,0 +1,99 @@
+{"time_stamp":"2024-07-07T21:54:53.181+0700","message":"success registering user","userID":20}
+{"time_stamp":"2024-07-07T21:54:53.182+0700","message":"global error handler","error":"Key: 'RegisterRequest.Username' Error:Field validation for 'Username' failed on the 'min' tag\nKey: 'RegisterRequest.Password' Error:Field validation for 'Password' failed on the 'min' tag"}
+{"time_stamp":"2024-07-07T21:54:53.321+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-07T21:54:53.422+0700","message":"user success logged in","userID":20}
+{"time_stamp":"2024-07-07T21:54:53.422+0700","message":"global error handler","error":"Key: 'LoginRequest.Username' Error:Field validation for 'Username' failed on the 'required' tag\nKey: 'LoginRequest.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"time_stamp":"2024-07-07T21:54:53.538+0700","message":"user failed login","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"time_stamp":"2024-07-07T21:54:53.538+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-07T21:54:53.666+0700","message":"user password updated successfully","userID":20}
+{"time_stamp":"2024-07-07T21:54:53.768+0700","message":"user success logged in","userID":20}
+{"time_stamp":"2024-07-07T21:54:53.778+0700","message":"success updating user profile","userID":20}
+{"time_stamp":"2024-07-07T21:56:15.522+0700","message":"success registering user","userID":22}
+{"time_stamp":"2024-07-07T21:56:15.564+0700","message":"global error handler","error":"Key: 'RegisterRequest.Username' Error:Field validation for 'Username' failed on the 'min' tag\nKey: 'RegisterRequest.Password' Error:Field validation for 'Password' failed on the 'min' tag"}
+{"time_stamp":"2024-07-07T21:56:15.691+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-07T21:56:15.788+0700","message":"user success logged in","userID":22}
+{"time_stamp":"2024-07-07T21:56:15.788+0700","message":"global error handler","error":"Key: 'LoginRequest.Username' Error:Field validation for 'Username' failed on the 'required' tag\nKey: 'LoginRequest.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"time_stamp":"2024-07-07T21:56:15.886+0700","message":"user failed login","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"time_stamp":"2024-07-07T21:56:15.886+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-07T21:56:16.011+0700","message":"user password updated successfully","userID":22}
+{"time_stamp":"2024-07-07T21:56:16.123+0700","message":"user success logged in","userID":22}
+{"time_stamp":"2024-07-07T21:56:16.130+0700","message":"success updating user profile","userID":22}
+{"time_stamp":"2024-07-07T21:58:08.089+0700","message":"success registering user","userID":24}
+{"time_stamp":"2024-07-07T21:58:08.090+0700","message":"global error handler","error":"Key: 'RegisterRequest.Username' Error:Field validation for 'Username' failed on the 'min' tag\nKey: 'RegisterRequest.Password' Error:Field validation for 'Password' failed on the 'min' tag"}
+{"time_stamp":"2024-07-07T21:58:08.304+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-07T21:58:08.421+0700","message":"user success logged in","userID":24}
+{"time_stamp":"2024-07-07T21:58:08.422+0700","message":"global error handler","error":"Key: 'LoginRequest.Username' Error:Field validation for 'Username' failed on the 'required' tag\nKey: 'LoginRequest.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"time_stamp":"2024-07-07T21:58:08.538+0700","message":"user failed login","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"time_stamp":"2024-07-07T21:58:08.538+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-07T21:58:08.668+0700","message":"user password updated successfully","userID":24}
+{"time_stamp":"2024-07-07T21:58:08.758+0700","message":"user success logged in","userID":24}
+{"time_stamp":"2024-07-07T21:58:08.758+0700","message":"global error handler","error":"Key: 'UpdateUserProfileRequest.Bio' Error:Field validation for 'Bio' failed on the 'max' tag"}
+{"time_stamp":"2024-07-07T21:58:54.078+0700","message":"success registering user","userID":26}
+{"time_stamp":"2024-07-07T21:58:54.082+0700","message":"global error handler","error":"Key: 'RegisterRequest.Username' Error:Field validation for 'Username' failed on the 'min' tag\nKey: 'RegisterRequest.Password' Error:Field validation for 'Password' failed on the 'min' tag"}
+{"time_stamp":"2024-07-07T21:58:54.217+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-07T21:58:54.342+0700","message":"user success logged in","userID":26}
+{"time_stamp":"2024-07-07T21:58:54.343+0700","message":"global error handler","error":"Key: 'LoginRequest.Username' Error:Field validation for 'Username' failed on the 'required' tag\nKey: 'LoginRequest.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"time_stamp":"2024-07-07T21:58:54.469+0700","message":"user failed login","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"time_stamp":"2024-07-07T21:58:54.469+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-07T21:58:54.574+0700","message":"user password updated successfully","userID":26}
+{"time_stamp":"2024-07-07T21:58:54.668+0700","message":"user success logged in","userID":26}
+{"time_stamp":"2024-07-07T21:58:54.668+0700","message":"global error handler","error":"Key: 'UpdateUserProfileRequest.Bio' Error:Field validation for 'Bio' failed on the 'max' tag"}
+{"time_stamp":"2024-07-07T22:00:28.692+0700","message":"success registering user","userID":28}
+{"time_stamp":"2024-07-07T22:00:28.693+0700","message":"global error handler","error":"Key: 'RegisterRequest.Username' Error:Field validation for 'Username' failed on the 'min' tag\nKey: 'RegisterRequest.Password' Error:Field validation for 'Password' failed on the 'min' tag"}
+{"time_stamp":"2024-07-07T22:00:28.798+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-07T22:00:28.897+0700","message":"user success logged in","userID":28}
+{"time_stamp":"2024-07-07T22:00:28.899+0700","message":"global error handler","error":"Key: 'LoginRequest.Username' Error:Field validation for 'Username' failed on the 'required' tag\nKey: 'LoginRequest.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"time_stamp":"2024-07-07T22:00:28.999+0700","message":"user failed login","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"time_stamp":"2024-07-07T22:00:28.999+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-07T22:00:29.109+0700","message":"user password updated successfully","userID":28}
+{"time_stamp":"2024-07-07T22:00:29.204+0700","message":"user success logged in","userID":28}
+{"time_stamp":"2024-07-07T22:00:29.217+0700","message":"success updating user profile","userID":28}
+{"time_stamp":"2024-07-07T22:00:29.218+0700","message":"global error handler","error":"Key: 'UpdateUserProfileRequest.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'UpdateUserProfileRequest.Gender' Error:Field validation for 'Gender' failed on the 'uppercase' tag"}
+{"time_stamp":"2024-07-07T22:05:14.353+0700","message":"success registering user","userID":30}
+{"time_stamp":"2024-07-07T22:05:14.385+0700","message":"global error handler","error":"Key: 'RegisterRequest.Username' Error:Field validation for 'Username' failed on the 'min' tag\nKey: 'RegisterRequest.Password' Error:Field validation for 'Password' failed on the 'min' tag"}
+{"time_stamp":"2024-07-07T22:05:14.552+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-07T22:05:14.695+0700","message":"user success logged in","userID":30}
+{"time_stamp":"2024-07-07T22:05:14.695+0700","message":"global error handler","error":"Key: 'LoginRequest.Username' Error:Field validation for 'Username' failed on the 'required' tag\nKey: 'LoginRequest.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"time_stamp":"2024-07-07T22:05:14.817+0700","message":"user failed login","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"time_stamp":"2024-07-07T22:05:14.817+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-07T22:05:14.947+0700","message":"user password updated successfully","userID":30}
+{"time_stamp":"2024-07-07T22:05:15.067+0700","message":"user success logged in","userID":30}
+{"time_stamp":"2024-07-07T22:05:15.085+0700","message":"success updating user profile","userID":30}
+{"time_stamp":"2024-07-07T22:05:15.086+0700","message":"global error handler","error":"Key: 'UpdateUserProfileRequest.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'UpdateUserProfileRequest.Gender' Error:Field validation for 'Gender' failed on the 'uppercase' tag"}
+{"time_stamp":"2024-07-07T22:05:15.087+0700","message":"global error handler","error":"path not found, use https://localhost:3000/docs/index.html for API docs"}
+{"time_stamp":"2024-07-07T22:06:48.090+0700","message":"success registering user","userID":33}
+{"time_stamp":"2024-07-07T22:06:48.090+0700","message":"global error handler","error":"Key: 'RegisterRequest.Username' Error:Field validation for 'Username' failed on the 'min' tag\nKey: 'RegisterRequest.Password' Error:Field validation for 'Password' failed on the 'min' tag"}
+{"time_stamp":"2024-07-07T22:06:48.183+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-07T22:06:48.276+0700","message":"user success logged in","userID":33}
+{"time_stamp":"2024-07-07T22:06:48.276+0700","message":"global error handler","error":"Key: 'LoginRequest.Username' Error:Field validation for 'Username' failed on the 'required' tag\nKey: 'LoginRequest.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"time_stamp":"2024-07-07T22:06:48.365+0700","message":"user failed login","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"time_stamp":"2024-07-07T22:06:48.366+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-07T22:06:48.450+0700","message":"user password updated successfully","userID":33}
+{"time_stamp":"2024-07-07T22:06:48.531+0700","message":"user success logged in","userID":33}
+{"time_stamp":"2024-07-07T22:06:48.538+0700","message":"success updating user profile","userID":33}
+{"time_stamp":"2024-07-07T22:06:48.539+0700","message":"global error handler","error":"Key: 'UpdateUserProfileRequest.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'UpdateUserProfileRequest.Gender' Error:Field validation for 'Gender' failed on the 'uppercase' tag"}
+{"time_stamp":"2024-07-07T22:06:48.540+0700","message":"global error handler","error":"user not found"}
+{"time_stamp":"2024-07-07T22:09:15.842+0700","message":"success registering user","userID":2}
+{"time_stamp":"2024-07-07T22:09:15.875+0700","message":"global error handler","error":"Key: 'RegisterRequest.Username' Error:Field validation for 'Username' failed on the 'min' tag\nKey: 'RegisterRequest.Password' Error:Field validation for 'Password' failed on the 'min' tag"}
+{"time_stamp":"2024-07-07T22:09:16.018+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-07T22:09:16.377+0700","message":"user success logged in","userID":2}
+{"time_stamp":"2024-07-07T22:09:16.378+0700","message":"global error handler","error":"Key: 'LoginRequest.Username' Error:Field validation for 'Username' failed on the 'required' tag\nKey: 'LoginRequest.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"time_stamp":"2024-07-07T22:09:16.656+0700","message":"user failed login","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"time_stamp":"2024-07-07T22:09:16.656+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-07T22:09:16.969+0700","message":"user password updated successfully","userID":2}
+{"time_stamp":"2024-07-07T22:09:17.402+0700","message":"user success logged in","userID":2}
+{"time_stamp":"2024-07-07T22:09:17.421+0700","message":"success updating user profile","userID":2}
+{"time_stamp":"2024-07-07T22:09:17.423+0700","message":"global error handler","error":"Key: 'UpdateUserProfileRequest.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'UpdateUserProfileRequest.Gender' Error:Field validation for 'Gender' failed on the 'uppercase' tag"}
+{"time_stamp":"2024-07-07T22:11:17.089+0700","message":"success registering user","userID":2}
+{"time_stamp":"2024-07-07T22:11:17.122+0700","message":"global error handler","error":"Key: 'RegisterRequest.Username' Error:Field validation for 'Username' failed on the 'min' tag\nKey: 'RegisterRequest.Password' Error:Field validation for 'Password' failed on the 'min' tag"}
+{"time_stamp":"2024-07-07T22:11:17.266+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-07T22:11:17.397+0700","message":"user success logged in","userID":2}
+{"time_stamp":"2024-07-07T22:11:17.398+0700","message":"global error handler","error":"Key: 'LoginRequest.Username' Error:Field validation for 'Username' failed on the 'required' tag\nKey: 'LoginRequest.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"time_stamp":"2024-07-07T22:11:17.515+0700","message":"user failed login","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"time_stamp":"2024-07-07T22:11:17.515+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-07T22:11:17.637+0700","message":"user password updated successfully","userID":2}
+{"time_stamp":"2024-07-07T22:11:17.749+0700","message":"user success logged in","userID":2}
+{"time_stamp":"2024-07-07T22:11:17.777+0700","message":"success updating user profile","userID":2}
+{"time_stamp":"2024-07-07T22:11:17.779+0700","message":"global error handler","error":"Key: 'UpdateUserProfileRequest.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'UpdateUserProfileRequest.Gender' Error:Field validation for 'Gender' failed on the 'uppercase' tag"}
+{"time_stamp":"2024-07-07T22:11:17.790+0700","message":"global error handler","error":"user not found"}
+{"time_stamp":"2024-07-07T22:11:17.790+0700","message":"global error handler","error":"id must be an integer"}

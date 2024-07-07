@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/raihanmd/car-review-sb/exceptions"
 	"github.com/raihanmd/car-review-sb/helper"
 	"github.com/raihanmd/car-review-sb/model/entity"
 	_ "github.com/raihanmd/car-review-sb/model/web"
@@ -21,15 +22,18 @@ type UserController interface {
 	GetUserProfile(c *gin.Context)
 	UpdateUserProfile(c *gin.Context)
 	DeleteUserProfile(c *gin.Context)
+	GetFavourites(c *gin.Context)
 }
 
 type userControllerImpl struct {
 	services.UserService
+	services.FavouriteService
 }
 
-func NewUserController(userService services.UserService) UserController {
+func NewUserController(userService services.UserService, favouriteService services.FavouriteService) UserController {
 	return &userControllerImpl{
 		userService,
+		favouriteService,
 	}
 }
 
@@ -57,7 +61,7 @@ func (controller *userControllerImpl) Register(c *gin.Context) {
 	registerRes, err := controller.UserService.Register(c, &newUser)
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusCreated, registerRes)
+	helper.ToResponseJSON(c, http.StatusCreated, registerRes, nil)
 }
 
 // LoginUser godoc
@@ -80,7 +84,7 @@ func (controller *userControllerImpl) Login(c *gin.Context) {
 	loginRes, err := controller.UserService.Login(c, loginReq.Username, loginReq.Password)
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, loginRes)
+	helper.ToResponseJSON(c, http.StatusOK, loginRes, nil)
 }
 
 // UpdatePassword godoc
@@ -107,10 +111,10 @@ func (controller *userControllerImpl) UpdatePassword(c *gin.Context) {
 	err = controller.UserService.UpdatePassword(c, userID, updatePasswordReq.Password)
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, "password updated")
+	helper.ToResponseJSON(c, http.StatusOK, "password updated", nil)
 }
 
-// UpdatePassword godoc
+// GetUserProfile godoc
 // @Summary Get user profile.
 // @Description Get user profile data.
 // @Tags Users
@@ -123,12 +127,14 @@ func (controller *userControllerImpl) UpdatePassword(c *gin.Context) {
 // @Router /api/users/profile/{id} [get]
 func (controller *userControllerImpl) GetUserProfile(c *gin.Context) {
 	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
-	helper.PanicIfError(err)
+	if err != nil {
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+	}
 
 	user, err := controller.UserService.GetUserProfile(c, uint(userID))
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, user)
+	helper.ToResponseJSON(c, http.StatusOK, user, nil)
 }
 
 // UpdateUserProfile godoc
@@ -168,7 +174,7 @@ func (controller *userControllerImpl) UpdateUserProfile(c *gin.Context) {
 	userResponse, err := controller.UserService.UpdateUserProfile(c, updatedProfile, userID)
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, userResponse)
+	helper.ToResponseJSON(c, http.StatusOK, userResponse, nil)
 }
 
 // DeleteUserProfile godoc
@@ -189,5 +195,27 @@ func (controller *userControllerImpl) DeleteUserProfile(c *gin.Context) {
 	err = controller.UserService.DeleteUserProfile(c, userID)
 	helper.PanicIfError(err)
 
-	helper.ToResponseJSON(c, http.StatusOK, "user deleted")
+	helper.ToResponseJSON(c, http.StatusOK, "user deleted", nil)
+}
+
+// GetFavourites godoc
+// @Summary Get user favourites.
+// @Description Get user profile data.
+// @Tags Users
+// @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
+// @Security BearerToken
+// @Produce json
+// @Success 200 {object} web.WebSuccess[response.FavouriteResponse]
+// @Failure 400 {object} web.WebBadRequestError
+// @Failure 404 {object} web.WebNotFoundError
+// @Failure 500 {object} web.WebInternalServerError
+// @Router /api/users/favourites [get]
+func (controller *userControllerImpl) GetFavourites(c *gin.Context) {
+	userID, _, err := utils.ExtractTokenClaims(c)
+	helper.PanicIfError(err)
+
+	favourites, err := controller.FavouriteService.GetUserFavourites(c, uint(userID))
+	helper.PanicIfError(err)
+
+	helper.ToResponseJSON(c, http.StatusOK, favourites, nil)
 }

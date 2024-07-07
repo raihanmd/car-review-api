@@ -1,4 +1,12 @@
 definitions:
+  request.BrandRequest:
+    properties:
+      name:
+        maxLength: 100
+        type: string
+    required:
+    - name
+    type: object
   request.CarCreateRequest:
     properties:
       acceleration:
@@ -113,6 +121,26 @@ definitions:
         type: integer
         x-order: "2"
     type: object
+  request.CommentCreateRequest:
+    properties:
+      content:
+        type: string
+        x-order: "1"
+      review_id:
+        type: integer
+        x-order: "0"
+    required:
+    - content
+    - review_id
+    type: object
+  request.CommentUpdateRequest:
+    properties:
+      content:
+        type: string
+        x-order: "0"
+    required:
+    - content
+    type: object
   request.LoginRequest:
     properties:
       password:
@@ -148,7 +176,7 @@ definitions:
       content:
         type: string
         x-order: "2"
-      image:
+      image_url:
         type: string
         x-order: "3"
       title:
@@ -158,7 +186,7 @@ definitions:
     required:
     - car_id
     - content
-    - image
+    - image_url
     - title
     type: object
   request.ReviewUpdateRequest:
@@ -166,14 +194,12 @@ definitions:
       content:
         type: string
         x-order: "1"
-      image:
+      image_url:
         type: string
         x-order: "2"
       title:
         type: string
         x-order: "0"
-    required:
-    - image
     type: object
   request.UpdatePasswordRequest:
     properties:
@@ -212,6 +238,16 @@ definitions:
         minLength: 3
         type: string
         x-order: "0"
+    type: object
+  response.BrandResponse:
+    properties:
+      id:
+        example: 1
+        type: integer
+        x-order: "0"
+      name:
+        type: string
+        x-order: "1"
     type: object
   response.CarResponse:
     properties:
@@ -280,11 +316,43 @@ definitions:
         type: integer
         x-order: "3"
     type: object
+  response.CommentResponse:
+    properties:
+      content:
+        example: Lorem ipsum dolor sit amet
+        type: string
+        x-order: "3"
+      created_at:
+        example: "2022-01-01T00:00:00Z"
+        type: string
+      id:
+        example: 1
+        type: integer
+        x-order: "0"
+      review_id:
+        example: 2
+        type: integer
+        x-order: "1"
+      updated_at:
+        example: "2022-01-01T00:00:00Z"
+        type: string
+      user_id:
+        example: 3
+        type: integer
+        x-order: "2"
+    type: object
+  response.FavouriteResponse:
+    properties:
+      car_id:
+        example: 1
+        type: integer
+        x-order: "0"
+    type: object
   response.FindReviewResponse:
     properties:
       car:
         allOf:
-        - $ref: '#/definitions/response.CarResponse'
+        - $ref: '#/definitions/response.ReviewCarResponse'
         x-order: "4"
       content:
         example: Lorem ipsum dolor sit amet
@@ -298,7 +366,7 @@ definitions:
         example: 1
         type: integer
         x-order: "0"
-      image:
+      image_url:
         example: image url
         type: string
         x-order: "3"
@@ -341,6 +409,13 @@ definitions:
         type: string
         x-order: "0"
     type: object
+  response.ReviewCarResponse:
+    properties:
+      id:
+        example: 1
+        type: integer
+        x-order: "0"
+    type: object
   response.ReviewResponse:
     properties:
       car_id:
@@ -359,7 +434,7 @@ definitions:
         example: 1
         type: integer
         x-order: "0"
-      image:
+      image_url:
         example: image url
         type: string
         x-order: "5"
@@ -457,6 +532,21 @@ definitions:
         type: string
         x-order: "1"
     type: object
+  web.Metadata:
+    properties:
+      limit:
+        type: integer
+        x-order: "1"
+      page:
+        type: integer
+        x-order: "0"
+      total_data:
+        type: integer
+        x-order: "3"
+      total_pages:
+        type: integer
+        x-order: "2"
+    type: object
   web.WebBadRequestError:
     properties:
       code:
@@ -493,6 +583,26 @@ definitions:
         example: Not Found
         type: string
     type: object
+  web.WebSuccess-array_response_BrandResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+        x-order: "0"
+      data:
+        items:
+          $ref: '#/definitions/response.BrandResponse'
+        type: array
+        x-order: "2"
+      message:
+        example: success
+        type: string
+        x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
+    type: object
   web.WebSuccess-array_response_CarResponse:
     properties:
       code:
@@ -508,6 +618,30 @@ definitions:
         example: success
         type: string
         x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
+    type: object
+  web.WebSuccess-array_response_CommentResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+        x-order: "0"
+      data:
+        items:
+          $ref: '#/definitions/response.CommentResponse'
+        type: array
+        x-order: "2"
+      message:
+        example: success
+        type: string
+        x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
     type: object
   web.WebSuccess-array_response_FindReviewResponse:
     properties:
@@ -524,6 +658,29 @@ definitions:
         example: success
         type: string
         x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
+    type: object
+  web.WebSuccess-response_BrandResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+        x-order: "0"
+      data:
+        allOf:
+        - $ref: '#/definitions/response.BrandResponse'
+        x-order: "2"
+      message:
+        example: success
+        type: string
+        x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
     type: object
   web.WebSuccess-response_CarResponse:
     properties:
@@ -539,6 +696,48 @@ definitions:
         example: success
         type: string
         x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
+    type: object
+  web.WebSuccess-response_CommentResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+        x-order: "0"
+      data:
+        allOf:
+        - $ref: '#/definitions/response.CommentResponse'
+        x-order: "2"
+      message:
+        example: success
+        type: string
+        x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
+    type: object
+  web.WebSuccess-response_FavouriteResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+        x-order: "0"
+      data:
+        allOf:
+        - $ref: '#/definitions/response.FavouriteResponse'
+        x-order: "2"
+      message:
+        example: success
+        type: string
+        x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
     type: object
   web.WebSuccess-response_FindReviewResponse:
     properties:
@@ -554,6 +753,10 @@ definitions:
         example: success
         type: string
         x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
     type: object
   web.WebSuccess-response_LoginResponse:
     properties:
@@ -569,6 +772,10 @@ definitions:
         example: success
         type: string
         x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
     type: object
   web.WebSuccess-response_RegisterResponse:
     properties:
@@ -584,6 +791,10 @@ definitions:
         example: success
         type: string
         x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
     type: object
   web.WebSuccess-response_ReviewResponse:
     properties:
@@ -599,6 +810,10 @@ definitions:
         example: success
         type: string
         x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
     type: object
   web.WebSuccess-response_UpdateUserProfileResponse:
     properties:
@@ -614,6 +829,10 @@ definitions:
         example: success
         type: string
         x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
     type: object
   web.WebSuccess-response_UserProfileResponse:
     properties:
@@ -629,6 +848,10 @@ definitions:
         example: success
         type: string
         x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
     type: object
   web.WebSuccess-string:
     properties:
@@ -643,6 +866,10 @@ definitions:
         example: success
         type: string
         x-order: "1"
+      metadata:
+        allOf:
+        - $ref: '#/definitions/web.Metadata'
+        x-order: "3"
     type: object
   web.WebUnauthorizedError:
     properties:
@@ -716,9 +943,180 @@ paths:
       summary: User register.
       tags:
       - Auth
+  /api/brands:
+    get:
+      description: Find all brand.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-array_response_BrandResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      summary: Find all brand.
+      tags:
+      - Brands
+    post:
+      description: Create a brand.
+      parameters:
+      - description: the body to create a brand
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.BrandRequest'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_BrandResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/web.WebForbiddenError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Create brand.
+      tags:
+      - Brands
+  /api/brands/{id}:
+    delete:
+      description: Delete a brand.
+      parameters:
+      - description: brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/web.WebForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Delete brand.
+      tags:
+      - Brands
+    patch:
+      description: Update a brand.
+      parameters:
+      - description: brand ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: the body to update a brand
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.BrandRequest'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_BrandResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/web.WebForbiddenError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Update brand.
+      tags:
+      - Brands
   /api/cars:
     get:
       description: Find all car.
+      parameters:
+      - default: 10
+        description: Limit
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Brand ID
+        in: query
+        name: brand_id
+        type: integer
+      - description: Model
+        in: query
+        name: model
+        type: string
+      - description: Minimum Year
+        in: query
+        name: min_year
+        type: integer
+      - description: Maximum Year
+        in: query
+        name: max_year
+        type: integer
       produces:
       - application/json
       responses:
@@ -886,9 +1284,211 @@ paths:
       summary: Update car.
       tags:
       - Cars
+  /api/comments:
+    post:
+      description: Create a comment.
+      parameters:
+      - description: the body to create a comment
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.CommentCreateRequest'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_CommentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Create comment.
+      tags:
+      - Comments
+  /api/comments/{id}:
+    delete:
+      description: Delete a comment.
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Delete comment.
+      tags:
+      - Comments
+    patch:
+      description: Update a comment.
+      parameters:
+      - description: Comment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: the body to update a comment
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/request.CommentUpdateRequest'
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_CommentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Update comment.
+      tags:
+      - Comments
+  /api/favourites/{carID}:
+    delete:
+      description: Unfavourite a car.
+      parameters:
+      - description: car ID
+        in: path
+        name: carID
+        required: true
+        type: integer
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Unfavourite a car.
+      tags:
+      - Favourites
+    post:
+      description: Favourite a car.
+      parameters:
+      - description: car ID
+        in: path
+        name: carID
+        required: true
+        type: integer
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-string'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Favourite a car.
+      tags:
+      - Favourites
   /api/reviews:
     get:
       description: Find all review.
+      parameters:
+      - default: 10
+        description: Limit
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Title
+        in: query
+        name: title
+        type: string
+      - description: Car ID
+        in: query
+        name: car_id
+        type: string
       produces:
       - application/json
       responses:
@@ -982,7 +1582,7 @@ paths:
     get:
       description: Find a review by id.
       parameters:
-      - description: review ID
+      - description: Review ID
         in: path
         name: id
         required: true
@@ -1048,6 +1648,37 @@ paths:
       summary: Update review.
       tags:
       - Reviews
+  /api/reviews/{id}/comments:
+    get:
+      description: Find a comment by review id.
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/web.WebSuccess-array_response_CommentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      summary: Find comment by review id.
+      tags:
+      - Reviews
   /api/users:
     delete:
       description: Delete a user profile by ID.
@@ -1075,6 +1706,39 @@ paths:
       security:
       - BearerToken: []
       summary: Delete user.
+      tags:
+      - Users
+  /api/users/favourites:
+    get:
+      description: Get user profile data.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-response_FavouriteResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      security:
+      - BearerToken: []
+      summary: Get user favourites.
       tags:
       - Users
   /api/users/password:
