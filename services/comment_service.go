@@ -11,6 +11,7 @@ import (
 	"github.com/raihanmd/car-review-sb/model/web/request"
 	"github.com/raihanmd/car-review-sb/model/web/response"
 	"go.uber.org/zap"
+	"gorm.io/gorm"
 )
 
 type CommentService interface {
@@ -33,13 +34,29 @@ func (service *commentServiceImpl) Create(c *gin.Context, commentCreateReq *requ
 
 	newComment.UserID = userID
 
-	if err := db.Create(newComment).Error; err != nil {
-		if pgErr, ok := err.(*pgconn.PgError); ok {
-			// violation foreign key review_id
-			if pgErr.Code == "23503" {
-				return nil, exceptions.NewCustomError(http.StatusNotFound, "review not found")
+	err := db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Create(newComment).Error; err != nil {
+			if pgErr, ok := err.(*pgconn.PgError); ok {
+				// violation foreign key review_id
+				if pgErr.Code == "23503" {
+					return exceptions.NewCustomError(http.StatusNotFound, "review not found")
+				}
 			}
+			return err
 		}
+
+		if err := tx.Model(&entity.Comment{}).
+			Preload("User", func(tx *gorm.DB) *gorm.DB {
+				return tx.Select("id, username")
+			}).
+			Take(newComment).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	if err != nil {
 		return nil, err
 	}
 
@@ -52,19 +69,34 @@ func (service *commentServiceImpl) Update(c *gin.Context, commentUpdateReq *requ
 	db, logger := helper.GetDBAndLogger(c)
 
 	var comment entity.Comment
-	if err := db.Where("user_id = ?", userID).First(&comment, "id = ?", commentID).Error; err != nil {
-		if pgErr, ok := err.(*pgconn.PgError); ok {
-			// violation foreign key review_id
-			if pgErr.Code == "23503" {
-				return nil, exceptions.NewCustomError(http.StatusNotFound, "review not found")
+
+	err := db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Where("user_id = ?", userID).First(&comment, "id = ?", commentID).Error; err != nil {
+			if pgErr, ok := err.(*pgconn.PgError); ok {
+				// violation foreign key review_id
+				if pgErr.Code == "23503" {
+					return exceptions.NewCustomError(http.StatusNotFound, "review not found")
+				}
 			}
+			return exceptions.NewCustomError(http.StatusNotFound, "comment not found")
 		}
-		return nil, exceptions.NewCustomError(http.StatusNotFound, "comment not found")
-	}
 
-	comment.Content = commentUpdateReq.Content
+		comment.Content = commentUpdateReq.Content
 
-	if err := db.Save(&comment).Error; err != nil {
+		if err := tx.Save(&comment).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Model(&entity.Comment{}).Preload("User", func(tx *gorm.DB) *gorm.DB {
+			return tx.Select("id, username")
+		}).Take(&comment).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	if err != nil {
 		return nil, err
 	}
 
@@ -95,7 +127,12 @@ func (service *commentServiceImpl) FindByReviewId(c *gin.Context, reviewID uint)
 	db, logger := helper.GetDBAndLogger(c)
 
 	var comments []entity.Comment
-	if err := db.Where("review_id = ?", reviewID).Find(&comments).Error; err != nil {
+	if err := db.Model(&entity.Comment{}).
+		Preload("User", func(tx *gorm.DB) *gorm.DB {
+			return tx.Select("id, username")
+		}).
+		Where("review_id = ?", reviewID).
+		Find(&comments).Error; err != nil {
 		return nil, err
 	}
 
@@ -131,9 +168,11 @@ func (service *commentServiceImpl) toCommentEntity(req any) *entity.Comment {
 
 func (service *commentServiceImpl) toCommentResponse(comment *entity.Comment) *response.CommentResponse {
 	return &response.CommentResponse{
-		ID:        comment.ID,
-		ReviewID:  comment.ReviewID,
-		UserID:    comment.UserID,
+		ID:       comment.ID,
+		ReviewID: comment.ReviewID,
+		User: response.CommentUserResponse{
+			Username: comment.User.Username,
+		},
 		Content:   comment.Content,
 		CreatedAt: comment.CreatedAt,
 		UpdatedAt: comment.UpdatedAt,

@@ -15,5 +15,5 @@ type ReviewCreateRequest struct {
 type ReviewUpdateRequest struct {
 	Title    *string `json:"title" extensions:"x-order=0"`
 	Content  *string `json:"content" extensions:"x-order=1"`
-	ImageUrl *string `json:"image_url" binding:"url" extensions:"x-order=2"`
+	ImageUrl *string `json:"image_url" binding:"omitempty,url" extensions:"x-order=2"`
 }

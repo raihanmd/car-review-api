@@ -42,7 +42,7 @@ func NewRouter() *gin.Engine {
 	}
 
 	cfg := zap.Config{
-		OutputPaths: []string{"./log/test.log", "stdout"},
+		OutputPaths: []string{"./log/error.log", "stdout"},
 		EncoderConfig: zapcore.EncoderConfig{
 			MessageKey: "message",
 			LevelKey:   "level",

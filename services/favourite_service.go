@@ -71,18 +71,15 @@ func (service *favouriteServiceImpl) UnfavouriteCar(c *gin.Context, carID uint, 
 func (service *favouriteServiceImpl) GetUserFavourites(c *gin.Context, userID uint) (*[]response.FavouriteResponse, error) {
 	db, _ := helper.GetDBAndLogger(c)
 
-	var favourites []entity.Favourite
-
-	if err := db.Select("car_id").Where("user_id = ?", userID).Find(&favourites).Error; err != nil {
-		return nil, err
-	}
-
 	var favouriteResponses []response.FavouriteResponse
 
-	for _, favourite := range favourites {
-		favouriteResponses = append(favouriteResponses, response.FavouriteResponse{
-			CarID: favourite.CarID,
-		})
+	if err := db.Model(&entity.Favourite{}).
+		Select("cars.id as car_id, brands.name as brand, cars.model, cars.image_url").
+		Joins("left join cars on favourites.car_id = cars.id").
+		Joins("left join brands on cars.brand_id = brands.id").
+		Where("user_id = ?", userID).
+		Find(&favouriteResponses).Error; err != nil {
+		return nil, err
 	}
 
 	return &favouriteResponses, nil

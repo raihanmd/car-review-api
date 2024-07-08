@@ -1930,10 +1930,13 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": 2
                 },
-                "user_id": {
-                    "type": "integer",
-                    "x-order": "2",
-                    "example": 3
+                "user": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/response.CommentUserResponse"
+                        }
+                    ],
+                    "x-order": "2"
                 },
                 "content": {
                     "type": "string",
@@ -1950,6 +1953,16 @@ const docTemplate = `{
                 }
             }
         },
+        "response.CommentUserResponse": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "x-order": "0",
+                    "example": "luigi"
+                }
+            }
+        },
         "response.FavouriteResponse": {
             "type": "object",
             "properties": {
@@ -1957,6 +1970,21 @@ const docTemplate = `{
                     "type": "integer",
                     "x-order": "0",
                     "example": 1
+                },
+                "brand": {
+                    "type": "string",
+                    "x-order": "1",
+                    "example": "Honda"
+                },
+                "model": {
+                    "type": "string",
+                    "x-order": "2",
+                    "example": "Civic"
+                },
+                "image_url": {
+                    "type": "string",
+                    "x-order": "3",
+                    "example": "image url"
                 }
             }
         },
