@@ -5,12 +5,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgconn"
-	"github.com/raihanmd/car-review-sb/exceptions"
-	"github.com/raihanmd/car-review-sb/helper"
-	"github.com/raihanmd/car-review-sb/model/entity"
-	"github.com/raihanmd/car-review-sb/model/web"
-	"github.com/raihanmd/car-review-sb/model/web/request"
-	"github.com/raihanmd/car-review-sb/model/web/response"
+	"github.com/raihanmd/fp-superbootcamp-go/exceptions"
+	"github.com/raihanmd/fp-superbootcamp-go/helper"
+	"github.com/raihanmd/fp-superbootcamp-go/model/entity"
+	"github.com/raihanmd/fp-superbootcamp-go/model/web"
+	"github.com/raihanmd/fp-superbootcamp-go/model/web/request"
+	"github.com/raihanmd/fp-superbootcamp-go/model/web/response"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )

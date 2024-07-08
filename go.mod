@@ -1,4 +1,4 @@
-module github.com/raihanmd/car-review-sb
+module github.com/raihanmd/fp-superbootcamp-go
 
 go 1.21
 

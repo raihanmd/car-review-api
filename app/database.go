@@ -1,8 +1,8 @@
 package app
 
 import (
-	"github.com/raihanmd/car-review-sb/helper"
-	"github.com/raihanmd/car-review-sb/model/entity"
+	"github.com/raihanmd/fp-superbootcamp-go/helper"
+	"github.com/raihanmd/fp-superbootcamp-go/model/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

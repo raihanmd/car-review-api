@@ -5,13 +5,13 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/raihanmd/car-review-sb/exceptions"
-	"github.com/raihanmd/car-review-sb/helper"
-	"github.com/raihanmd/car-review-sb/model/web"
-	"github.com/raihanmd/car-review-sb/model/web/request"
-	_ "github.com/raihanmd/car-review-sb/model/web/response"
-	"github.com/raihanmd/car-review-sb/services"
-	"github.com/raihanmd/car-review-sb/utils"
+	"github.com/raihanmd/fp-superbootcamp-go/exceptions"
+	"github.com/raihanmd/fp-superbootcamp-go/helper"
+	"github.com/raihanmd/fp-superbootcamp-go/model/web"
+	"github.com/raihanmd/fp-superbootcamp-go/model/web/request"
+	_ "github.com/raihanmd/fp-superbootcamp-go/model/web/response"
+	"github.com/raihanmd/fp-superbootcamp-go/services"
+	"github.com/raihanmd/fp-superbootcamp-go/utils"
 )
 
 type ReviewController interface {

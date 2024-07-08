@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
-	"github.com/raihanmd/car-review-sb/model/web"
+	"github.com/raihanmd/fp-superbootcamp-go/model/web"
 	"go.uber.org/zap"
 )
 

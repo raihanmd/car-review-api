@@ -5,9 +5,9 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
-	"github.com/raihanmd/car-review-sb/app"
-	"github.com/raihanmd/car-review-sb/docs"
-	"github.com/raihanmd/car-review-sb/helper"
+	"github.com/raihanmd/fp-superbootcamp-go/app"
+	"github.com/raihanmd/fp-superbootcamp-go/docs"
+	"github.com/raihanmd/fp-superbootcamp-go/helper"
 )
 
 func init() {

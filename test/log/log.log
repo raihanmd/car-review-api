@@ -97,3 +97,16 @@
 {"time_stamp":"2024-07-07T22:11:17.779+0700","message":"global error handler","error":"Key: 'UpdateUserProfileRequest.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'UpdateUserProfileRequest.Gender' Error:Field validation for 'Gender' failed on the 'uppercase' tag"}
 {"time_stamp":"2024-07-07T22:11:17.790+0700","message":"global error handler","error":"user not found"}
 {"time_stamp":"2024-07-07T22:11:17.790+0700","message":"global error handler","error":"id must be an integer"}
+{"time_stamp":"2024-07-08T08:04:11.459+0700","message":"success registering user","userID":2}
+{"time_stamp":"2024-07-08T08:04:11.499+0700","message":"global error handler","error":"Key: 'RegisterRequest.Username' Error:Field validation for 'Username' failed on the 'min' tag\nKey: 'RegisterRequest.Password' Error:Field validation for 'Password' failed on the 'min' tag"}
+{"time_stamp":"2024-07-08T08:04:11.633+0700","message":"global error handler","error":"username already exists"}
+{"time_stamp":"2024-07-08T08:04:11.743+0700","message":"user success logged in","userID":2}
+{"time_stamp":"2024-07-08T08:04:11.743+0700","message":"global error handler","error":"Key: 'LoginRequest.Username' Error:Field validation for 'Username' failed on the 'required' tag\nKey: 'LoginRequest.Password' Error:Field validation for 'Password' failed on the 'required' tag"}
+{"time_stamp":"2024-07-08T08:04:11.837+0700","message":"user failed login","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"time_stamp":"2024-07-08T08:04:11.837+0700","message":"global error handler","error":"username or password is incorrect"}
+{"time_stamp":"2024-07-08T08:04:11.975+0700","message":"user password updated successfully","userID":2}
+{"time_stamp":"2024-07-08T08:04:12.067+0700","message":"user success logged in","userID":2}
+{"time_stamp":"2024-07-08T08:04:12.086+0700","message":"success updating user profile","userID":2}
+{"time_stamp":"2024-07-08T08:04:12.087+0700","message":"global error handler","error":"Key: 'UpdateUserProfileRequest.Email' Error:Field validation for 'Email' failed on the 'email' tag\nKey: 'UpdateUserProfileRequest.Gender' Error:Field validation for 'Gender' failed on the 'uppercase' tag"}
+{"time_stamp":"2024-07-08T08:04:12.089+0700","message":"global error handler","error":"user not found"}
+{"time_stamp":"2024-07-08T08:04:12.090+0700","message":"global error handler","error":"id must be an integer"}

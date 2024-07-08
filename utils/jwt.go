@@ -9,9 +9,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/raihanmd/car-review-sb/exceptions"
-	"github.com/raihanmd/car-review-sb/helper"
-	"github.com/raihanmd/car-review-sb/model/entity"
+	"github.com/raihanmd/fp-superbootcamp-go/exceptions"
+	"github.com/raihanmd/fp-superbootcamp-go/helper"
+	"github.com/raihanmd/fp-superbootcamp-go/model/entity"
 )
 
 var API_SECRET = helper.GetEnv("API_SECRET", "RAHASIA")
