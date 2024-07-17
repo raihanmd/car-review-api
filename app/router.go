@@ -128,18 +128,18 @@ func NewRouter() *gin.Engine {
 
 	userRouter.PATCH("/password", userController.UpdatePassword)
 	userRouter.PATCH("/profile", userController.UpdateUserProfile)
-	userRouter.DELETE("/", userController.DeleteUserProfile)
+	userRouter.DELETE("", userController.DeleteUserProfile)
 
 	// ======================== CARS ROUTE =======================
 
 	carRouter := apiRouter.Group("/cars")
 
-	carRouter.GET("/", carController.FindAll)
+	carRouter.GET("", carController.FindAll)
 	carRouter.GET("/:id", carController.FindById)
 
 	carRouter.Use(middlewares.JwtAuthMiddleware)
 
-	carRouter.POST("/", carController.Create)
+	carRouter.POST("", carController.Create)
 	carRouter.PATCH("/:id", carController.Update)
 	carRouter.DELETE("/:id", carController.Delete)
 
@@ -147,14 +147,13 @@ func NewRouter() *gin.Engine {
 
 	reviewRouter := apiRouter.Group("/reviews")
 
-	reviewRouter.GET("/", reviewController.FindAll)
+	reviewRouter.GET("", reviewController.FindAll)
 	reviewRouter.GET("/:id", reviewController.FindById)
 
-	reviewRouter.GET("/:id/comments", reviewController.FindComments) // comment controller
-
+	reviewRouter.GET("/:id/comments", reviewController.FindComments)
 	reviewRouter.Use(middlewares.JwtAuthMiddleware)
 
-	reviewRouter.POST("/", reviewController.Create)
+	reviewRouter.POST("", reviewController.Create)
 	reviewRouter.PATCH("/:id", reviewController.Update)
 	reviewRouter.DELETE("/:id", reviewController.Delete)
 
@@ -162,11 +161,11 @@ func NewRouter() *gin.Engine {
 
 	brandRouter := apiRouter.Group("/brands")
 
-	brandRouter.GET("/", brandController.FindAll)
+	brandRouter.GET("", brandController.FindAll)
 
 	brandRouter.Use(middlewares.JwtAuthMiddleware)
 
-	brandRouter.POST("/", brandController.Create)
+	brandRouter.POST("", brandController.Create)
 	brandRouter.PATCH("/:id", brandController.Update)
 	brandRouter.DELETE("/:id", brandController.Delete)
 
@@ -181,7 +180,7 @@ func NewRouter() *gin.Engine {
 
 	commentRouter := apiRouter.Group("/comments")
 
-	commentRouter.POST("/", commentController.Create)
+	commentRouter.POST("", commentController.Create)
 	commentRouter.PATCH("/:id", commentController.Update)
 	commentRouter.DELETE("/:id", commentController.Delete)
 
