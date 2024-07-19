@@ -4,13 +4,16 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
+	"github.com/joho/godotenv"
 	"github.com/raihanmd/fp-superbootcamp-go/controllers"
+	"github.com/raihanmd/fp-superbootcamp-go/docs"
 	"github.com/raihanmd/fp-superbootcamp-go/exceptions"
 	"github.com/raihanmd/fp-superbootcamp-go/helper"
 	"github.com/raihanmd/fp-superbootcamp-go/middlewares"
@@ -23,7 +26,19 @@ import (
 )
 
 func NewRouter() *gin.Engine {
-	r := gin.Default()
+
+	swaggerSchemes := []string{"https"}
+	if os.Getenv("ENVIRONMENT") != "production" {
+		err := godotenv.Load()
+		helper.PanicIfError(err)
+		swaggerSchemes = []string{"http"}
+	}
+
+	docs.SwaggerInfo.Title = "Car Review REST API"
+	docs.SwaggerInfo.Description = "This is a Car Review REST API Docs."
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = helper.MustGetEnv("SERVER_HOST")
+	docs.SwaggerInfo.Schemes = swaggerSchemes
 
 	if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
 		v.RegisterValidation("no_space", func(fl validator.FieldLevel) bool {
@@ -42,7 +57,7 @@ func NewRouter() *gin.Engine {
 	}
 
 	cfg := zap.Config{
-		OutputPaths: []string{"./log/error.log", "stdout"},
+		OutputPaths: []string{"stdout"},
 		EncoderConfig: zapcore.EncoderConfig{
 			MessageKey: "message",
 			LevelKey:   "level",
@@ -90,14 +105,13 @@ func NewRouter() *gin.Engine {
 
 	commentController := controllers.NewCommentController(commentService)
 
-	corsConfig := cors.DefaultConfig()
-	corsConfig.AllowAllOrigins = true
-	corsConfig.AllowHeaders = []string{"Content-Type", "X-XSRF-TOKEN", "Accept", "Origin", "X-Requested-With", "Authorization"}
+	r := gin.Default()
 
-	corsConfig.AllowCredentials = true
-	corsConfig.AddAllowMethods("OPTIONS")
-
-	r.Use(cors.New(corsConfig))
+	r.Use(cors.New(cors.Config{
+		AllowAllOrigins: true,
+		AllowMethods:    []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:    []string{"Content-Type", "X-XSRF-TOKEN", "Accept", "Origin", "X-Requested-With"},
+	}))
 
 	r.Use(func(c *gin.Context) {
 		c.Set("db", db)
