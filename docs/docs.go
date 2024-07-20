@@ -2320,7 +2320,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/response.BrandResponse"
@@ -2350,7 +2350,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/response.CarResponse"
@@ -2380,7 +2380,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/response.CommentResponse"
@@ -2410,7 +2410,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/response.FindReviewResponse"
@@ -2440,7 +2440,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.BrandResponse"
@@ -2471,7 +2471,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.CarResponse"
@@ -2502,7 +2502,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.CommentResponse"
@@ -2533,7 +2533,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.FavouriteResponse"
@@ -2564,7 +2564,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.FindReviewResponse"
@@ -2595,7 +2595,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.LoginResponse"
@@ -2626,7 +2626,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.RegisterResponse"
@@ -2657,7 +2657,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.ReviewResponse"
@@ -2688,7 +2688,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.UpdateUserProfileResponse"
@@ -2719,7 +2719,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.UserProfileResponse"
@@ -2750,7 +2750,7 @@ const docTemplate = `{
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "type": "string",
                     "x-order": "2"
                 },

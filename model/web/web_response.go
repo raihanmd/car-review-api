@@ -3,7 +3,7 @@ package web
 type WebSuccess[T any] struct {
 	Code     int       `json:"code" example:"200" extensions:"x-order=0"`
 	Message  string    `json:"message" example:"success" extensions:"x-order=1"`
-	Data     T         `json:"data" extensions:"x-order=2"`
+	Payload  T         `json:"payload" extensions:"x-order=2"`
 	Metadata *Metadata `json:"metadata" extensions:"x-order=3"`
 }
 

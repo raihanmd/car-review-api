@@ -2309,7 +2309,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/response.BrandResponse"
@@ -2339,7 +2339,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/response.CarResponse"
@@ -2369,7 +2369,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/response.CommentResponse"
@@ -2399,7 +2399,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/response.FindReviewResponse"
@@ -2429,7 +2429,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.BrandResponse"
@@ -2460,7 +2460,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.CarResponse"
@@ -2491,7 +2491,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.CommentResponse"
@@ -2522,7 +2522,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.FavouriteResponse"
@@ -2553,7 +2553,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.FindReviewResponse"
@@ -2584,7 +2584,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.LoginResponse"
@@ -2615,7 +2615,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.RegisterResponse"
@@ -2646,7 +2646,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.ReviewResponse"
@@ -2677,7 +2677,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.UpdateUserProfileResponse"
@@ -2708,7 +2708,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.UserProfileResponse"
@@ -2739,7 +2739,7 @@
                     "x-order": "1",
                     "example": "success"
                 },
-                "data": {
+                "payload": {
                     "type": "string",
                     "x-order": "2"
                 },

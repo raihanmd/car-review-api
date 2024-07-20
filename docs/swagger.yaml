@@ -608,11 +608,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        items:
-          $ref: '#/definitions/response.BrandResponse'
-        type: array
-        x-order: "2"
       message:
         example: success
         type: string
@@ -621,6 +616,11 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        items:
+          $ref: '#/definitions/response.BrandResponse'
+        type: array
+        x-order: "2"
     type: object
   web.WebSuccess-array_response_CarResponse:
     properties:
@@ -628,11 +628,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        items:
-          $ref: '#/definitions/response.CarResponse'
-        type: array
-        x-order: "2"
       message:
         example: success
         type: string
@@ -641,6 +636,11 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        items:
+          $ref: '#/definitions/response.CarResponse'
+        type: array
+        x-order: "2"
     type: object
   web.WebSuccess-array_response_CommentResponse:
     properties:
@@ -648,11 +648,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        items:
-          $ref: '#/definitions/response.CommentResponse'
-        type: array
-        x-order: "2"
       message:
         example: success
         type: string
@@ -661,6 +656,11 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        items:
+          $ref: '#/definitions/response.CommentResponse'
+        type: array
+        x-order: "2"
     type: object
   web.WebSuccess-array_response_FindReviewResponse:
     properties:
@@ -668,11 +668,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        items:
-          $ref: '#/definitions/response.FindReviewResponse'
-        type: array
-        x-order: "2"
       message:
         example: success
         type: string
@@ -681,6 +676,11 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        items:
+          $ref: '#/definitions/response.FindReviewResponse'
+        type: array
+        x-order: "2"
     type: object
   web.WebSuccess-response_BrandResponse:
     properties:
@@ -688,10 +688,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        allOf:
-        - $ref: '#/definitions/response.BrandResponse'
-        x-order: "2"
       message:
         example: success
         type: string
@@ -700,6 +696,10 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        allOf:
+        - $ref: '#/definitions/response.BrandResponse'
+        x-order: "2"
     type: object
   web.WebSuccess-response_CarResponse:
     properties:
@@ -707,10 +707,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        allOf:
-        - $ref: '#/definitions/response.CarResponse'
-        x-order: "2"
       message:
         example: success
         type: string
@@ -719,6 +715,10 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        allOf:
+        - $ref: '#/definitions/response.CarResponse'
+        x-order: "2"
     type: object
   web.WebSuccess-response_CommentResponse:
     properties:
@@ -726,10 +726,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        allOf:
-        - $ref: '#/definitions/response.CommentResponse'
-        x-order: "2"
       message:
         example: success
         type: string
@@ -738,6 +734,10 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        allOf:
+        - $ref: '#/definitions/response.CommentResponse'
+        x-order: "2"
     type: object
   web.WebSuccess-response_FavouriteResponse:
     properties:
@@ -745,10 +745,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        allOf:
-        - $ref: '#/definitions/response.FavouriteResponse'
-        x-order: "2"
       message:
         example: success
         type: string
@@ -757,6 +753,10 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        allOf:
+        - $ref: '#/definitions/response.FavouriteResponse'
+        x-order: "2"
     type: object
   web.WebSuccess-response_FindReviewResponse:
     properties:
@@ -764,10 +764,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        allOf:
-        - $ref: '#/definitions/response.FindReviewResponse'
-        x-order: "2"
       message:
         example: success
         type: string
@@ -776,6 +772,10 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        allOf:
+        - $ref: '#/definitions/response.FindReviewResponse'
+        x-order: "2"
     type: object
   web.WebSuccess-response_LoginResponse:
     properties:
@@ -783,10 +783,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        allOf:
-        - $ref: '#/definitions/response.LoginResponse'
-        x-order: "2"
       message:
         example: success
         type: string
@@ -795,6 +791,10 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        allOf:
+        - $ref: '#/definitions/response.LoginResponse'
+        x-order: "2"
     type: object
   web.WebSuccess-response_RegisterResponse:
     properties:
@@ -802,10 +802,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        allOf:
-        - $ref: '#/definitions/response.RegisterResponse'
-        x-order: "2"
       message:
         example: success
         type: string
@@ -814,6 +810,10 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        allOf:
+        - $ref: '#/definitions/response.RegisterResponse'
+        x-order: "2"
     type: object
   web.WebSuccess-response_ReviewResponse:
     properties:
@@ -821,10 +821,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        allOf:
-        - $ref: '#/definitions/response.ReviewResponse'
-        x-order: "2"
       message:
         example: success
         type: string
@@ -833,6 +829,10 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        allOf:
+        - $ref: '#/definitions/response.ReviewResponse'
+        x-order: "2"
     type: object
   web.WebSuccess-response_UpdateUserProfileResponse:
     properties:
@@ -840,10 +840,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        allOf:
-        - $ref: '#/definitions/response.UpdateUserProfileResponse'
-        x-order: "2"
       message:
         example: success
         type: string
@@ -852,6 +848,10 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        allOf:
+        - $ref: '#/definitions/response.UpdateUserProfileResponse'
+        x-order: "2"
     type: object
   web.WebSuccess-response_UserProfileResponse:
     properties:
@@ -859,10 +859,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        allOf:
-        - $ref: '#/definitions/response.UserProfileResponse'
-        x-order: "2"
       message:
         example: success
         type: string
@@ -871,6 +867,10 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        allOf:
+        - $ref: '#/definitions/response.UserProfileResponse'
+        x-order: "2"
     type: object
   web.WebSuccess-string:
     properties:
@@ -878,9 +878,6 @@ definitions:
         example: 200
         type: integer
         x-order: "0"
-      data:
-        type: string
-        x-order: "2"
       message:
         example: success
         type: string
@@ -889,6 +886,9 @@ definitions:
         allOf:
         - $ref: '#/definitions/web.Metadata'
         x-order: "3"
+      payload:
+        type: string
+        x-order: "2"
     type: object
   web.WebUnauthorizedError:
     properties:
