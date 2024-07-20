@@ -6,6 +6,7 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -107,11 +108,15 @@ func NewRouter() *gin.Engine {
 
 	r := gin.Default()
 
-	r.Use(cors.New(cors.Config{
-		AllowAllOrigins: true,
-		AllowMethods:    []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-		AllowHeaders:    []string{"Content-Type", "X-XSRF-TOKEN", "Accept", "Origin", "X-Requested-With"},
-	}))
+	r.Use(cors.New(
+		cors.Config{
+			AllowAllOrigins:  true,
+			AllowCredentials: true,
+			AllowMethods:     []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
+			AllowHeaders:     []string{"Content-Type", "X-XSRF-TOKEN", "Accept", "Origin", "X-Requested-With", "Authorization", "Pragma", "Cache-Control", "Expires"},
+			MaxAge:           12 * time.Hour,
+		},
+	))
 
 	r.Use(func(c *gin.Context) {
 		c.Set("db", db)
