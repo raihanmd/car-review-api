@@ -2,6 +2,7 @@ package services
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -141,6 +142,11 @@ func (service *carServiceImpl) FindAll(c *gin.Context, carQueryReq *request.CarQ
 
 	// Car Filtering
 	{
+
+		if carQueryReq.Name != nil {
+			subquery = subquery.Where("name ILIKE ?", "%"+*carQueryReq.Name+"%")
+		}
+
 		if carQueryReq.BrandID != nil {
 			subquery = subquery.Where("brand_id = ?", *carQueryReq.BrandID)
 		}
@@ -158,7 +164,7 @@ func (service *carServiceImpl) FindAll(c *gin.Context, carQueryReq *request.CarQ
 		}
 	}
 
-	query = query.Where("id IN (?)", subquery)
+	query = query.Order("id").Where("id IN (?)", subquery)
 
 	if err := query.Find(&cars).Error; err != nil {
 		return nil, nil, err
@@ -200,6 +206,7 @@ func (service *carServiceImpl) toCarResponse(car *entity.Car) *response.CarRespo
 	return &response.CarResponse{
 		ID:                  car.ID,
 		BrandID:             car.BrandID,
+		Name:                car.Name,
 		Model:               car.Model,
 		Year:                car.Year,
 		ImageUrl:            car.ImageUrl,
@@ -222,7 +229,8 @@ func (service *carServiceImpl) toCarEntity(req any) *entity.Car {
 	case *request.CarCreateRequest:
 		return &entity.Car{
 			BrandID:  r.BrandID,
-			Model:    r.Model,
+			Name:     r.Name,
+			Model:    strings.ToUpper(r.Model),
 			Year:     r.Year,
 			ImageUrl: r.ImageUrl,
 			CarSpecification: entity.CarSpecification{
@@ -233,20 +241,21 @@ func (service *carServiceImpl) toCarEntity(req any) *entity.Car {
 				},
 				Engine:       r.Engine,
 				Torque:       r.Torque,
-				Transmission: r.Transmission,
+				Transmission: strings.ToUpper(r.Transmission),
 				Acceleration: r.Acceleration,
 				HorsePower:   r.HorsePower,
 				BreakingSystem: entity.CarBreakingSystem{
 					Front: r.BreakingSystemFront,
 					Back:  r.BreakingSystemBack,
 				},
-				Fuel: r.Fuel,
+				Fuel: strings.ToUpper(r.Fuel),
 			},
 		}
 	case *request.CarUpdateRequest:
 		return &entity.Car{
 			BrandID:  r.BrandID,
-			Model:    r.Model,
+			Name:     r.Name,
+			Model:    strings.ToUpper(r.Model),
 			Year:     r.Year,
 			ImageUrl: r.ImageUrl,
 			CarSpecification: entity.CarSpecification{
@@ -257,14 +266,14 @@ func (service *carServiceImpl) toCarEntity(req any) *entity.Car {
 				},
 				Engine:       r.Engine,
 				Torque:       r.Torque,
-				Transmission: r.Transmission,
+				Transmission: strings.ToUpper(r.Transmission),
 				Acceleration: r.Acceleration,
 				HorsePower:   r.HorsePower,
 				BreakingSystem: entity.CarBreakingSystem{
 					Front: r.BreakingSystemFront,
 					Back:  r.BreakingSystemBack,
 				},
-				Fuel: r.Fuel,
+				Fuel: strings.ToUpper(r.Fuel),
 			},
 		}
 	default:

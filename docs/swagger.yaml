@@ -42,6 +42,9 @@ definitions:
       model:
         type: string
         x-order: "1"
+      name:
+        type: string
+        x-order: "1"
       torque:
         type: integer
         x-order: "8"
@@ -67,6 +70,7 @@ definitions:
     - image_url
     - length
     - model
+    - name
     - torque
     - transmission
     - width
@@ -105,6 +109,9 @@ definitions:
         type: integer
         x-order: "6"
       model:
+        type: string
+        x-order: "1"
+      name:
         type: string
         x-order: "1"
       torque:
@@ -296,7 +303,11 @@ definitions:
         type: integer
         x-order: "7"
       model:
-        example: Yaris
+        example: SUV
+        type: string
+        x-order: "2"
+      name:
+        example: Toyota Yaris
         type: string
         x-order: "2"
       torque:
@@ -1124,6 +1135,10 @@ paths:
         in: query
         name: brand_id
         type: integer
+      - description: Name
+        in: query
+        name: name
+        type: string
       - description: Model
         in: query
         name: model

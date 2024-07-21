@@ -115,6 +115,7 @@ func (service *reviewServiceImpl) FindAll(c *gin.Context, reviewQueryReq *reques
 	var reviews []map[string]interface{}
 
 	query := db.Table("reviews").
+		Order("created_at desc").
 		Select("reviews.*, reviews.id as review_id, cars.id as car_id, users.username, users.id as user_id").
 		Joins("left join cars on reviews.car_id = cars.id").
 		Joins("left join users on reviews.user_id = users.id")

@@ -126,6 +126,7 @@ func (controller *carControllerImpl) Delete(c *gin.Context) {
 // @Param limit query int false "Limit" default(10)
 // @Param page query int false "Page" default(1)
 // @Param brand_id query int false "Brand ID"
+// @Param name query string false "Name"
 // @Param model query string false "Model"
 // @Param min_year query int false "Minimum Year"
 // @Param max_year query int false "Maximum Year"

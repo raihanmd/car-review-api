@@ -362,6 +362,12 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "description": "Name",
+                        "name": "name",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
                         "description": "Model",
                         "name": "model",
                         "in": "query"
@@ -1521,6 +1527,7 @@ const docTemplate = `{
                 "image_url",
                 "length",
                 "model",
+                "name",
                 "torque",
                 "transmission",
                 "width",
@@ -1530,6 +1537,10 @@ const docTemplate = `{
                 "brand_id": {
                     "type": "integer",
                     "x-order": "0"
+                },
+                "name": {
+                    "type": "string",
+                    "x-order": "1"
                 },
                 "model": {
                     "type": "string",
@@ -1596,6 +1607,10 @@ const docTemplate = `{
                 "brand_id": {
                     "type": "integer",
                     "x-order": "0"
+                },
+                "name": {
+                    "type": "string",
+                    "x-order": "1"
                 },
                 "model": {
                     "type": "string",
@@ -1878,7 +1893,12 @@ const docTemplate = `{
                 "model": {
                     "type": "string",
                     "x-order": "2",
-                    "example": "Yaris"
+                    "example": "SUV"
+                },
+                "name": {
+                    "type": "string",
+                    "x-order": "2",
+                    "example": "Toyota Yaris"
                 },
                 "year": {
                     "type": "integer",

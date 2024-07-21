@@ -2,6 +2,7 @@ package request
 
 type CarQueryRequest struct {
 	BrandID *uint   `form:"brand_id"`
+	Name    *string `form:"name"`
 	Model   *string `form:"model"`
 	MinYear *int    `form:"min_year"`
 	MaxYear *int    `form:"max_year"`
@@ -9,6 +10,7 @@ type CarQueryRequest struct {
 
 type CarCreateRequest struct {
 	BrandID             uint    `json:"brand_id" binding:"required" extensions:"x-order=0"`
+	Name                string  `json:"name" binding:"required" extensions:"x-order=1"`
 	Model               string  `json:"model" binding:"required" extensions:"x-order=1"`
 	Year                int16   `json:"year" binding:"required,min=1878" extensions:"x-order=2"`
 	ImageUrl            string  `json:"image_url" binding:"required,url" extensions:"x-order=3"`
@@ -27,6 +29,7 @@ type CarCreateRequest struct {
 
 type CarUpdateRequest struct {
 	BrandID             uint    `json:"brand_id" extensions:"x-order=0"`
+	Name                string  `json:"name" extensions:"x-order=1"`
 	Model               string  `json:"model" extensions:"x-order=1"`
 	Year                int16   `json:"year" binding:"omitempty,min=1878" extensions:"x-order=2"`
 	ImageUrl            string  `json:"image_url" binding:"omitempty,url" extensions:"x-order=3"`

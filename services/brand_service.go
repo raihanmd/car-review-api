@@ -110,7 +110,7 @@ func (service *brandServiceImpl) FindAll(c *gin.Context) (*[]response.BrandRespo
 
 	var brands []entity.Brand
 
-	if err := db.Find(&brands).Error; err != nil {
+	if err := db.Order("id").Find(&brands).Error; err != nil {
 		return nil, err
 	}
 
