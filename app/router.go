@@ -135,6 +135,8 @@ func NewRouter() *gin.Engine {
 
 	apiRouter.POST("/auth/register", userController.Register)
 	apiRouter.POST("/auth/login", userController.Login)
+	apiRouter.POST("/auth/forgot-password", userController.ForgotPassword)
+	apiRouter.POST("/auth/reset-password", userController.ResetPassword)
 
 	// ======================== USERS ROUTE =======================
 

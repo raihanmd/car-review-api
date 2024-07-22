@@ -37,6 +37,7 @@ func TestRegister(t *testing.T) {
 	t.Run("should success register", func(t *testing.T) {
 		newUser := request.RegisterRequest{
 			Username: "test",
+			Email:    "test@email.com",
 			Password: "testtest",
 		}
 		requestBody, _ := json.Marshal(newUser)
@@ -63,6 +64,7 @@ func TestRegister(t *testing.T) {
 	t.Run("should error if password is less than 6 or username less than 3", func(t *testing.T) {
 		newUser := request.RegisterRequest{
 			Username: "ra",
+			Email:    "wrong",
 			Password: "test",
 		}
 		requestBody, _ := json.Marshal(newUser)
@@ -87,6 +89,7 @@ func TestRegister(t *testing.T) {
 	t.Run("should error if username already exists", func(t *testing.T) {
 		newUser := request.RegisterRequest{
 			Username: "test",
+			Email:    "test@email.com",
 			Password: "testtest",
 		}
 		requestBody, _ := json.Marshal(newUser)
@@ -112,7 +115,7 @@ func TestRegister(t *testing.T) {
 func TestLogin(t *testing.T) {
 	t.Run("should success login", func(t *testing.T) {
 		loginUser := request.LoginRequest{
-			Username: "test",
+			Email:    "test@email.com",
 			Password: "testtest",
 		}
 		requestBody, _ := json.Marshal(loginUser)
@@ -140,7 +143,7 @@ func TestLogin(t *testing.T) {
 
 	t.Run("should error if password or username are empty", func(t *testing.T) {
 		loginUser := request.LoginRequest{
-			Username: "",
+			Email:    "",
 			Password: "",
 		}
 		requestBody, _ := json.Marshal(loginUser)
@@ -165,6 +168,7 @@ func TestLogin(t *testing.T) {
 	t.Run("should error if username or pasword wrong", func(t *testing.T) {
 		loginUser := request.RegisterRequest{
 			Username: "test",
+			Email:    "test@email.com",
 			Password: "wrong",
 		}
 		requestBody, _ := json.Marshal(loginUser)
@@ -215,7 +219,7 @@ func TestUpdatePasswordUser(t *testing.T) {
 
 		t.Run("should success login again with updated password", func(t *testing.T) {
 			newLogin := request.LoginRequest{
-				Username: "test",
+				Email:    "test@email.com",
 				Password: "mynewpassword",
 			}
 
@@ -255,7 +259,7 @@ func TestUpdateUserProfile(t *testing.T) {
 
 		updateProfile := request.UpdateUserProfileRequest{
 			Username: "newusername",
-			Email:    &email,
+			Email:    email,
 			FullName: &fullName,
 			Bio:      nil,
 			Age:      &age,
@@ -300,7 +304,7 @@ func TestUpdateUserProfile(t *testing.T) {
 
 		updateProfile := request.UpdateUserProfileRequest{
 			Username: "newusername",
-			Email:    &email,
+			Email:    email,
 			FullName: &fullName,
 			Bio:      &bio,
 			Age:      &age,

@@ -17,6 +17,8 @@ import (
 
 type UserService interface {
 	Register(*gin.Context, *entity.User) (*response.RegisterResponse, error)
+	ForgotPassword(*gin.Context, string, string) (*response.ForgotPasswordResponse, error)
+	ResetPassword(*gin.Context, string, string) error
 	Login(*gin.Context, string, string) (*response.LoginResponse, error)
 	UpdatePassword(*gin.Context, uint, string) error
 	GetUserProfile(*gin.Context, uint) (*response.UserProfileResponse, error)
@@ -42,11 +44,11 @@ func (service *userServiceImpl) Register(c *gin.Context, user *entity.User) (*re
 
 	err = db.Transaction(func(tx *gorm.DB) error {
 		if err = db.Create(user).Error; err != nil {
-			return exceptions.NewCustomError(http.StatusConflict, "username already exists")
+			return exceptions.NewCustomError(http.StatusConflict, "username or email already exists")
 		}
 
 		if err = db.Create(&entity.Profile{UserID: user.ID}).Error; err != nil {
-			return exceptions.NewCustomError(http.StatusConflict, "username already exists")
+			return exceptions.NewCustomError(http.StatusConflict, "username or email already exists")
 		}
 
 		return nil
@@ -60,6 +62,7 @@ func (service *userServiceImpl) Register(c *gin.Context, user *entity.User) (*re
 
 	registerResponse := response.RegisterResponse{
 		Username: user.Username,
+		Email:    user.Email,
 		Role:     user.Role,
 	}
 
@@ -67,20 +70,19 @@ func (service *userServiceImpl) Register(c *gin.Context, user *entity.User) (*re
 }
 
 func (service *userServiceImpl) Login(c *gin.Context, username, password string) (*response.LoginResponse, error) {
-	db, logger := helper.GetDBAndLogger(c)
+	db, _ := helper.GetDBAndLogger(c)
 
 	var err error
 
 	user := entity.User{}
 
-	if err = db.Model(&entity.User{}).Where("username = ?", username).Take(&user).Error; err != nil {
-		return nil, exceptions.NewCustomError(http.StatusUnauthorized, "username or password is incorrect")
+	if err = db.Model(&entity.User{}).Where("email = ?", username).Take(&user).Error; err != nil {
+		return nil, exceptions.NewCustomError(http.StatusUnauthorized, "email or password is incorrect")
 	}
 
 	err = helper.VerifyPassword(password, user.Password)
 	if err != nil {
-		logger.Info("user failed login", zap.Any("error", err))
-		return nil, exceptions.NewCustomError(http.StatusUnauthorized, "username or password is incorrect")
+		return nil, exceptions.NewCustomError(http.StatusUnauthorized, "email or password is incorrect")
 	}
 
 	token, err := utils.GenerateToken(user.ID, user.Role)
@@ -90,11 +92,11 @@ func (service *userServiceImpl) Login(c *gin.Context, username, password string)
 
 	loginResponse := response.LoginResponse{
 		Username: user.Username,
+		Email:    user.Email,
 		Role:     user.Role,
 		Token:    token,
 	}
 
-	logger.Info("user success logged in", zap.Uint("userID", user.ID))
 	return &loginResponse, nil
 }
 
@@ -121,7 +123,7 @@ func (service *userServiceImpl) GetUserProfile(c *gin.Context, userID uint) (*re
 	var responseUser response.UserProfileResponse
 
 	if err := db.Model(&entity.User{}).
-		Select("users.id, users.username, users.role, profiles.user_id, profiles.email, profiles.full_name, profiles.bio, profiles.age, profiles.gender").
+		Select("users.id, users.username, users.role, users.email, profiles.user_id, profiles.full_name, profiles.bio, profiles.age, profiles.gender").
 		Joins("left join profiles on users.id = profiles.user_id").
 		Where("users.id = ?", userID).
 		Scan(&responseUser).Error; err != nil {
@@ -154,7 +156,7 @@ func (service *userServiceImpl) UpdateUserProfile(c *gin.Context, updatedUser *e
 		}
 
 		if err := tx.Model(&entity.User{}).
-			Select("profiles.*, users.id, users.username, users.role").
+			Select("profiles.*, users.id, users.username, users.role, users.email").
 			Joins("left join profiles on users.id = profiles.user_id").
 			Take(&responseUser, "users.id = ?", userID).Error; err != nil {
 			return err
@@ -190,5 +192,55 @@ func (service *userServiceImpl) DeleteUserProfile(c *gin.Context, userID uint) e
 	}
 
 	logger.Info("user profile and user deleted successfully", zap.Uint("userID", userID))
+	return nil
+}
+
+func (service *userServiceImpl) ForgotPassword(c *gin.Context, username string, email string) (*response.ForgotPasswordResponse, error) {
+	db, _ := helper.GetDBAndLogger(c)
+
+	var user entity.User
+	if err := db.Where("username = ?", username).Where("email = ?", email).First(&user).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return nil, exceptions.NewCustomError(http.StatusNotFound, "username or email not found")
+		}
+		return nil, err
+	}
+
+	token, err := utils.GenerateResetPasswordToken(user.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &response.ForgotPasswordResponse{
+		Token: token,
+	}, nil
+}
+
+func (service *userServiceImpl) ResetPassword(c *gin.Context, token string, newPassword string) error {
+	db, _ := helper.GetDBAndLogger(c)
+
+	claims, err := utils.ParseResetToken(token)
+	if err != nil {
+		return exceptions.NewCustomError(http.StatusBadRequest, "invalid or expired token")
+	}
+
+	var user entity.User
+	if err := db.First(&user, claims.UserID).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			return exceptions.NewCustomError(http.StatusNotFound, "user not found")
+		}
+		return err
+	}
+
+	hashedPassword, err := helper.HashPassword(newPassword)
+	if err != nil {
+		return err
+	}
+
+	user.Password = string(hashedPassword)
+	if err := db.Save(&user).Error; err != nil {
+		return err
+	}
+
 	return nil
 }

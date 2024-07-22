@@ -17,6 +17,8 @@ import (
 
 type UserController interface {
 	Register(*gin.Context)
+	ForgotPassword(*gin.Context)
+	ResetPassword(*gin.Context)
 	Login(c *gin.Context)
 	UpdatePassword(c *gin.Context)
 	GetUserProfile(c *gin.Context)
@@ -55,6 +57,7 @@ func (controller *userControllerImpl) Register(c *gin.Context) {
 
 	newUser := entity.User{
 		Username: registerReq.Username,
+		Email:    registerReq.Email,
 		Password: registerReq.Password,
 	}
 
@@ -81,7 +84,7 @@ func (controller *userControllerImpl) Login(c *gin.Context) {
 	err := c.ShouldBindJSON(&loginReq)
 	helper.PanicIfError(err)
 
-	loginRes, err := controller.UserService.Login(c, loginReq.Username, loginReq.Password)
+	loginRes, err := controller.UserService.Login(c, loginReq.Email, loginReq.Password)
 	helper.PanicIfError(err)
 
 	helper.ToResponseJSON(c, http.StatusOK, loginRes, nil)
@@ -160,8 +163,8 @@ func (controller *userControllerImpl) UpdateUserProfile(c *gin.Context) {
 
 	updatedProfile := &entity.User{
 		Username: updateUserReq.Username,
+		Email:    updateUserReq.Email,
 		Profile: entity.Profile{
-			Email:    updateUserReq.Email,
 			FullName: updateUserReq.FullName,
 			Bio:      updateUserReq.Bio,
 			Age:      updateUserReq.Age,
@@ -218,4 +221,47 @@ func (controller *userControllerImpl) GetFavourites(c *gin.Context) {
 	helper.PanicIfError(err)
 
 	helper.ToResponseJSON(c, http.StatusOK, favourites, nil)
+}
+
+// ForgotPassword godoc
+// @Summary Forgot password.
+// @Description Request forgot password.
+// @Tags Auth
+// @Param Body body request.ForgotPasswordRequest true "the body to request forgot password"
+// @Produce json
+// @Success 200 {object} web.WebSuccess[response.ForgotPasswordResponse]
+// @Failure 404 {object} web.WebNotFoundError
+// @Failure 500 {object} web.WebInternalServerError
+// @Router /api/auth/forgot-password [post]
+func (controller *userControllerImpl) ForgotPassword(c *gin.Context) {
+	var req request.ForgotPasswordRequest
+	err := c.ShouldBindJSON(&req)
+	helper.PanicIfError(err)
+
+	userResponse, err := controller.UserService.ForgotPassword(c, req.Username, req.Email)
+	helper.PanicIfError(err)
+
+	helper.ToResponseJSON(c, http.StatusOK, userResponse, nil)
+}
+
+// ResetPassword godoc
+// @Summary Reset password.
+// @Description Reset password.
+// @Tags Auth
+// @Param Body body request.ResetPasswordRequest true "the body to reset password"
+// @Produce json
+// @Success 200 {object} web.WebSuccess[string]
+// @Failure 400 {object} web.WebBadRequestError
+// @Failure 404 {object} web.WebNotFoundError
+// @Failure 500 {object} web.WebInternalServerError
+// @Router /api/auth/reset-password [post]
+func (controller *userControllerImpl) ResetPassword(c *gin.Context) {
+	var req request.ResetPasswordRequest
+	err := c.ShouldBindJSON(&req)
+	helper.PanicIfError(err)
+
+	err = controller.UserService.ResetPassword(c, req.Token, req.NewPassword)
+	helper.PanicIfError(err)
+
+	helper.ToResponseJSON(c, http.StatusOK, "password updated", nil)
 }

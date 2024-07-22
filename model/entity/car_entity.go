@@ -4,7 +4,7 @@ import "time"
 
 type Car struct {
 	ID               uint             `gorm:"primaryKey;autoIncrement"`
-	Name             string           `gorm:"not null;type:varchar(100);default:'Unknown';index:idx_name"`
+	Name             string           `gorm:"not null;type:varchar(100);index:idx_name"`
 	BrandID          uint             `gorm:"not null"`
 	Model            string           `gorm:"not null;type:varchar(50)"`
 	Year             int16            `gorm:"not null;type:smallint;index:idx_year"`

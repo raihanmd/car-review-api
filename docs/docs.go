@@ -15,6 +15,49 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/auth/forgot-password": {
+            "post": {
+                "description": "Request forgot password.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Forgot password.",
+                "parameters": [
+                    {
+                        "description": "the body to request forgot password",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ForgotPasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-response_ForgotPasswordResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            }
+        },
         "/api/auth/login": {
             "post": {
                 "description": "Logging in to get jwt token to access admin or user api by roles.",
@@ -96,6 +139,55 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/reset-password": {
+            "post": {
+                "description": "Reset password.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Reset password.",
+                "parameters": [
+                    {
+                        "description": "the body to reset password",
+                        "name": "Body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ResetPasswordRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
                         }
                     },
                     "500": {
@@ -1608,11 +1700,11 @@ const docTemplate = `{
                     "type": "integer",
                     "x-order": "0"
                 },
-                "name": {
+                "model": {
                     "type": "string",
                     "x-order": "1"
                 },
-                "model": {
+                "name": {
                     "type": "string",
                     "x-order": "1"
                 },
@@ -1700,26 +1792,46 @@ const docTemplate = `{
                 }
             }
         },
-        "request.LoginRequest": {
+        "request.ForgotPasswordRequest": {
             "type": "object",
             "required": [
-                "password",
+                "email",
                 "username"
             ],
             "properties": {
                 "username": {
                     "type": "string",
+                    "maxLength": 20,
+                    "minLength": 3,
+                    "x-order": "0"
+                },
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.LoginRequest": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
                     "x-order": "0"
                 },
                 "password": {
                     "type": "string",
-                    "x-order": "1"
+                    "x-order": "1",
+                    "example": "password"
                 }
             }
         },
         "request.RegisterRequest": {
             "type": "object",
             "required": [
+                "email",
                 "password",
                 "username"
             ],
@@ -1730,10 +1842,35 @@ const docTemplate = `{
                     "minLength": 3,
                     "x-order": "0"
                 },
+                "email": {
+                    "type": "string",
+                    "x-order": "1"
+                },
                 "password": {
                     "type": "string",
-                    "minLength": 6,
-                    "x-order": "1"
+                    "minLength": 8,
+                    "x-order": "2",
+                    "example": "password"
+                }
+            }
+        },
+        "request.ResetPasswordRequest": {
+            "type": "object",
+            "required": [
+                "new_password",
+                "token"
+            ],
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "x-order": "0",
+                    "example": "token"
+                },
+                "new_password": {
+                    "type": "string",
+                    "minLength": 8,
+                    "x-order": "1",
+                    "example": "new_password"
                 }
             }
         },
@@ -2059,6 +2196,15 @@ const docTemplate = `{
                 }
             }
         },
+        "response.ForgotPasswordResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string",
+                    "example": "token"
+                }
+            }
+        },
         "response.LoginResponse": {
             "type": "object",
             "properties": {
@@ -2067,14 +2213,19 @@ const docTemplate = `{
                     "x-order": "0",
                     "example": "luigi"
                 },
-                "role": {
+                "email": {
                     "type": "string",
                     "x-order": "1",
+                    "example": "luigi@sam.com"
+                },
+                "role": {
+                    "type": "string",
+                    "x-order": "2",
                     "example": "USER"
                 },
                 "token": {
                     "type": "string",
-                    "x-order": "2",
+                    "x-order": "3",
                     "example": "token"
                 }
             }
@@ -2087,9 +2238,14 @@ const docTemplate = `{
                     "x-order": "0",
                     "example": "luigi"
                 },
-                "role": {
+                "email": {
                     "type": "string",
                     "x-order": "1",
+                    "example": "luigi@sam.com"
+                },
+                "role": {
+                    "type": "string",
+                    "x-order": "2",
                     "example": "USER"
                 }
             }
@@ -2588,6 +2744,37 @@ const docTemplate = `{
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.FindReviewResponse"
+                        }
+                    ],
+                    "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
+                }
+            }
+        },
+        "web.WebSuccess-response_ForgotPasswordResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 200
+                },
+                "message": {
+                    "type": "string",
+                    "x-order": "1",
+                    "example": "success"
+                },
+                "payload": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/response.ForgotPasswordResponse"
                         }
                     ],
                     "x-order": "2"

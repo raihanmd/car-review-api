@@ -14,7 +14,7 @@ import (
 	"github.com/raihanmd/fp-superbootcamp-go/model/entity"
 )
 
-var API_SECRET = helper.GetEnv("API_SECRET", "RAHASIA")
+var API_SECRET = helper.GetEnv("API_SECRET", "W8j8sLNYNXyhVyjAcyiuaWMCHGFGfcwEG8WsxlOMsPgX0vF73LmSslCaofZls8oNMSmj8bNFnZpxqD3JUUmPhYtRI5gIsSi9riGHTXpgja6RETJiXFI4WTsIfszZcwoW")
 
 func GenerateToken(userId uint, userRole string) (string, error) {
 	tokenLifeSpan, err := strconv.Atoi(helper.GetEnv("TOKEN_HOUR_LIFESPAN", "1"))

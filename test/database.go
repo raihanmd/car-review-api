@@ -7,5 +7,5 @@ func TruncateUser(db *gorm.DB) {
 }
 
 func CreateRootUser(db *gorm.DB) {
-	db.Exec("INSERT INTO users (username, password, role) VALUES ('root', 'root', 'ADMIN')")
+	db.Exec("INSERT INTO users (username, password, email, role) VALUES ('root', 'root@email.com', 'root', 'ADMIN')")
 }
