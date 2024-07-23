@@ -19,12 +19,13 @@ type UserController interface {
 	Register(*gin.Context)
 	ForgotPassword(*gin.Context)
 	ResetPassword(*gin.Context)
-	Login(c *gin.Context)
-	UpdatePassword(c *gin.Context)
-	GetUserProfile(c *gin.Context)
-	UpdateUserProfile(c *gin.Context)
-	DeleteUserProfile(c *gin.Context)
-	GetFavourites(c *gin.Context)
+	Login(*gin.Context)
+	UpdatePassword(*gin.Context)
+	GetUserProfile(*gin.Context)
+	UpdateUserProfile(*gin.Context)
+	DeleteUserProfile(*gin.Context)
+	GetFavourites(*gin.Context)
+	GetCurrentUser(*gin.Context)
 }
 
 type userControllerImpl struct {
@@ -264,4 +265,26 @@ func (controller *userControllerImpl) ResetPassword(c *gin.Context) {
 	helper.PanicIfError(err)
 
 	helper.ToResponseJSON(c, http.StatusOK, "password updated", nil)
+}
+
+// GetCurrentUser godoc
+// @Summary Get current user.
+// @Description Get current user.
+// @Tags Users
+// @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
+// @Security BearerToken
+// @Produce json
+// @Success 200 {object} web.WebSuccess[response.RegisterResponse]
+// @Failure 404 {object} web.WebNotFoundError
+// @Failure 400 {object} web.WebBadRequestError
+// @Failure 500 {object} web.WebInternalServerError
+// @Router /api/users/current [get]
+func (controller *userControllerImpl) GetCurrentUser(c *gin.Context) {
+	userID, _, err := utils.ExtractTokenClaims(c)
+	helper.PanicIfError(err)
+
+	userResponse, err := controller.UserService.GetCurrentUser(c, uint(userID))
+	helper.PanicIfError(err)
+
+	helper.ToResponseJSON(c, http.StatusOK, userResponse, nil)
 }

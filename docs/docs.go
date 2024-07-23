@@ -1382,6 +1382,58 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/users/current": {
+            "get": {
+                "security": [
+                    {
+                        "BearerToken": []
+                    }
+                ],
+                "description": "Get current user.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get current user.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization. How to input in swagger : 'Bearer \u003cinsert_your_token_here\u003e'",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-response_RegisterResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            }
+        },
         "/api/users/favourites": {
             "get": {
                 "security": [
@@ -1630,11 +1682,11 @@ const docTemplate = `{
                     "type": "integer",
                     "x-order": "0"
                 },
-                "name": {
+                "model": {
                     "type": "string",
                     "x-order": "1"
                 },
-                "model": {
+                "name": {
                     "type": "string",
                     "x-order": "1"
                 },
@@ -1700,11 +1752,11 @@ const docTemplate = `{
                     "type": "integer",
                     "x-order": "0"
                 },
-                "model": {
+                "name": {
                     "type": "string",
                     "x-order": "1"
                 },
-                "name": {
+                "model": {
                     "type": "string",
                     "x-order": "1"
                 },
@@ -2027,15 +2079,15 @@ const docTemplate = `{
                     "x-order": "15",
                     "example": "Electric"
                 },
-                "model": {
-                    "type": "string",
-                    "x-order": "2",
-                    "example": "SUV"
-                },
                 "name": {
                     "type": "string",
                     "x-order": "2",
                     "example": "Toyota Yaris"
+                },
+                "model": {
+                    "type": "string",
+                    "x-order": "2",
+                    "example": "SUV"
                 },
                 "year": {
                     "type": "integer",

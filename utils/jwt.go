@@ -62,16 +62,16 @@ func ExtractTokenClaims(c *gin.Context) (id uint, role string, err error) {
 	tokenString := ExtractToken(c)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, jwt.ErrSignatureInvalid
+			return nil, exceptions.NewCustomError(http.StatusBadRequest, "invalid or expired token")
 		}
 		return []byte(API_SECRET), nil
 	})
 	if err != nil {
-		return 0, "", err
+		return 0, "", exceptions.NewCustomError(http.StatusBadRequest, "invalid or expired token")
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok || !token.Valid {
-		return 0, "", jwt.ErrSignatureInvalid
+		return 0, "", exceptions.NewCustomError(http.StatusBadRequest, "invalid or expired token")
 	}
 	userId, err := strconv.ParseUint(fmt.Sprintf("%.0f", claims["user_id"]), 10, 32)
 	if err != nil {

@@ -1,9 +1,11 @@
 package utils
 
 import (
+	"net/http"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/raihanmd/fp-superbootcamp-go/exceptions"
 )
 
 type Claims struct {
@@ -28,17 +30,17 @@ func ParseResetToken(tokenString string) (*Claims, error) {
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, jwt.ErrSignatureInvalid
+			return nil, exceptions.NewCustomError(http.StatusBadRequest, "invalid or expired token")
 		}
 		return []byte(API_SECRET), nil
 	})
 
 	if err != nil {
-		return nil, err
+		return nil, exceptions.NewCustomError(http.StatusBadRequest, "invalid or expired token")
 	}
 
 	if !token.Valid {
-		return nil, jwt.ErrSignatureInvalid
+		return nil, exceptions.NewCustomError(http.StatusBadRequest, "invalid or expired token")
 	}
 
 	return claims, nil

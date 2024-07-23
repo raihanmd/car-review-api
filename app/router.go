@@ -144,6 +144,7 @@ func NewRouter() *gin.Engine {
 
 	apiRouter.GET("/users/profile/:id", userController.GetUserProfile)
 	apiRouter.GET("/users/favourites", userController.GetFavourites)
+	apiRouter.GET("/users/current", userController.GetCurrentUser)
 
 	userRouter.Use(middlewares.JwtAuthMiddleware)
 
