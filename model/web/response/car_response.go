@@ -3,7 +3,8 @@ package response
 type CarResponse struct {
 	ID                  uint    `json:"id" example:"1" extensions:"x-order=0"`
 	BrandID             uint    `json:"brand_id" example:"2" extensions:"x-order=1"`
-	Name                string  `json:"name" example:"Toyota Yaris" extensions:"x-order=2"`
+	BrandName           string  `json:"brand_name" example:"Toyota" extensions:"x-order=1"`
+	Name                string  `json:"name" example:"Yaris" extensions:"x-order=2"`
 	Model               string  `json:"model" example:"SUV" extensions:"x-order=2"`
 	Year                int16   `json:"year" example:"2020" extensions:"x-order=3"`
 	ImageUrl            string  `json:"image_url" example:"image url" extensions:"x-order=4"`

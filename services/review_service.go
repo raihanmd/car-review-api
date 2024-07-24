@@ -47,11 +47,11 @@ func (service *reviewServiceImpl) Create(c *gin.Context, reviewCreateReq *reques
 		if pgErr, ok := err.(*pgconn.PgError); ok {
 			// violation foreign key car_id
 			if pgErr.Code == "23503" {
-				return nil, exceptions.NewCustomError(http.StatusNotFound, "car not found")
+				return nil, exceptions.NewCustomError(http.StatusNotFound, "Car not found")
 			}
 			// Handle duplicate key error
 			if pgErr.Code == "23505" {
-				return nil, exceptions.NewCustomError(http.StatusConflict, "only one review for this car permitted")
+				return nil, exceptions.NewCustomError(http.StatusConflict, "You have reviewed this car")
 			}
 		}
 		return nil, err
@@ -74,7 +74,6 @@ func (service *reviewServiceImpl) Update(c *gin.Context, reviewUpdateReq *reques
 	result := db.Model(&entity.Review{}).
 		Where("id = ?", reviewID).
 		Where("user_id = ?", userID).
-		Where("car_id = ?", responseReview.Car.ID).
 		Updates(reviewUpdateReq).
 		Take(&responseReview, "id = ?", reviewID)
 
@@ -149,9 +148,6 @@ func (service *reviewServiceImpl) FindAll(c *gin.Context, reviewQueryReq *reques
 			ImageUrl:  v["image_url"].(string),
 			CreatedAt: v["created_at"].(time.Time),
 			UpdatedAt: v["updated_at"].(time.Time),
-			Car: response.ReviewCarResponse{
-				ID: uint(v["car_id"].(int64)),
-			},
 			User: response.ReviewUserResponse{
 				ID:       uint(v["user_id"].(int64)),
 				Username: v["username"].(string),
@@ -193,9 +189,6 @@ func (service *reviewServiceImpl) FindByID(c *gin.Context, reviewId uint) (*resp
 		ImageUrl:  review["image_url"].(string),
 		CreatedAt: review["created_at"].(time.Time),
 		UpdatedAt: review["updated_at"].(time.Time),
-		Car: response.ReviewCarResponse{
-			ID: uint(review["car_id"].(int64)),
-		},
 		User: response.ReviewUserResponse{
 			ID:       uint(review["user_id"].(int64)),
 			Username: review["username"].(string),

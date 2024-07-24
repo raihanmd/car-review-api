@@ -2044,6 +2044,11 @@ const docTemplate = `{
                     "x-order": "0",
                     "example": 1
                 },
+                "brand_name": {
+                    "type": "string",
+                    "x-order": "1",
+                    "example": "Toyota"
+                },
                 "brand_id": {
                     "type": "integer",
                     "x-order": "1",
@@ -2082,7 +2087,7 @@ const docTemplate = `{
                 "name": {
                     "type": "string",
                     "x-order": "2",
-                    "example": "Toyota Yaris"
+                    "example": "Yaris"
                 },
                 "model": {
                     "type": "string",
@@ -2220,14 +2225,6 @@ const docTemplate = `{
                     "x-order": "3",
                     "example": "image url"
                 },
-                "car": {
-                    "allOf": [
-                        {
-                            "$ref": "#/definitions/response.ReviewCarResponse"
-                        }
-                    ],
-                    "x-order": "4"
-                },
                 "user": {
                     "allOf": [
                         {
@@ -2299,16 +2296,6 @@ const docTemplate = `{
                     "type": "string",
                     "x-order": "2",
                     "example": "USER"
-                }
-            }
-        },
-        "response.ReviewCarResponse": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "x-order": "0",
-                    "example": 1
                 }
             }
         },

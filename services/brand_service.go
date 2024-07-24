@@ -36,7 +36,7 @@ func (service *brandServiceImpl) Create(c *gin.Context, brandCreateRequest *requ
 		if pgErr, ok := err.(*pgconn.PgError); ok {
 			// Handle duplicate key error
 			if pgErr.Code == "23505" {
-				return nil, exceptions.NewCustomError(http.StatusConflict, "name already exist")
+				return nil, exceptions.NewCustomError(http.StatusConflict, "Name already exist")
 			}
 		}
 		return nil, err
@@ -61,14 +61,14 @@ func (service *brandServiceImpl) Update(c *gin.Context, brandRequest *request.Br
 			if pgErr, ok := result.Error.(*pgconn.PgError); ok {
 				// Handle duplicate key error
 				if pgErr.Code == "23505" {
-					return exceptions.NewCustomError(http.StatusConflict, "name already exist")
+					return exceptions.NewCustomError(http.StatusConflict, "Name already exist")
 				}
 			}
 			return result.Error
 		}
 
 		if result.RowsAffected == 0 {
-			return exceptions.NewCustomError(http.StatusNotFound, "brand not found")
+			return exceptions.NewCustomError(http.StatusNotFound, "Brand not found")
 		}
 
 		if err := tx.Take(&brand, "id = ?", brandID).Error; err != nil {
@@ -97,7 +97,7 @@ func (service *brandServiceImpl) Delete(c *gin.Context, brandID uint) error {
 	}
 
 	if result.RowsAffected == 0 {
-		return exceptions.NewCustomError(http.StatusNotFound, "brand not found")
+		return exceptions.NewCustomError(http.StatusNotFound, "Brand not found")
 	}
 
 	logger.Info("brand deleted successfully", zap.Uint("brandID", brandID))

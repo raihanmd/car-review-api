@@ -45,11 +45,11 @@ func (service *userServiceImpl) Register(c *gin.Context, user *entity.User) (*re
 
 	err = db.Transaction(func(tx *gorm.DB) error {
 		if err = db.Create(user).Error; err != nil {
-			return exceptions.NewCustomError(http.StatusConflict, "username or email already exists")
+			return exceptions.NewCustomError(http.StatusConflict, "Username or email already exists")
 		}
 
 		if err = db.Create(&entity.Profile{UserID: user.ID}).Error; err != nil {
-			return exceptions.NewCustomError(http.StatusConflict, "username or email already exists")
+			return exceptions.NewCustomError(http.StatusConflict, "Username or email already exists")
 		}
 
 		return nil
@@ -78,12 +78,12 @@ func (service *userServiceImpl) Login(c *gin.Context, username, password string)
 	user := entity.User{}
 
 	if err = db.Model(&entity.User{}).Where("email = ?", username).Take(&user).Error; err != nil {
-		return nil, exceptions.NewCustomError(http.StatusUnauthorized, "email or password is incorrect")
+		return nil, exceptions.NewCustomError(http.StatusUnauthorized, "Email or password is incorrect")
 	}
 
 	err = helper.VerifyPassword(password, user.Password)
 	if err != nil {
-		return nil, exceptions.NewCustomError(http.StatusUnauthorized, "email or password is incorrect")
+		return nil, exceptions.NewCustomError(http.StatusUnauthorized, "Email or password is incorrect")
 	}
 
 	token, err := utils.GenerateToken(user.ID, user.Role)
@@ -132,7 +132,7 @@ func (service *userServiceImpl) GetUserProfile(c *gin.Context, userID uint) (*re
 	}
 
 	if responseUser.ID == 0 {
-		return nil, exceptions.NewCustomError(http.StatusNotFound, "user not found")
+		return nil, exceptions.NewCustomError(http.StatusNotFound, "User not found")
 	}
 
 	return &responseUser, nil
@@ -202,7 +202,7 @@ func (service *userServiceImpl) ForgotPassword(c *gin.Context, username string, 
 	var user entity.User
 	if err := db.Where("username = ?", username).Where("email = ?", email).First(&user).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, exceptions.NewCustomError(http.StatusNotFound, "username or email not found")
+			return nil, exceptions.NewCustomError(http.StatusNotFound, "Username or email not found")
 		}
 		return nil, err
 	}
@@ -222,13 +222,13 @@ func (service *userServiceImpl) ResetPassword(c *gin.Context, token string, newP
 
 	claims, err := utils.ParseResetToken(token)
 	if err != nil {
-		return exceptions.NewCustomError(http.StatusBadRequest, "invalid or expired token")
+		return exceptions.NewCustomError(http.StatusBadRequest, "Invalid or expired token")
 	}
 
 	var user entity.User
 	if err := db.First(&user, claims.UserID).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return exceptions.NewCustomError(http.StatusNotFound, "user not found")
+			return exceptions.NewCustomError(http.StatusNotFound, "User not found")
 		}
 		return err
 	}
@@ -252,7 +252,7 @@ func (service *userServiceImpl) GetCurrentUser(c *gin.Context, userID uint) (*re
 	var user entity.User
 	if err := db.Where("id = ?", userID).First(&user).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, exceptions.NewCustomError(http.StatusNotFound, "user not found")
+			return nil, exceptions.NewCustomError(http.StatusNotFound, "User not found")
 		}
 		return nil, err
 	}

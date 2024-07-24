@@ -41,7 +41,7 @@ func NewFavouriteController(favouriteService services.FavouriteService) Favourit
 func (controller *favouriteControllerImpl) FavouriteCar(c *gin.Context) {
 	carID, err := strconv.ParseUint(c.Param("carID"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "carID must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "CarID must be an integer"))
 	}
 
 	userID, _, err := utils.ExtractTokenClaims(c)
@@ -68,7 +68,7 @@ func (controller *favouriteControllerImpl) FavouriteCar(c *gin.Context) {
 func (controller *favouriteControllerImpl) UnfavouriteCar(c *gin.Context) {
 	carID, err := strconv.ParseUint(c.Param("carID"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "carID must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "CarID must be an integer"))
 	}
 
 	userID, _, err := utils.ExtractTokenClaims(c)

@@ -72,7 +72,7 @@ func (controller *commentControllerImpl) Create(c *gin.Context) {
 func (controller *commentControllerImpl) Update(c *gin.Context) {
 	commentID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "Id must be an integer"))
 	}
 
 	var commentUpdateReq request.CommentUpdateRequest
@@ -105,7 +105,7 @@ func (controller *commentControllerImpl) Update(c *gin.Context) {
 func (controller *commentControllerImpl) Delete(c *gin.Context) {
 	commentID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "Id must be an integer"))
 	}
 
 	userID, _, err := utils.ExtractTokenClaims(c)

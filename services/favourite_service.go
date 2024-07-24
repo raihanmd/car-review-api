@@ -37,11 +37,11 @@ func (service *favouriteServiceImpl) FavouriteCar(c *gin.Context, carID uint, us
 		if pgErr, ok := err.(*pgconn.PgError); ok {
 			// unique violation
 			if pgErr.Code == "23505" {
-				return exceptions.NewCustomError(http.StatusBadRequest, "car is already favourited by the user")
+				return exceptions.NewCustomError(http.StatusBadRequest, "You have favourited this car")
 			}
 			// violation foreign key car_id
 			if pgErr.Code == "23503" {
-				return exceptions.NewCustomError(http.StatusNotFound, "car not found")
+				return exceptions.NewCustomError(http.StatusNotFound, "Car not found")
 			}
 		}
 		return err

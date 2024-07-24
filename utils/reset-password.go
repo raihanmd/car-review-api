@@ -30,17 +30,17 @@ func ParseResetToken(tokenString string) (*Claims, error) {
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, exceptions.NewCustomError(http.StatusBadRequest, "invalid or expired token")
+			return nil, exceptions.NewCustomError(http.StatusBadRequest, "Invalid or expired token")
 		}
 		return []byte(API_SECRET), nil
 	})
 
 	if err != nil {
-		return nil, exceptions.NewCustomError(http.StatusBadRequest, "invalid or expired token")
+		return nil, exceptions.NewCustomError(http.StatusBadRequest, "Invalid or expired token")
 	}
 
 	if !token.Valid {
-		return nil, exceptions.NewCustomError(http.StatusBadRequest, "invalid or expired token")
+		return nil, exceptions.NewCustomError(http.StatusBadRequest, "Invalid or expired token")
 	}
 
 	return claims, nil

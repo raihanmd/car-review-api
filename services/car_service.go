@@ -39,7 +39,7 @@ func (service *carServiceImpl) Create(c *gin.Context, carCreateReq *request.CarC
 		if pgErr, ok := err.(*pgconn.PgError); ok {
 			// violation foreign key brand_id
 			if pgErr.Code == "23503" {
-				return nil, exceptions.NewCustomError(http.StatusNotFound, "brand not found")
+				return nil, exceptions.NewCustomError(http.StatusNotFound, "Brand not found")
 			}
 		}
 		return nil, err
@@ -61,14 +61,14 @@ func (service *carServiceImpl) Update(c *gin.Context, carUpdateReq *request.CarU
 		result := db.Model(&entity.Car{}).Where("id = ?", carID).Updates(updateCar)
 
 		if result.RowsAffected == 0 {
-			return exceptions.NewCustomError(http.StatusNotFound, "car not found")
+			return exceptions.NewCustomError(http.StatusNotFound, "Car not found")
 		}
 
 		if result.Error != nil {
 			if pgErr, ok := result.Error.(*pgconn.PgError); ok {
 				// violation foreign key brand_id
 				if pgErr.Code == "23503" {
-					return exceptions.NewCustomError(http.StatusNotFound, "brand not found")
+					return exceptions.NewCustomError(http.StatusNotFound, "Brand not found")
 				}
 			}
 			return result.Error
@@ -78,7 +78,7 @@ func (service *carServiceImpl) Update(c *gin.Context, carUpdateReq *request.CarU
 			return err
 		}
 
-		if err := tx.Preload("CarSpecification").Take(&car, "id = ?", carID).Error; err != nil {
+		if err := tx.Preload("Brand").Preload("CarSpecification").Take(&car, "id = ?", carID).Error; err != nil {
 			return err
 		}
 
@@ -105,7 +105,7 @@ func (service *carServiceImpl) Delete(c *gin.Context, carID uint) error {
 		}
 
 		if result.RowsAffected == 0 {
-			return exceptions.NewCustomError(http.StatusNotFound, "car not found")
+			return exceptions.NewCustomError(http.StatusNotFound, "Car not found")
 		}
 
 		err := db.Where("id = ?", carID).Delete(&entity.Car{}).Error
@@ -136,13 +136,12 @@ func (service *carServiceImpl) FindAll(c *gin.Context, carQueryReq *request.CarQ
 	query.Count(&pagination.TotalData)
 
 	offset := (pagination.Page - 1) * pagination.Limit
-	query = query.Preload("CarSpecification").Limit(pagination.Limit).Offset(offset)
+	query = query.Preload("Brand").Preload("CarSpecification").Limit(pagination.Limit).Offset(offset)
 
 	subquery := db.Model(&entity.CarSpecification{}).Select("car_id")
 
 	// Car Filtering
 	{
-
 		if carQueryReq.Name != nil {
 			subquery = subquery.Where("name ILIKE ?", "%"+*carQueryReq.Name+"%")
 		}
@@ -192,9 +191,9 @@ func (service *carServiceImpl) FindByID(c *gin.Context, carId uint) (*response.C
 
 	var car entity.Car
 
-	if err := db.Preload("CarSpecification").Take(&car, "id = ?", carId).Error; err != nil {
+	if err := db.Preload("Brand").Preload("CarSpecification").Take(&car, "id = ?", carId).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return nil, exceptions.NewCustomError(http.StatusNotFound, "car not found")
+			return nil, exceptions.NewCustomError(http.StatusNotFound, "Car not found")
 		}
 		return nil, err
 	}
@@ -206,6 +205,7 @@ func (service *carServiceImpl) toCarResponse(car *entity.Car) *response.CarRespo
 	return &response.CarResponse{
 		ID:                  car.ID,
 		BrandID:             car.BrandID,
+		BrandName:           car.Brand.Name,
 		Name:                car.Name,
 		Model:               car.Model,
 		Year:                car.Year,

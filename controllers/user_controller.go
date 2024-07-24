@@ -132,7 +132,7 @@ func (controller *userControllerImpl) UpdatePassword(c *gin.Context) {
 func (controller *userControllerImpl) GetUserProfile(c *gin.Context) {
 	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "Id must be an integer"))
 	}
 
 	user, err := controller.UserService.GetUserProfile(c, uint(userID))

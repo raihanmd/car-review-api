@@ -74,7 +74,7 @@ func (controller *brandControllerImpl) Create(c *gin.Context) {
 func (controller *brandControllerImpl) Update(c *gin.Context) {
 	brandID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "Id must be an integer"))
 	}
 
 	var brandUpdateReq request.BrandRequest
@@ -107,7 +107,7 @@ func (controller *brandControllerImpl) Update(c *gin.Context) {
 func (controller *brandControllerImpl) Delete(c *gin.Context) {
 	brandID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "Id must be an integer"))
 	}
 
 	utils.UserRoleMustAdmin(c)

@@ -39,7 +39,7 @@ func (service *commentServiceImpl) Create(c *gin.Context, commentCreateReq *requ
 			if pgErr, ok := err.(*pgconn.PgError); ok {
 				// violation foreign key review_id
 				if pgErr.Code == "23503" {
-					return exceptions.NewCustomError(http.StatusNotFound, "review not found")
+					return exceptions.NewCustomError(http.StatusNotFound, "Review not found")
 				}
 			}
 			return err
@@ -75,10 +75,10 @@ func (service *commentServiceImpl) Update(c *gin.Context, commentUpdateReq *requ
 			if pgErr, ok := err.(*pgconn.PgError); ok {
 				// violation foreign key review_id
 				if pgErr.Code == "23503" {
-					return exceptions.NewCustomError(http.StatusNotFound, "review not found")
+					return exceptions.NewCustomError(http.StatusNotFound, "Review not found")
 				}
 			}
-			return exceptions.NewCustomError(http.StatusNotFound, "comment not found")
+			return exceptions.NewCustomError(http.StatusNotFound, "Comment not found")
 		}
 
 		comment.Content = commentUpdateReq.Content
@@ -115,7 +115,7 @@ func (service *commentServiceImpl) Delete(c *gin.Context, userID, commentID uint
 	}
 
 	if result.RowsAffected == 0 {
-		return exceptions.NewCustomError(http.StatusNotFound, "comment not found")
+		return exceptions.NewCustomError(http.StatusNotFound, "Comment not found")
 	}
 
 	logger.Info("Comment deleted successfully", zap.Uint("commentID", commentID))
@@ -137,7 +137,7 @@ func (service *commentServiceImpl) FindByReviewId(c *gin.Context, reviewID uint)
 	}
 
 	if len(comments) == 0 {
-		return nil, exceptions.NewCustomError(http.StatusNotFound, "comments not found")
+		return nil, exceptions.NewCustomError(http.StatusNotFound, "Comments not found")
 	}
 
 	logger.Info("Comments fetched successfully", zap.Uint("reviewID", reviewID), zap.Int("count", len(comments)))

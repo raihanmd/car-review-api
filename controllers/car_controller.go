@@ -75,7 +75,7 @@ func (controller *carControllerImpl) Create(c *gin.Context) {
 func (controller *carControllerImpl) Update(c *gin.Context) {
 	carID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "Id must be an integer"))
 	}
 
 	var carUpdateReq request.CarUpdateRequest
@@ -108,7 +108,7 @@ func (controller *carControllerImpl) Update(c *gin.Context) {
 func (controller *carControllerImpl) Delete(c *gin.Context) {
 	carID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "Id must be an integer"))
 	}
 
 	utils.UserRoleMustAdmin(c)
@@ -172,7 +172,7 @@ func (controller *carControllerImpl) FindAll(c *gin.Context) {
 func (controller *carControllerImpl) FindById(c *gin.Context) {
 	carID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "Id must be an integer"))
 	}
 
 	car, err := controller.CarService.FindByID(c, uint(carID))

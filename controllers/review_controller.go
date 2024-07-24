@@ -77,7 +77,7 @@ func (controller *reviewControllerImpl) Create(c *gin.Context) {
 func (controller *reviewControllerImpl) Update(c *gin.Context) {
 	reviewID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "Id must be an integer"))
 	}
 
 	var reviewUpdateReq request.ReviewUpdateRequest
@@ -110,7 +110,7 @@ func (controller *reviewControllerImpl) Update(c *gin.Context) {
 func (controller *reviewControllerImpl) Delete(c *gin.Context) {
 	reviewID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "Id must be an integer"))
 	}
 
 	userID, _, err := utils.ExtractTokenClaims(c)
@@ -172,7 +172,7 @@ func (controller *reviewControllerImpl) FindAll(c *gin.Context) {
 func (controller *reviewControllerImpl) FindById(c *gin.Context) {
 	reviewID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "id must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "Id must be an integer"))
 	}
 
 	review, err := controller.ReviewService.FindByID(c, uint(reviewID))
@@ -195,7 +195,7 @@ func (controller *reviewControllerImpl) FindById(c *gin.Context) {
 func (controller *reviewControllerImpl) FindComments(c *gin.Context) {
 	reviewID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
-		panic(exceptions.NewCustomError(http.StatusBadRequest, "reviewID must be an integer"))
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "ReviewID must be an integer"))
 	}
 
 	comments, err := controller.CommentService.FindByReviewId(c, uint(reviewID))
