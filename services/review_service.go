@@ -148,6 +148,9 @@ func (service *reviewServiceImpl) FindAll(c *gin.Context, reviewQueryReq *reques
 			ImageUrl:  v["image_url"].(string),
 			CreatedAt: v["created_at"].(time.Time),
 			UpdatedAt: v["updated_at"].(time.Time),
+			Car: response.ReviewCarResponse{
+				ID: uint(v["car_id"].(int64)),
+			},
 			User: response.ReviewUserResponse{
 				ID:       uint(v["user_id"].(int64)),
 				Username: v["username"].(string),
@@ -189,6 +192,9 @@ func (service *reviewServiceImpl) FindByID(c *gin.Context, reviewId uint) (*resp
 		ImageUrl:  review["image_url"].(string),
 		CreatedAt: review["created_at"].(time.Time),
 		UpdatedAt: review["updated_at"].(time.Time),
+		Car: response.ReviewCarResponse{
+			ID: uint(review["car_id"].(int64)),
+		},
 		User: response.ReviewUserResponse{
 			ID:       uint(review["user_id"].(int64)),
 			Username: review["username"].(string),

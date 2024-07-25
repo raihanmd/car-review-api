@@ -1399,7 +1399,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/web.WebSuccess-response_RegisterResponse"
+                            "$ref": "#/definitions/web.WebSuccess-response_GetUserCurrentResponse"
                         }
                     },
                     "400": {
@@ -1671,11 +1671,11 @@
                     "type": "integer",
                     "x-order": "0"
                 },
-                "model": {
+                "name": {
                     "type": "string",
                     "x-order": "1"
                 },
-                "name": {
+                "model": {
                     "type": "string",
                     "x-order": "1"
                 },
@@ -2033,15 +2033,15 @@
                     "x-order": "0",
                     "example": 1
                 },
-                "brand_name": {
-                    "type": "string",
-                    "x-order": "1",
-                    "example": "Toyota"
-                },
                 "brand_id": {
                     "type": "integer",
                     "x-order": "1",
                     "example": 2
+                },
+                "brand_name": {
+                    "type": "string",
+                    "x-order": "1",
+                    "example": "Toyota"
                 },
                 "transmission": {
                     "type": "string",
@@ -2214,6 +2214,14 @@
                     "x-order": "3",
                     "example": "image url"
                 },
+                "car": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/response.ReviewCarResponse"
+                        }
+                    ],
+                    "x-order": "5"
+                },
                 "user": {
                     "allOf": [
                         {
@@ -2240,6 +2248,31 @@
                 "token": {
                     "type": "string",
                     "example": "token"
+                }
+            }
+        },
+        "response.GetUserCurrentResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 1
+                },
+                "username": {
+                    "type": "string",
+                    "x-order": "2",
+                    "example": "luigi"
+                },
+                "email": {
+                    "type": "string",
+                    "x-order": "3",
+                    "example": "luigi@sam.com"
+                },
+                "role": {
+                    "type": "string",
+                    "x-order": "4",
+                    "example": "USER"
                 }
             }
         },
@@ -2285,6 +2318,16 @@
                     "type": "string",
                     "x-order": "2",
                     "example": "USER"
+                }
+            }
+        },
+        "response.ReviewCarResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 1
                 }
             }
         },
@@ -2803,6 +2846,37 @@
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.ForgotPasswordResponse"
+                        }
+                    ],
+                    "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
+                }
+            }
+        },
+        "web.WebSuccess-response_GetUserCurrentResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 200
+                },
+                "message": {
+                    "type": "string",
+                    "x-order": "1",
+                    "example": "success"
+                },
+                "payload": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/response.GetUserCurrentResponse"
                         }
                     ],
                     "x-order": "2"

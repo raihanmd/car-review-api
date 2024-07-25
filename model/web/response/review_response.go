@@ -18,6 +18,7 @@ type FindReviewResponse struct {
 	Title     string             `json:"title" example:"Title" extensions:"x-order=1"`
 	Content   string             `json:"content" example:"Lorem ipsum dolor sit amet" extensions:"x-order=2"`
 	ImageUrl  string             `json:"image_url" example:"image url" extensions:"x-order=3"`
+	Car       ReviewCarResponse  `json:"car" extensions:"x-order=5"`
 	User      ReviewUserResponse `json:"user" extensions:"x-order=5"`
 	CreatedAt time.Time          `json:"created_at" example:"2022-01-01T00:00:00Z" extensions:"x-order=6"`
 	UpdatedAt time.Time          `json:"updated_at" example:"2022-01-01T00:00:00Z" extensions:"x-order=7"`
@@ -26,4 +27,8 @@ type FindReviewResponse struct {
 type ReviewUserResponse struct {
 	ID       uint   `json:"id" example:"1" extensions:"x-order=0"`
 	Username string `json:"username" example:"John Doe" extensions:"x-order=1"`
+}
+
+type ReviewCarResponse struct {
+	ID uint `json:"id" example:"1" extensions:"x-order=0"`
 }

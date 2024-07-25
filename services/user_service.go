@@ -24,7 +24,7 @@ type UserService interface {
 	GetUserProfile(*gin.Context, uint) (*response.UserProfileResponse, error)
 	UpdateUserProfile(*gin.Context, *entity.User, uint) (*response.UpdateUserProfileResponse, error)
 	DeleteUserProfile(*gin.Context, uint) error
-	GetCurrentUser(*gin.Context, uint) (*response.RegisterResponse, error)
+	GetCurrentUser(*gin.Context, uint) (*response.GetUserCurrentResponse, error)
 }
 
 type userServiceImpl struct{}
@@ -246,7 +246,7 @@ func (service *userServiceImpl) ResetPassword(c *gin.Context, token string, newP
 	return nil
 }
 
-func (service *userServiceImpl) GetCurrentUser(c *gin.Context, userID uint) (*response.RegisterResponse, error) {
+func (service *userServiceImpl) GetCurrentUser(c *gin.Context, userID uint) (*response.GetUserCurrentResponse, error) {
 	db, _ := helper.GetDBAndLogger(c)
 
 	var user entity.User
@@ -257,7 +257,8 @@ func (service *userServiceImpl) GetCurrentUser(c *gin.Context, userID uint) (*re
 		return nil, err
 	}
 
-	return &response.RegisterResponse{
+	return &response.GetUserCurrentResponse{
+		ID:       user.ID,
 		Username: user.Username,
 		Email:    user.Email,
 		Role:     user.Role,

@@ -1410,7 +1410,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/web.WebSuccess-response_RegisterResponse"
+                            "$ref": "#/definitions/web.WebSuccess-response_GetUserCurrentResponse"
                         }
                     },
                     "400": {
@@ -1682,11 +1682,11 @@ const docTemplate = `{
                     "type": "integer",
                     "x-order": "0"
                 },
-                "model": {
+                "name": {
                     "type": "string",
                     "x-order": "1"
                 },
-                "name": {
+                "model": {
                     "type": "string",
                     "x-order": "1"
                 },
@@ -2044,15 +2044,15 @@ const docTemplate = `{
                     "x-order": "0",
                     "example": 1
                 },
-                "brand_name": {
-                    "type": "string",
-                    "x-order": "1",
-                    "example": "Toyota"
-                },
                 "brand_id": {
                     "type": "integer",
                     "x-order": "1",
                     "example": 2
+                },
+                "brand_name": {
+                    "type": "string",
+                    "x-order": "1",
+                    "example": "Toyota"
                 },
                 "transmission": {
                     "type": "string",
@@ -2084,15 +2084,15 @@ const docTemplate = `{
                     "x-order": "15",
                     "example": "Electric"
                 },
-                "name": {
-                    "type": "string",
-                    "x-order": "2",
-                    "example": "Yaris"
-                },
                 "model": {
                     "type": "string",
                     "x-order": "2",
                     "example": "SUV"
+                },
+                "name": {
+                    "type": "string",
+                    "x-order": "2",
+                    "example": "Yaris"
                 },
                 "year": {
                     "type": "integer",
@@ -2225,6 +2225,14 @@ const docTemplate = `{
                     "x-order": "3",
                     "example": "image url"
                 },
+                "car": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/response.ReviewCarResponse"
+                        }
+                    ],
+                    "x-order": "5"
+                },
                 "user": {
                     "allOf": [
                         {
@@ -2251,6 +2259,31 @@ const docTemplate = `{
                 "token": {
                     "type": "string",
                     "example": "token"
+                }
+            }
+        },
+        "response.GetUserCurrentResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 1
+                },
+                "username": {
+                    "type": "string",
+                    "x-order": "2",
+                    "example": "luigi"
+                },
+                "email": {
+                    "type": "string",
+                    "x-order": "3",
+                    "example": "luigi@sam.com"
+                },
+                "role": {
+                    "type": "string",
+                    "x-order": "4",
+                    "example": "USER"
                 }
             }
         },
@@ -2296,6 +2329,16 @@ const docTemplate = `{
                     "type": "string",
                     "x-order": "2",
                     "example": "USER"
+                }
+            }
+        },
+        "response.ReviewCarResponse": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 1
                 }
             }
         },
@@ -2814,6 +2857,37 @@ const docTemplate = `{
                     "allOf": [
                         {
                             "$ref": "#/definitions/response.ForgotPasswordResponse"
+                        }
+                    ],
+                    "x-order": "2"
+                },
+                "metadata": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/web.Metadata"
+                        }
+                    ],
+                    "x-order": "3"
+                }
+            }
+        },
+        "web.WebSuccess-response_GetUserCurrentResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 200
+                },
+                "message": {
+                    "type": "string",
+                    "x-order": "1",
+                    "example": "success"
+                },
+                "payload": {
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/response.GetUserCurrentResponse"
                         }
                     ],
                     "x-order": "2"

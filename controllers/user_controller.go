@@ -274,7 +274,7 @@ func (controller *userControllerImpl) ResetPassword(c *gin.Context) {
 // @Param Authorization header string true "Authorization. How to input in swagger : 'Bearer <insert_your_token_here>'"
 // @Security BearerToken
 // @Produce json
-// @Success 200 {object} web.WebSuccess[response.RegisterResponse]
+// @Success 200 {object} web.WebSuccess[response.GetUserCurrentResponse]
 // @Failure 404 {object} web.WebNotFoundError
 // @Failure 400 {object} web.WebBadRequestError
 // @Failure 500 {object} web.WebInternalServerError
