@@ -83,7 +83,7 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 
 	// ======================== USER =======================
 
-	userController := controllers.NewUserController(userService, favouriteService)
+	userController := controllers.NewUserController(userService, favouriteService, reviewService)
 
 	// ======================== CARD =======================
 

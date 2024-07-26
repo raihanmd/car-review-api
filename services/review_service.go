@@ -22,6 +22,7 @@ type ReviewService interface {
 	Delete(*gin.Context, uint, uint) error
 	FindAll(*gin.Context, *request.ReviewQueryRequest, *web.PaginationRequest) (*[]response.FindReviewResponse, *web.Metadata, error)
 	FindByID(*gin.Context, uint) (*response.FindReviewResponse, error)
+	FindByUserID(*gin.Context, *web.PaginationRequest, uint) (*[]response.FindReviewResponse, *web.Metadata, error)
 }
 
 type reviewServiceImpl struct{}
@@ -93,15 +94,23 @@ func (service *reviewServiceImpl) Update(c *gin.Context, reviewUpdateReq *reques
 func (service *reviewServiceImpl) Delete(c *gin.Context, userID, reviewID uint) error {
 	db, logger := helper.GetDBAndLogger(c)
 
-	result := db.Where("id = ?", reviewID).Where("user_id = ?", userID).Delete(&entity.Review{})
+	err := db.Transaction(func(tx *gorm.DB) error {
+		err := tx.Where("review_id = ?", reviewID).Delete(&entity.Comment{}).Error
+		helper.PanicIfError(err)
 
-	if result.Error != nil {
-		return result.Error
-	}
+		result := tx.Where("id = ?", reviewID).Where("user_id = ?", userID).Delete(&entity.Review{})
 
-	if result.RowsAffected == 0 {
-		return exceptions.NewCustomError(http.StatusNotFound, "review not found")
-	}
+		if result.Error != nil {
+			return result.Error
+		}
+
+		if result.RowsAffected == 0 {
+			return exceptions.NewCustomError(http.StatusNotFound, "review not found")
+		}
+
+		return nil
+	})
+	helper.PanicIfError(err)
 
 	logger.Info("review deleted successfully", zap.Uint("reviewID", reviewID))
 
@@ -202,4 +211,56 @@ func (service *reviewServiceImpl) FindByID(c *gin.Context, reviewId uint) (*resp
 	}
 
 	return &responseReview, nil
+}
+func (service *reviewServiceImpl) FindByUserID(c *gin.Context, paging *web.PaginationRequest, userID uint) (*[]response.FindReviewResponse, *web.Metadata, error) {
+	db, _ := helper.GetDBAndLogger(c)
+
+	var reviews []map[string]interface{}
+
+	query := db.Table("reviews").
+		Order("created_at desc").
+		Select("reviews.*, reviews.id as review_id, cars.id as car_id, users.username, users.id as user_id").
+		Joins("left join cars on reviews.car_id = cars.id").
+		Joins("left join users on reviews.user_id = users.id")
+	query.Count(&paging.TotalData)
+
+	offset := (paging.Page - 1) * paging.Limit
+	query = query.Limit(paging.Limit).Offset(offset)
+
+	if err := query.Find(&reviews, "reviews.user_id = ?", userID).Error; err != nil {
+		return nil, nil, err
+	}
+
+	paging.TotalPages = int((paging.TotalData + int64(paging.Limit) - 1) / int64(paging.Limit))
+
+	var responseReviews []response.FindReviewResponse
+
+	for _, v := range reviews {
+		review := response.FindReviewResponse{
+			ID:        uint(v["review_id"].(int64)),
+			Title:     v["title"].(string),
+			Content:   v["content"].(string),
+			ImageUrl:  v["image_url"].(string),
+			CreatedAt: v["created_at"].(time.Time),
+			UpdatedAt: v["updated_at"].(time.Time),
+			Car: response.ReviewCarResponse{
+				ID: uint(v["car_id"].(int64)),
+			},
+			User: response.ReviewUserResponse{
+				ID:       uint(v["user_id"].(int64)),
+				Username: v["username"].(string),
+			},
+		}
+
+		responseReviews = append(responseReviews, review)
+	}
+
+	metadata := web.Metadata{
+		Page:       &paging.Page,
+		Limit:      &paging.Limit,
+		TotalPages: &paging.TotalPages,
+		TotalData:  &paging.TotalData,
+	}
+
+	return &responseReviews, &metadata, nil
 }

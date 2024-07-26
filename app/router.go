@@ -84,7 +84,7 @@ func NewRouter() *gin.Engine {
 
 	// ======================== USER =======================
 
-	userController := controllers.NewUserController(userService, favouriteService)
+	userController := controllers.NewUserController(userService, favouriteService, reviewService)
 
 	// ======================== CARD =======================
 
@@ -145,6 +145,7 @@ func NewRouter() *gin.Engine {
 	apiRouter.GET("/users/profile/:id", userController.GetUserProfile)
 	apiRouter.GET("/users/favourites", userController.GetFavourites)
 	apiRouter.GET("/users/current", userController.GetCurrentUser)
+	apiRouter.GET("/users/:id/reviews", userController.GetUserReviews)
 
 	userRouter.Use(middlewares.JwtAuthMiddleware)
 

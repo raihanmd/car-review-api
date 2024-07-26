@@ -171,6 +171,7 @@ func (service *commentServiceImpl) toCommentResponse(comment *entity.Comment) *r
 		ID:       comment.ID,
 		ReviewID: comment.ReviewID,
 		User: response.CommentUserResponse{
+			ID:       comment.User.ID,
 			Username: comment.User.Username,
 		},
 		Content:   comment.Content,

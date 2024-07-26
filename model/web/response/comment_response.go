@@ -12,5 +12,6 @@ type CommentResponse struct {
 }
 
 type CommentUserResponse struct {
-	Username string `json:"username" example:"luigi" extensions:"x-order=0"`
+	ID       uint   `json:"id" example:"1" extensions:"x-order=0"`
+	Username string `json:"username" example:"luigi" extensions:"x-order=1"`
 }

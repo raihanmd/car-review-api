@@ -8,7 +8,7 @@ import (
 	"github.com/raihanmd/fp-superbootcamp-go/exceptions"
 	"github.com/raihanmd/fp-superbootcamp-go/helper"
 	"github.com/raihanmd/fp-superbootcamp-go/model/entity"
-	_ "github.com/raihanmd/fp-superbootcamp-go/model/web"
+	"github.com/raihanmd/fp-superbootcamp-go/model/web"
 	"github.com/raihanmd/fp-superbootcamp-go/model/web/request"
 	_ "github.com/raihanmd/fp-superbootcamp-go/model/web/response"
 	"github.com/raihanmd/fp-superbootcamp-go/services"
@@ -26,17 +26,20 @@ type UserController interface {
 	DeleteUserProfile(*gin.Context)
 	GetFavourites(*gin.Context)
 	GetCurrentUser(*gin.Context)
+	GetUserReviews(*gin.Context)
 }
 
 type userControllerImpl struct {
 	services.UserService
 	services.FavouriteService
+	services.ReviewService
 }
 
-func NewUserController(userService services.UserService, favouriteService services.FavouriteService) UserController {
+func NewUserController(userService services.UserService, favouriteService services.FavouriteService, reviewService services.ReviewService) UserController {
 	return &userControllerImpl{
 		userService,
 		favouriteService,
+		reviewService,
 	}
 }
 
@@ -287,4 +290,41 @@ func (controller *userControllerImpl) GetCurrentUser(c *gin.Context) {
 	helper.PanicIfError(err)
 
 	helper.ToResponseJSON(c, http.StatusOK, userResponse, nil)
+}
+
+// GetUserReviews godoc
+// @Summary Get user reviews.
+// @Description Get user profile data.
+// @Tags Users
+// @Param limit query int false "Limit" default(10)
+// @Param page query int false "Page" default(1)
+// @Param id path int true "User ID"
+// @Produce json
+// @Success 200 {object} web.WebSuccess[[]response.FindReviewResponse]
+// @Failure 400 {object} web.WebBadRequestError
+// @Failure 404 {object} web.WebNotFoundError
+// @Failure 500 {object} web.WebInternalServerError
+// @Router /api/users/{id}/reviews [get]
+func (controller *userControllerImpl) GetUserReviews(c *gin.Context) {
+	var pagination web.PaginationRequest
+
+	if err := c.ShouldBindQuery(&pagination); err != nil {
+		panic(err)
+	}
+
+	if pagination.Limit == 0 {
+		pagination.Limit = 10
+	}
+	if pagination.Page == 0 {
+		pagination.Page = 1
+	}
+	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err != nil {
+		panic(exceptions.NewCustomError(http.StatusBadRequest, "Id must be an integer"))
+	}
+
+	reviews, metadata, err := controller.ReviewService.FindByUserID(c, &pagination, uint(userID))
+	helper.PanicIfError(err)
+
+	helper.ToResponseJSON(c, http.StatusOK, reviews, metadata)
 }

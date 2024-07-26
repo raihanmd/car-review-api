@@ -392,10 +392,14 @@ definitions:
     type: object
   response.CommentUserResponse:
     properties:
+      id:
+        example: 1
+        type: integer
+        x-order: "0"
       username:
         example: luigi
         type: string
-        x-order: "0"
+        x-order: "1"
     type: object
   response.FavouriteResponse:
     properties:
@@ -1909,6 +1913,47 @@ paths:
       security:
       - BearerToken: []
       summary: Delete user.
+      tags:
+      - Users
+  /api/users/{id}/reviews:
+    get:
+      description: Get user profile data.
+      parameters:
+      - default: 10
+        description: Limit
+        in: query
+        name: limit
+        type: integer
+      - default: 1
+        description: Page
+        in: query
+        name: page
+        type: integer
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/web.WebSuccess-array_response_FindReviewResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/web.WebBadRequestError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/web.WebNotFoundError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/web.WebInternalServerError'
+      summary: Get user reviews.
       tags:
       - Users
   /api/users/current:

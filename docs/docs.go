@@ -1642,6 +1642,67 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/api/users/{id}/reviews": {
+            "get": {
+                "description": "Get user profile data.",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get user reviews.",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "default": 10,
+                        "description": "Limit",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "Page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebSuccess-array_response_FindReviewResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebBadRequestError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebNotFoundError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.WebInternalServerError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1682,11 +1743,11 @@ const docTemplate = `{
                     "type": "integer",
                     "x-order": "0"
                 },
-                "name": {
+                "model": {
                     "type": "string",
                     "x-order": "1"
                 },
-                "model": {
+                "name": {
                     "type": "string",
                     "x-order": "1"
                 },
@@ -2044,15 +2105,15 @@ const docTemplate = `{
                     "x-order": "0",
                     "example": 1
                 },
-                "brand_id": {
-                    "type": "integer",
-                    "x-order": "1",
-                    "example": 2
-                },
                 "brand_name": {
                     "type": "string",
                     "x-order": "1",
                     "example": "Toyota"
+                },
+                "brand_id": {
+                    "type": "integer",
+                    "x-order": "1",
+                    "example": 2
                 },
                 "transmission": {
                     "type": "string",
@@ -2084,15 +2145,15 @@ const docTemplate = `{
                     "x-order": "15",
                     "example": "Electric"
                 },
-                "model": {
-                    "type": "string",
-                    "x-order": "2",
-                    "example": "SUV"
-                },
                 "name": {
                     "type": "string",
                     "x-order": "2",
                     "example": "Yaris"
+                },
+                "model": {
+                    "type": "string",
+                    "x-order": "2",
+                    "example": "SUV"
                 },
                 "year": {
                     "type": "integer",
@@ -2170,9 +2231,14 @@ const docTemplate = `{
         "response.CommentUserResponse": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "integer",
+                    "x-order": "0",
+                    "example": 1
+                },
                 "username": {
                     "type": "string",
-                    "x-order": "0",
+                    "x-order": "1",
                     "example": "luigi"
                 }
             }
